@@ -1,6 +1,6 @@
 # Database_final_porject (資料庫系統_第八組)
 ### 題目
-
+### ETF 投資組合管理系統
 ### 成員
 
 - **組員一**：資工系 - 41143210 - 田晉嘉 [JustinTien10](https://github.com/JustinTien10)
