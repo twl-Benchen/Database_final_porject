@@ -38,7 +38,7 @@
 
 ## 應用情境與使用案例
 **使用案例**
-![image]((https://github.com/twl-Benchen/Database_final_porject/blob/main/%E4%BD%BF%E7%94%A8%E8%80%85.jpg)) 
+![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E4%BD%BF%E7%94%A8%E8%80%85.jpg)
  - 使用者
    - 檢視ETF資訊與技術指標
    - 使用ETF篩選器
