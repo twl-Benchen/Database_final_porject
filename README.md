@@ -37,8 +37,8 @@
   - 自我介紹：[]
 
 ## 應用情境與使用案例
-**使用案例**
-![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E4%BD%BF%E7%94%A8%E8%80%85.jpg)
+**使用案例**  
+![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E4%BD%BF%E7%94%A8%E8%80%85.jpg) ![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E7%AE%A1%E7%90%86%E8%80%85.jpg)
  - 使用者
    - 檢視ETF資訊與技術指標
    - 使用ETF篩選器
@@ -47,7 +47,6 @@
    - 使用者可以查看ETF的歷史走勢、技術指標（如MACD、RSI等），對應「ETF_HistoryPrice(ETF歷史價格) 」​
    - 依據主題、報酬率、產業等條件，快速找到符合需求的ETF ，對應「 Category_Level1(第一分類) 」與「 Category_Level2(第二分類) 」​
    - 建立個人化投資組合，追蹤其報酬變化與模擬股息再投入，對應「 Transaction(交易紀錄表) 」​
-![image](picture or gif url)
  - 管理者
    - 查看使用者資料
    - 更新ETF資料
