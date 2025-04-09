@@ -108,6 +108,18 @@
 | 1 | 0050 | 1 |
 | 2 | 0050 | 3 |
 |3 | 0051 | 2 |
+- Users(使用者基本資料)
+
+| 欄位名稱 | 欄位說明 | 資料型態 | 是否可為空 | 值域 |
+| --- | --- | --- | --- | ---|
+| User_Id(PK) |	使用者代號 |	INT	| N |	從 1 開始遞增的整數 |
+| User_Name |	使用者名稱 |	VARCHAR(50) |	N |	長度 1~50 的文字|
+| Full_Name	| 全名 |	VARCHAR(100) |	N |	長度 1~100 的文字|
+| Email	| 電子郵件 |	VARCHAR(100) |	N |	必須符合 Email 格式|
+| Phone_Number	| 電話號碼 |	VARCHAR(10) |	N |	固定長度 10 碼（例如：09xxxxxxxx）|
+| Role |	權限 |	ENUM('user','admin') |	N |	僅限 'user' 或 'admin' |
+| Max_Amount |	當日最大交易量 |	INT |	N |	大於或等於 0 的整數 |
+| Users_Creat_At |	帳號創建日期 |	TIMESTAMP |	N |	時間格式：yyyy-mm-dd |
 ## ER Diagram及詳細說明
 ![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)
 
