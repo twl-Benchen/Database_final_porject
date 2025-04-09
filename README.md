@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/49b890ba-63ae-4e3f-8608-c275dc42c259)![image](https://github.com/user-attachments/assets/5d8ce184-a15b-42c8-a796-d23ddef90e9f)# Database_final_porject (資料庫系統_第八組)
+# Database_final_porject (資料庫系統_第八組)
 ### 題目 ETF 投資組合管理系統
 - **專案簡介**  
     協助投資者整合與管理其 ETF 投資資訊，並提供即時的績效及配置。
