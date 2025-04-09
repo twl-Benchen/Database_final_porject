@@ -1,4 +1,5 @@
 # Database_final_porject (資料庫系統_第八組)
+https://nfuedu-my.sharepoint.com/:p:/r/personal/41143238_nfu_edu_tw/_layouts/15/Doc.aspx?sourcedoc=%7Be27c8db4-38d1-4f40-865f-cfe431659b89%7D&action=default&previoussessionid=329c3c3d-c540-71dd-fe06-656f9a8cf7fe
 ### 題目 ETF 投資組合管理系統
 - **專案簡介**  
     協助投資者整合與管理其 ETF 投資資訊，並提供即時的績效及配置。
