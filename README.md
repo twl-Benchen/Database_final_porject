@@ -88,18 +88,21 @@
 
 ## 完整性限制
 - Category_Level1(第一分類)
+
 | Category1_Id(PK) | Category1_Name |
 | --- | --- |
 | 1 | 股票型 |
 | 2 | 高股息 |
 | 3 | 債券型 |
 - Category_Level2(第二分類)
+
 | Category2_Id(PK) | Category1_Id(FK) | Category2_Name |
 | --- | --- | --- |
 | 1 | 大型權值 | 1 |
 | 2 | 中小型權值 | 1 |
 | 3 | 高息低波動 | 2 |
 - ETF_Category(紀錄分類)
+
 | Category_Id(PK) | ETF_Id(FK) | Category2_Id(FK) |
 | --- | --- | --- |
 | 1 | 0050 | 1 |
