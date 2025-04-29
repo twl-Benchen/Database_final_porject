@@ -90,8 +90,7 @@
 
 ## 完整性限制(Database Schema)
 
-
-#### ETF 基本資料表 (ETF)
+### ETF 基本資料表 (ETF)
 
 | 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                             |
 | ------------------- | -------------- | ---------- | ---------- | --------------------------------|
@@ -103,60 +102,138 @@
 | Scale               | INT            | N          | 規模 (億)  | ≥ 0 的整數                       |
 | ETF_Created_At      | TIMESTAMP      | N          | 創立時間   | 時間格式：YYYY-MM-DD             |
 
+```sql
+-- 建立 ETF 資料表
+CREATE TABLE ETF (
+  ETF_Id VARCHAR(10) PRIMARY KEY,
+  ETF_Name VARCHAR(100) NOT NULL,
+  Devidend_Yield DECIMAL(5,2) NOT NULL,
+  Holders INT NOT NULL,
+  IndexName VARCHAR(50) NOT NULL,
+  Scale INT NOT NULL,
+  ETF_Created_At DATE NOT NULL
+);
 
-
-#### 交易紀錄表 (Transaction)
+-- 範例：插入0050 (台灣50) 之ETF資料
+INSERT INTO ETF (ETF_Id, ETF_Name, Devidend_Yield, Holders, IndexName, Scale, ETF_Created_At)
+VALUES ('0050', '台灣50', 4.20, 500000, 'TWSE TAIEX', 250, '2003-06-25');
+``` 
+---
+### 交易紀錄表 (Transaction)
 
 | 欄位名稱               | 資料型態                 | 是否可為空 | 欄位說明     | 值域                                  |
 | ---------------------- | ------------------------ | ---------- | ------------ | ------------------------------------- |
-| Transaction_Id (PK)    | INT                      | N          | 交易代號     | 從 1 開始遞增的整數                  |
-| User_Id (FK)           | VARCHAR(50)              | N          | 使用者代號   | 參考 Users.User_Id                   |
-| ETF_Id (FK)            | VARCHAR(10)              | N          | ETF 代號     | 參考 ETF.ETF_Id                      |
-| Transaction_Type       | ENUM('Buy','Sell')       | N          | 交易類型     | 僅可為 'Buy' 或 'Sell'               |
-| Shares                 | INT                      | N          | 買賣股數     | > 0 的整數                          |
-| Price                  | DECIMAL(10,2)            | N          | 交易價格     | ≥ 0，最多小數第 2 位                 |
-| Transaction_Date       | TIMESTAMP                | N          | 交易時間     | 時間格式：YYYY-MM-DD                 |
+| Transaction_Id (PK)    | INT                      | N          | 交易代號     | 從 1 開始遞增的整數                   |
+| User_Id (FK)           | VARCHAR(50)              | N          | 使用者代號   | 參考 Users.User_Id                    |
+| ETF_Id (FK)            | VARCHAR(10)              | N          | ETF 代號     | 參考 ETF.ETF_Id                       |
+| Transaction_Type       | ENUM('Buy','Sell')       | N          | 交易類型     | 僅可為 'Buy' 或 'Sell'                |
+| Shares                 | INT                      | N          | 買賣股數     | > 0 的整數                           |
+| Price                  | DECIMAL(10,2)            | N          | 交易價格     | ≥ 0，最多小數第 2 位                  |
+| Transaction_Date       | TIMESTAMP                | N          | 交易時間     | 時間格式：YYYY-MM-DD                  |
 
+```sql
+-- 建立交易紀錄表
+CREATE TABLE `Transaction` (
+  Transaction_Id INT PRIMARY KEY AUTO_INCREMENT,
+  User_Id VARCHAR(50) NOT NULL,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Transaction_Type ENUM('Buy','Sell') NOT NULL,
+  Shares INT NOT NULL,
+  Price DECIMAL(10,2) NOT NULL,
+  Transaction_Date DATE NOT NULL,
+  FOREIGN KEY (User_Id) REFERENCES Users(User_Id),
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id)
+);
 
+-- 範例：記錄001使用者於2025-04-29買進0050 100股，單價167.80
+INSERT INTO `Transaction` (User_Id, ETF_Id, Transaction_Type, Shares, Price, Transaction_Date)
+VALUES (1, '0050', 'Buy', 100, 168.80, '2025-04-29');
+```
 
-#### 持倉資料表 (Portfolio)
+---
+### 持倉資料表 (Portfolio)
 
 | 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                  |
 | ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- |
-| Portfolio_Id (PK)      | INT            | N          | 持倉代號     | 從 1 開始遞增的整數                  |
-| User_Id (FK)           | VARCHAR(50)    | N          | 使用者代號   | 參考 Users.User_Id                   |
-| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                      |
-| Shares_Held            | INT            | N          | 持有股數     | > 0 的整數                          |
-| Average_Cost           | DECIMAL(10,2)  | N          | 平均成本     | ≥ 0，最多小數第 2 位                 |
-| Last_Updated           | TIMESTAMP      | N          | 最後更新日期 | 時間格式：YYYY-MM-DD                 |
+| Portfolio_Id (PK)      | INT            | N          | 持倉代號     | 從 1 開始遞增的整數                   |
+| User_Id (FK)           | VARCHAR(50)    | N          | 使用者代號   | 參考 Users.User_Id                    |
+| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                       |
+| Shares_Held            | INT            | N          | 持有股數     | > 0 的整數                           |
+| Average_Cost           | DECIMAL(10,2)  | N          | 平均成本     | ≥ 0，最多小數第 2 位                  |
+| Last_Updated           | TIMESTAMP      | N          | 最後更新日期 | 時間格式：YYYY-MM-DD                  |
 
+```sql
+-- 建立持倉資料表
+CREATE TABLE Portfolio (
+  Portfolio_Id INT PRIMARY KEY AUTO_INCREMENT,
+  User_Id VARCHAR(50) NOT NULL,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Shares_Held INT NOT NULL,
+  Average_Cost DECIMAL(10,2) NOT NULL,
+  Last_Updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (User_Id) REFERENCES Users(User_Id),
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id)
+);
 
+-- 範例：使用者代號1持有0050 100股，平均成本167.80
+INSERT INTO Portfolio (User_Id, ETF_Id, Shares_Held, Average_Cost)
+VALUES (1, '0050', 100, 167.80);
+```
 
-#### ETF 歷史價格表 (ETF_HistoryPrice)
+---
+### ETF 歷史價格表 (ETF_HistoryPrice)
 
 | 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                  |
 | ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- |
-| PriceRecord_Id (PK)    | INT            | N          | 價格紀錄代號 | 從 1 開始遞增的整數                  |
-| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                      |
-| Open_Price             | DECIMAL(10,2)  | N          | 開盤價       | ≥ 0，最多小數第 2 位                 |
-| Close_Price            | DECIMAL(10,2)  | N          | 收盤價       | ≥ 0，最多小數第 2 位                 |
-| High_Price             | DECIMAL(10,2)  | N          | 最高價       | ≥ 0，最多小數第 2 位                 |
-| Low_Price              | DECIMAL(10,2)  | N          | 最低價       | ≥ 0，最多小數第 2 位                 |
-| Volume                 | BIGINT         | N          | 交易量       | ≥ 0 的整數                          |
-| History_Date           | DATE           | N          | 日期         | 時間格式：YYYY-MM-DD                 |
+| PriceRecord_Id (PK)    | INT            | N          | 價格紀錄代號 | 從 1 開始遞增的整數                   |
+| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                       |
+| Open_Price             | DECIMAL(10,2)  | N          | 開盤價       | ≥ 0，最多小數第 2 位                  |
+| Close_Price            | DECIMAL(10,2)  | N          | 收盤價       | ≥ 0，最多小數第 2 位                  |
+| High_Price             | DECIMAL(10,2)  | N          | 最高價       | ≥ 0，最多小數第 2 位                  |
+| Low_Price              | DECIMAL(10,2)  | N          | 最低價       | ≥ 0，最多小數第 2 位                  |
+| Volume                 | BIGINT         | N          | 交易量       | ≥ 0 的整數                           |
+| History_Date           | DATE           | N          | 日期         | 時間格式：YYYY-MM-DD                  |
 
+```sql
+-- 建立歷史價格表
+CREATE TABLE ETF_HistoryPrice (
+  PriceRecord_Id INT PRIMARY KEY AUTO_INCREMENT,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Open_Price DECIMAL(10,2) NOT NULL,
+  Close_Price DECIMAL(10,2) NOT NULL,
+  High_Price DECIMAL(10,2) NOT NULL,
+  Low_Price DECIMAL(10,2) NOT NULL,
+  Volume BIGINT NOT NULL,
+  History_Date DATE NOT NULL,
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id)
+);
 
+-- 範例：紀錄2025-04-29 之0050開盤167.15、收盤167.80、最高168.00、最低166.50、成交量10830
+INSERT INTO ETF_HistoryPrice (ETF_Id, Open_Price, Close_Price, High_Price, Low_Price, Volume, History_Date)
+VALUES ('0050', 167.15, 167.80, 168.00, 166.50, 10830, '2025-04-28');
+```
 
-#### 第一分類表 (Category_Level1)
+---
+### 第一分類表 (Category_Level1)
 
 | 欄位名稱           | 資料型態    | 是否可為空 | 欄位說明     | 值域                            |
 | ------------------ | ----------- | ---------- | ------------ | ------------------------------- |
-| Category1_Id (PK)  | INT         | N          | 第一分類代號 | 從 1 開始遞增的整數            |
-| Category1_Name     | VARCHAR(20) | N          | 第一分類名稱 | 長度 1~20 的文字               |
+| Category1_Id (PK)  | INT         | N          | 第一分類代號 | 從 1 開始遞增的整數              |
+| Category1_Name     | VARCHAR(20) | N          | 第一分類名稱 | 長度 1~20 的文字                 |
 
+```sql
+-- 建立第一分類表
+CREATE TABLE Category_Level1 (
+  Category1_Id INT PRIMARY KEY AUTO_INCREMENT,
+  Category1_Name VARCHAR(20) NOT NULL
+);
 
+-- 範例：新增第一分類「股票型」
+INSERT INTO Category_Level1 (Category1_Name) VALUES ('股票型');
+```
 
-#### 第二分類表 (Category_Level2)
+---
+### 第二分類表 (Category_Level2)
 
 | 欄位名稱              | 資料型態    | 是否可為空 | 欄位說明       | 值域                                   |
 | --------------------- | ----------- | ---------- | -------------- | -------------------------------------- |
@@ -164,9 +241,21 @@
 | Category1_Id (FK)     | INT         | N          | 第一分類代號   | 參考 Category_Level1.Category1_Id      |
 | Category2_Name        | VARCHAR(20) | N          | 第二分類名稱   | 長度 1~20 的文字                     |
 
+```sql
+-- 建立第二分類表
+CREATE TABLE Category_Level2 (
+  Category2_Id INT PRIMARY KEY AUTO_INCREMENT,
+  Category1_Id INT NOT NULL,
+  Category2_Name VARCHAR(20) NOT NULL,
+  FOREIGN KEY (Category1_Id) REFERENCES Category_Level1(Category1_Id)
+);
 
+-- 範例：新增第二分類「大型權值」屬於第一分類1
+INSERT INTO Category_Level2 (Category1_Id, Category2_Name) VALUES (1, '大型權值');
+```
 
-#### 紀錄分類表 (ETF_Category)
+---
+### 紀錄分類表 (ETF_Category)
 
 | 欄位名稱            | 資料型態    | 是否可為空 | 欄位說明       | 值域                                   |
 | ------------------- | ----------- | ---------- | -------------- | -------------------------------------- |
@@ -174,20 +263,52 @@
 | ETF_Id (FK)         | VARCHAR(10) | N          | ETF 代號       | 參考 ETF.ETF_Id                      |
 | Category2_Id (FK)   | INT         | N          | 第二分類代號   | 參考 Category_Level2.Category2_Id     |
 
+```sql
+-- 建立ETF與分類對應表
+CREATE TABLE ETF_Category (
+  Category_Id INT PRIMARY KEY AUTO_INCREMENT,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Category2_Id INT NOT NULL,
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
+  FOREIGN KEY (Category2_Id) REFERENCES Category_Level2(Category2_Id)
+);
 
+-- 範例：將0050歸類至第二分類1 (大型權值)
+INSERT INTO ETF_Category (ETF_Id, Category2_Id) VALUES ('0050', 1);
+```
 
-#### 使用者基本資料表 (Users)
+---
+### 使用者基本資料表 (Users)
 
 | 欄位名稱              | 資料型態             | 是否可為空 | 欄位說明       | 值域                            |
 | --------------------- | -------------------- | ---------- | -------------- | ------------------------------- |
-| User_Id (PK)          | INT                  | N          | 使用者代號     | 從 1 開始遞增的整數            |
-| User_Name             | VARCHAR(50)          | N          | 使用者名稱     | 長度 1~50 的文字               |
-| Full_Name             | VARCHAR(100)         | N          | 全名           | 長度 1~100 的文字              |
+| User_Id (PK)          | INT                  | N          | 使用者代號     | 從 1 開始遞增的整數              |
+| User_Name             | VARCHAR(50)          | N          | 使用者名稱     | 長度 1~50 的文字                 |
+| Full_Name             | VARCHAR(100)         | N          | 全名           | 長度 1~100 的文字                |
 | Email                 | VARCHAR(100)         | N          | 電子郵件       | Email 格式                     |
 | Phone_Number          | VARCHAR(10)          | N          | 電話號碼       | 長度固定為 10 碼               |
 | Role                  | ENUM('user','admin') | N          | 權限           | 僅限 'user' 或 'admin'          |
 | Max_Amount            | INT                  | N          | 當日最大交易量 | ≥ 0 的整數                    |
 | Users_Created_At      | TIMESTAMP            | N          | 帳號創建日期   | 時間格式：YYYY-MM-DD           |
+
+```sql
+-- 建立使用者資料表
+CREATE TABLE Users (
+  User_Id INT PRIMARY KEY AUTO_INCREMENT,
+  User_Name VARCHAR(50) NOT NULL,
+  Full_Name VARCHAR(100) NOT NULL,
+  Email VARCHAR(100) NOT NULL UNIQUE,
+  Phone_Number VARCHAR(10) NOT NULL,
+  Role ENUM('user','admin') NOT NULL,
+  Max_Amount INT NOT NULL DEFAULT 0,
+  Users_Created_At TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 範例：新增使用者 Bob (User_Id 自動產生為1)
+INSERT INTO Users (User_Name, Full_Name, Email, Phone_Number, Role, Max_Amount)
+VALUES ('bob', 'Bob Lee', 'bob@example.com', '0987654321', 'user', 500000);
+```
+
 
 ## ER Diagram及詳細說明
 ![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)
