@@ -116,7 +116,7 @@ CREATE TABLE ETF (
 
 -- 範例：插入0050 (台灣50) 之ETF資料
 INSERT INTO ETF (ETF_Id, ETF_Name, Devidend_Yield, Holders, IndexName, Scale, ETF_Created_At)
-VALUES ('0050', '台灣50', 4.20, 500000, 'TWSE TAIEX', 250, '2003-06-25');
+VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-25');
 ``` 
 ---
 ### 交易紀錄表 (Transaction)
