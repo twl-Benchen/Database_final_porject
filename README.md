@@ -88,40 +88,107 @@
   - 確保用戶個人資料與交易記錄的隱私性
   - 提供資料備份以確保系統穩定性
 
-## 完整性限制
-- Category_Level1(第一分類)
+## 完整性限制(Database Schema)
 
-| Category1_Id(PK) | Category1_Name |
-| --- | --- |
-| 1 | 股票型 |
-| 2 | 高股息 |
-| 3 | 債券型 |
-- Category_Level2(第二分類)
 
-| Category2_Id(PK) | Category1_Id(FK) | Category2_Name |
-| --- | --- | --- |
-| 1 | 大型權值 | 1 |
-| 2 | 中小型權值 | 1 |
-| 3 | 高息低波動 | 2 |
-- ETF_Category(紀錄分類)
+#### ETF 基本資料表 (ETF)
 
-| Category_Id(PK) | ETF_Id(FK) | Category2_Id(FK) |
-| --- | --- | --- |
-| 1 | 0050 | 1 |
-| 2 | 0050 | 3 |
-|3 | 0051 | 2 |
-- Users(使用者基本資料)
+| 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                             |
+| ------------------- | -------------- | ---------- | ---------- | --------------------------------|
+| ETF_Id (PK)         | VARCHAR(10)    | N          | ETF 代號   | 數字 + 英文字串                  |
+| ETF_Name            | VARCHAR(100)   | N          | ETF 名稱   | 長度 1~100 的文字                |
+| Devidend_Yield      | DECIMAL(5,2)   | N          | 殖利率     | ≥ 0，最多小數第 2 位             |
+| Holders             | INT            | N          | 持有人數   | ≥ 0 的整數                       |
+| IndexName           | VARCHAR(50)    | N          | 追蹤指數   | 長度 1~50 的文字                 |
+| Scale               | INT            | N          | 規模 (億)  | ≥ 0 的整數                       |
+| ETF_Created_At      | TIMESTAMP      | N          | 創立時間   | 時間格式：YYYY-MM-DD             |
 
-| 欄位名稱 | 欄位說明 | 資料型態 | 是否可為空 | 值域 |
-| --- | --- | --- | --- | ---|
-| User_Id(PK) |	使用者代號 |	INT	| N |	從 1 開始遞增的整數 |
-| User_Name |	使用者名稱 |	VARCHAR(50) |	N |	長度 1~50 的文字|
-| Full_Name	| 全名 |	VARCHAR(100) |	N |	長度 1~100 的文字|
-| Email	| 電子郵件 |	VARCHAR(100) |	N |	必須符合 Email 格式|
-| Phone_Number	| 電話號碼 |	VARCHAR(10) |	N |	固定長度 10 碼（例如：09xxxxxxxx）|
-| Role |	權限 |	ENUM('user','admin') |	N |	僅限 'user' 或 'admin' |
-| Max_Amount |	當日最大交易量 |	INT |	N |	大於或等於 0 的整數 |
-| Users_Creat_At |	帳號創建日期 |	TIMESTAMP |	N |	時間格式：yyyy-mm-dd |
+
+
+#### 交易紀錄表 (Transaction)
+
+| 欄位名稱               | 資料型態                 | 是否可為空 | 欄位說明     | 值域                                  |
+| ---------------------- | ------------------------ | ---------- | ------------ | ------------------------------------- |
+| Transaction_Id (PK)    | INT                      | N          | 交易代號     | 從 1 開始遞增的整數                  |
+| User_Id (FK)           | VARCHAR(50)              | N          | 使用者代號   | 參考 Users.User_Id                   |
+| ETF_Id (FK)            | VARCHAR(10)              | N          | ETF 代號     | 參考 ETF.ETF_Id                      |
+| Transaction_Type       | ENUM('Buy','Sell')       | N          | 交易類型     | 僅可為 'Buy' 或 'Sell'               |
+| Shares                 | INT                      | N          | 買賣股數     | > 0 的整數                          |
+| Price                  | DECIMAL(10,2)            | N          | 交易價格     | ≥ 0，最多小數第 2 位                 |
+| Transaction_Date       | TIMESTAMP                | N          | 交易時間     | 時間格式：YYYY-MM-DD                 |
+
+
+
+#### 持倉資料表 (Portfolio)
+
+| 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                  |
+| ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- |
+| Portfolio_Id (PK)      | INT            | N          | 持倉代號     | 從 1 開始遞增的整數                  |
+| User_Id (FK)           | VARCHAR(50)    | N          | 使用者代號   | 參考 Users.User_Id                   |
+| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                      |
+| Shares_Held            | INT            | N          | 持有股數     | > 0 的整數                          |
+| Average_Cost           | DECIMAL(10,2)  | N          | 平均成本     | ≥ 0，最多小數第 2 位                 |
+| Last_Updated           | TIMESTAMP      | N          | 最後更新日期 | 時間格式：YYYY-MM-DD                 |
+
+
+
+#### ETF 歷史價格表 (ETF_HistoryPrice)
+
+| 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                  |
+| ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- |
+| PriceRecord_Id (PK)    | INT            | N          | 價格紀錄代號 | 從 1 開始遞增的整數                  |
+| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                      |
+| Open_Price             | DECIMAL(10,2)  | N          | 開盤價       | ≥ 0，最多小數第 2 位                 |
+| Close_Price            | DECIMAL(10,2)  | N          | 收盤價       | ≥ 0，最多小數第 2 位                 |
+| High_Price             | DECIMAL(10,2)  | N          | 最高價       | ≥ 0，最多小數第 2 位                 |
+| Low_Price              | DECIMAL(10,2)  | N          | 最低價       | ≥ 0，最多小數第 2 位                 |
+| Volume                 | BIGINT         | N          | 交易量       | ≥ 0 的整數                          |
+| History_Date           | DATE           | N          | 日期         | 時間格式：YYYY-MM-DD                 |
+
+
+
+#### 第一分類表 (Category_Level1)
+
+| 欄位名稱           | 資料型態    | 是否可為空 | 欄位說明     | 值域                            |
+| ------------------ | ----------- | ---------- | ------------ | ------------------------------- |
+| Category1_Id (PK)  | INT         | N          | 第一分類代號 | 從 1 開始遞增的整數            |
+| Category1_Name     | VARCHAR(20) | N          | 第一分類名稱 | 長度 1~20 的文字               |
+
+
+
+#### 第二分類表 (Category_Level2)
+
+| 欄位名稱              | 資料型態    | 是否可為空 | 欄位說明       | 值域                                   |
+| --------------------- | ----------- | ---------- | -------------- | -------------------------------------- |
+| Category2_Id (PK)     | INT         | N          | 第二分類代號   | 從 1 開始遞增的整數                  |
+| Category1_Id (FK)     | INT         | N          | 第一分類代號   | 參考 Category_Level1.Category1_Id      |
+| Category2_Name        | VARCHAR(20) | N          | 第二分類名稱   | 長度 1~20 的文字                     |
+
+
+
+#### 紀錄分類表 (ETF_Category)
+
+| 欄位名稱            | 資料型態    | 是否可為空 | 欄位說明       | 值域                                   |
+| ------------------- | ----------- | ---------- | -------------- | -------------------------------------- |
+| Category_Id (PK)    | INT         | N          | 紀錄分類代號   | 從 1 開始遞增的整數                  |
+| ETF_Id (FK)         | VARCHAR(10) | N          | ETF 代號       | 參考 ETF.ETF_Id                      |
+| Category2_Id (FK)   | INT         | N          | 第二分類代號   | 參考 Category_Level2.Category2_Id     |
+
+
+
+#### 使用者基本資料表 (Users)
+
+| 欄位名稱              | 資料型態             | 是否可為空 | 欄位說明       | 值域                            |
+| --------------------- | -------------------- | ---------- | -------------- | ------------------------------- |
+| User_Id (PK)          | INT                  | N          | 使用者代號     | 從 1 開始遞增的整數            |
+| User_Name             | VARCHAR(50)          | N          | 使用者名稱     | 長度 1~50 的文字               |
+| Full_Name             | VARCHAR(100)         | N          | 全名           | 長度 1~100 的文字              |
+| Email                 | VARCHAR(100)         | N          | 電子郵件       | Email 格式                     |
+| Phone_Number          | VARCHAR(10)          | N          | 電話號碼       | 長度固定為 10 碼               |
+| Role                  | ENUM('user','admin') | N          | 權限           | 僅限 'user' 或 'admin'          |
+| Max_Amount            | INT                  | N          | 當日最大交易量 | ≥ 0 的整數                    |
+| Users_Created_At      | TIMESTAMP            | N          | 帳號創建日期   | 時間格式：YYYY-MM-DD           |
+
 ## ER Diagram及詳細說明
 ![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)
 
