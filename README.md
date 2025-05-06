@@ -1,4 +1,3 @@
-![image](https://github.com/user-attachments/assets/ba4dc15b-d521-490c-8c45-42e363ec7926)# Database_final_porject (資料庫系統_第八組)
 [查看投影片](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E7%AC%AC%E5%85%AB%E7%B5%84_ETF%20%E6%8A%95%E8%B3%87%E7%B5%84%E5%90%88%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1.pdf)
 
 ### 題目 ETF 投資組合管理系統
