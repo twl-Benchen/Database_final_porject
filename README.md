@@ -1,4 +1,4 @@
-# Database_final_porject (資料庫系統_第八組)
+![image](https://github.com/user-attachments/assets/ba4dc15b-d521-490c-8c45-42e363ec7926)# Database_final_porject (資料庫系統_第八組)
 [查看投影片](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E7%AC%AC%E5%85%AB%E7%B5%84_ETF%20%E6%8A%95%E8%B3%87%E7%B5%84%E5%90%88%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1.pdf)
 
 ### 題目 ETF 投資組合管理系統
@@ -311,7 +311,7 @@ VALUES ('bob', 'Bob Lee', 'bob@example.com', '0987654321', 'user', 500000);
 
 
 ---
-### 使用者認證資料表 (Auth)
+### 使用者密碼 (Auth)
 | 欄位名稱          | 資料型態         | 是否可為空 | 欄位說明  | 值域              |
 | ------------- | ------------ | ----- | ----- | --------------- |
 | User\_Id (PK) | INT          | N     | 使用者代號 | 從 1 開始遞增的整數     |
@@ -319,11 +319,11 @@ VALUES ('bob', 'Bob Lee', 'bob@example.com', '0987654321', 'user', 500000);
 | Last\_Login   | TIMESTAMP    | N     | 最近登入  | 時間格式：YYYY-MM-DD |
 
 ```sql
--- 建立使用者認證資料表 Auth
+-- 建立使用者密碼資料表 Auth
 CREATE TABLE Auth (
   User_Id INT PRIMARY KEY AUTO_INCREMENT,
   Password VARCHAR(255) NOT NULL,
-  Last_Login TIMESTAMP NULL DEFAULT NULL
+  Last_Login TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 範例：新增使用者密碼為 'abcd'
