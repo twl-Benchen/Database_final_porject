@@ -330,6 +330,12 @@ VALUES ('abcd');
 
 ## ER Diagram及詳細說明
 <!--![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)-->
+**簡略圖**
+
+![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ERD_simp.png)
+
+**完整圖**
+
 ![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/final_project.drawio.png)
 **1. 使用者密碼 (User_Auth) 資料表屬性**
 - 使用者代號 (User_Id)
