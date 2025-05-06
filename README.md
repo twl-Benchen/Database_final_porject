@@ -331,4 +331,69 @@ VALUES ('abcd');
 ## ER Diagram及詳細說明
 <!--![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)-->
 ![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/final_project.drawio.png)
+**1. 使用者密碼 (User_Auth) 資料表屬性**
+- 使用者代號 (User_Id)
+- 使用者密碼 (Password)
+- 最近登入 (Last_Login)
 
+**2. 使用者基本資料 (Users) 資料表屬性**
+- 使用者代號 (User_Id)
+- 使用者名稱 (User_Name)
+- 全名 (Full_Name)
+- 電子郵件 (Email)
+- 電話號碼 (Phone_Number)
+- 權限 (Role)
+- 當日最大交易量 (Max_Amount)
+- 帳號創建日期 (Users_Created_At)
+
+**3. 交易紀錄表 (Transaction) 資料表屬性**
+- 交易代號 (Transaction_Id)
+- 使用者代號 (User_Id)
+- ETF 代號 (ETF_Id)
+- 交易類型 (Transaction_Type)
+- 買賣股數 (Shares)
+- 交易價格 (Price)
+- 交易時間 (Transaction_Date)
+
+**4. 持倉資料 (Portfolio) 資料表屬性**
+- 持倉代號 (Portfolio_Id)
+- 使用者代號 (User_Id)
+- ETF 代號 (ETF_Id)
+- 持有股數 (Shares_Held)
+- 平均成本 (Average_Cost)
+- 最後更新日期 (Last_Updated)
+
+**5. ETF 基本資料 (ETF) 資料表屬性**
+- ETF 代號 (ETF_Id)
+- ETF 名稱 (ETF_Name)
+- 殖利率 (Devidend_Yield)
+- 持有人數 (Holders)
+- 追蹤指數 (IndexName)
+- 規模 (Scale)
+- 創立時間 (ETF_Created_At)
+
+**6. ETF 歷史價格 (ETF_HistoryPrice) 資料表屬性**
+- 價格紀錄代號 (PriceRecord_Id)
+- ETF 代號 (ETF_Id)
+- 開盤價 (Open_Price)
+- 收盤價 (Close_Price)
+- 最高價 (High_Price)
+- 最低價 (Low_Price)
+- 交易量 (Volume)
+- 日期 (History_Date)
+
+**7. 紀錄分類 (ETF_Category) 資料表屬性**
+- 紀錄分類代號 (Category_Id)
+- ETF 代號 (ETF_Id)
+- 第二分類代號 (Category2_Id)
+
+**8. 第二分類 (Category_Level2) 資料表屬性**
+- 第二分類代號 (Category2_Id)
+- 第一分類代號 (Category1_Id)
+- 第二分類名稱 (Category2_Name)
+
+**9. 第一分類 (Category_Level1) 資料表屬性**
+- 第一分類代號 (Category1_Id)
+- 第一分類名稱 (Category1_Name)
+
+**10. 關聯**
