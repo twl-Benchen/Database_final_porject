@@ -310,6 +310,27 @@ VALUES ('bob', 'Bob Lee', 'bob@example.com', '0987654321', 'user', 500000);
 ```
 
 
+---
+### 使用者認證資料表 (Auth)
+| 欄位名稱          | 資料型態         | 是否可為空 | 欄位說明  | 值域              |
+| ------------- | ------------ | ----- | ----- | --------------- |
+| User\_Id (PK) | INT          | N     | 使用者代號 | 從 1 開始遞增的整數     |
+| Password      | VARCHAR(255) | N     | 使用者密碼 | 長度 1\~255 的文字   |
+| Last\_Login   | TIMESTAMP    | N     | 最近登入  | 時間格式：YYYY-MM-DD |
+
+```sql
+-- 建立使用者認證資料表 Auth
+CREATE TABLE Auth (
+  User_Id INT PRIMARY KEY AUTO_INCREMENT,
+  Password VARCHAR(255) NOT NULL,
+  Last_Login TIMESTAMP NULL DEFAULT NULL
+);
+
+-- 範例：新增使用者密碼為 'abcd'
+INSERT INTO Auth (Password)
+VALUES ('abcd');
+```
+
 ## ER Diagram及詳細說明
 ![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)
 
