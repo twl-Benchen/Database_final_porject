@@ -89,17 +89,18 @@
 
 ## 完整性限制(Database Schema)
 
+
 ### ETF 基本資料表 (ETF)
 
-| 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                             |
-| ------------------- | -------------- | ---------- | ---------- | --------------------------------|
-| ETF_Id (PK)         | VARCHAR(10)    | N          | ETF 代號   | 數字 + 英文字串                  |
-| ETF_Name            | VARCHAR(100)   | N          | ETF 名稱   | 長度 1~100 的文字                |
-| Devidend_Yield      | DECIMAL(5,2)   | N          | 殖利率     | ≥ 0，最多小數第 2 位             |
-| Holders             | INT            | N          | 持有人數   | ≥ 0 的整數                       |
-| IndexName           | VARCHAR(50)    | N          | 追蹤指數   | 長度 1~50 的文字                 |
-| Scale               | INT            | N          | 規模 (億)  | ≥ 0 的整數                       |
-| ETF_Created_At      | TIMESTAMP      | N          | 創立時間   | 時間格式：YYYY-MM-DD             |
+| 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                               | 實際資料舉例            |
+| ------------------- | -------------- | ---------- | ---------- | -------------------------------- | ---------------------- |
+| ETF_Id (PK)         | VARCHAR(10)    | N          | ETF 代號   | 數字 + 英文字串                  | 0050                  |
+| ETF_Name            | VARCHAR(100)   | N          | ETF 名稱   | 長度 1~100 的文字                | 元大台灣50             |
+| Devidend_Yield      | DECIMAL(5,2)   | N          | 殖利率     | ≥ 0，最多小數第 2 位              | 2.15                  |
+| Holders             | INT            | N          | 持有人數   | ≥ 0 的整數                       | 900000                |
+| IndexName           | VARCHAR(50)    | N          | 追蹤指數   | 長度 1~50 的文字                 | 台灣50指數             |
+| Scale               | INT            | N          | 規模 (億)  | ≥ 0 的整數                       | 5000                 |
+| ETF_Created_At      | TIMESTAMP      | N          | 創立時間   | 時間格式：YYYY-MM-DD             | 2003-06-30            |
 
 ```sql
 -- 建立 ETF 資料表
@@ -119,16 +120,16 @@ VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-
 ``` 
 ---
 ### 交易紀錄表 (Transaction)
-
-| 欄位名稱               | 資料型態                 | 是否可為空 | 欄位說明     | 值域                                  |
-| ---------------------- | ------------------------ | ---------- | ------------ | ------------------------------------- |
-| Transaction_Id (PK)    | INT                      | N          | 交易代號     | 從 1 開始遞增的整數                   |
-| User_Id (FK)           | VARCHAR(50)              | N          | 使用者代號   | 參考 Users.User_Id                    |
-| ETF_Id (FK)            | VARCHAR(10)              | N          | ETF 代號     | 參考 ETF.ETF_Id                       |
-| Transaction_Type       | ENUM('Buy','Sell')       | N          | 交易類型     | 僅可為 'Buy' 或 'Sell'                |
-| Shares                 | INT                      | N          | 買賣股數     | > 0 的整數                           |
-| Price                  | DECIMAL(10,2)            | N          | 交易價格     | ≥ 0，最多小數第 2 位                  |
-| Transaction_Date       | TIMESTAMP                | N          | 交易時間     | 時間格式：YYYY-MM-DD                  |
+ 
+| 欄位名稱               | 資料型態                 | 是否可為空 | 欄位說明     | 值域                                     | 實際資料舉例          |
+| ---------------------- | ------------------------ | ---------- | ------------ | ------------------------------------- | -------------------- |
+| Transaction_Id (PK)    | INT                      | N          | 交易代號     | 從 1 開始遞增的整數                     | 1                    |
+| User_Id (FK)           | VARCHAR(50)              | N          | 使用者代號   | 參考 Users.User_Id                     | 1                    |
+| ETF_Id (FK)            | VARCHAR(10)              | N          | ETF 代號     | 參考 ETF.ETF_Id                        | 0050                |
+| Transaction_Type       | ENUM('Buy','Sell')       | N          | 交易類型     | 僅可為 'Buy' 或 'Sell'                  | Buy                  |
+| Shares                 | INT                      | N          | 買賣股數     | > 0 的整數                             | 100                  |
+| Price                  | DECIMAL(10,2)            | N          | 交易價格     | ≥ 0，最多小數第 2 位                    | 125.50                |
+| Transaction_Date       | TIMESTAMP                | N          | 交易時間     | 時間格式：YYYY-MM-DD                    | 2025-05-05           |
 
 ```sql
 -- 建立交易紀錄表
@@ -152,14 +153,14 @@ VALUES (1, '0050', 'Buy', 100, 168.80, '2025-04-29');
 ---
 ### 持倉資料表 (Portfolio)
 
-| 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                  |
-| ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- |
-| Portfolio_Id (PK)      | INT            | N          | 持倉代號     | 從 1 開始遞增的整數                   |
-| User_Id (FK)           | VARCHAR(50)    | N          | 使用者代號   | 參考 Users.User_Id                    |
-| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                       |
-| Shares_Held            | INT            | N          | 持有股數     | > 0 的整數                           |
-| Average_Cost           | DECIMAL(10,2)  | N          | 平均成本     | ≥ 0，最多小數第 2 位                  |
-| Last_Updated           | TIMESTAMP      | N          | 最後更新日期 | 時間格式：YYYY-MM-DD                  |
+| 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                     | 實際資料舉例          |
+| ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- | -------------------- |
+| Portfolio_Id (PK)      | INT            | N          | 持倉代號     | 從 1 開始遞增的整數                      | 1                    |
+| User_Id (FK)           | VARCHAR(50)    | N          | 使用者代號   | 參考 Users.User_Id                      | 1                    |
+| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                        | 0050                |
+| Shares_Held            | INT            | N          | 持有股數     | > 0 的整數                             | 500                   |
+| Average_Cost           | DECIMAL(10,2)  | N          | 平均成本     | ≥ 0，最多小數第 2 位                    | 175                |
+| Last_Updated           | TIMESTAMP      | N          | 最後更新日期 | 時間格式：YYYY-MM-DD                    | 2025-05-06           |
 
 ```sql
 -- 建立持倉資料表
@@ -180,18 +181,19 @@ VALUES (1, '0050', 100, 167.80);
 ```
 
 ---
+
 ### ETF 歷史價格表 (ETF_HistoryPrice)
 
-| 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                  |
-| ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- |
-| PriceRecord_Id (PK)    | INT            | N          | 價格紀錄代號 | 從 1 開始遞增的整數                   |
-| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                       |
-| Open_Price             | DECIMAL(10,2)  | N          | 開盤價       | ≥ 0，最多小數第 2 位                  |
-| Close_Price            | DECIMAL(10,2)  | N          | 收盤價       | ≥ 0，最多小數第 2 位                  |
-| High_Price             | DECIMAL(10,2)  | N          | 最高價       | ≥ 0，最多小數第 2 位                  |
-| Low_Price              | DECIMAL(10,2)  | N          | 最低價       | ≥ 0，最多小數第 2 位                  |
-| Volume                 | BIGINT         | N          | 交易量       | ≥ 0 的整數                           |
-| History_Date           | DATE           | N          | 日期         | 時間格式：YYYY-MM-DD                  |
+| 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                    | 實際資料舉例          |
+| ---------------------- | -------------- | ---------- | ------------ | ------------------------------------ | -------------------- |
+| PriceRecord_Id (PK)    | INT            | N          | 價格紀錄代號 | 從 1 開始遞增的整數                     | 1                    |
+| ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                       | 0050.TW              |
+| Open_Price             | DECIMAL(10,2)  | N          | 開盤價       | ≥ 0，最多小數第 2 位                   | 125.00                |
+| Close_Price            | DECIMAL(10,2)  | N          | 收盤價       | ≥ 0，最多小數第 2 位                   | 125.50                |
+| High_Price             | DECIMAL(10,2)  | N          | 最高價       | ≥ 0，最多小數第 2 位                   | 126.00                |
+| Low_Price              | DECIMAL(10,2)  | N          | 最低價       | ≥ 0，最多小數第 2 位                   | 124.80                |
+| Volume                 | BIGINT         | N          | 交易量       | ≥ 0 的整數                            | 3500000              |
+| History_Date           | DATE           | N          | 日期         | 時間格式：YYYY-MM-DD                   | 2025-05-05           |
 
 ```sql
 -- 建立歷史價格表
@@ -215,10 +217,10 @@ VALUES ('0050', 167.15, 167.80, 168.00, 166.50, 10830, '2025-04-28');
 ---
 ### 第一分類表 (Category_Level1)
 
-| 欄位名稱           | 資料型態    | 是否可為空 | 欄位說明     | 值域                            |
-| ------------------ | ----------- | ---------- | ------------ | ------------------------------- |
-| Category1_Id (PK)  | INT         | N          | 第一分類代號 | 從 1 開始遞增的整數              |
-| Category1_Name     | VARCHAR(20) | N          | 第一分類名稱 | 長度 1~20 的文字                 |
+| 欄位名稱           | 資料型態    | 是否可為空 | 欄位說明     | 值域                               | 實際資料舉例    |
+| ------------------ | ----------- | ---------- | ------------ | ------------------------------- | -------------- |
+| Category1_Id (PK)  | INT         | N          | 第一分類代號 | 從 1 開始遞增的整數               | 1              |
+| Category1_Name     | VARCHAR(20) | N          | 第一分類名稱 | 長度 1~20 的文字                 | 股票型          |
 
 ```sql
 -- 建立第一分類表
@@ -234,11 +236,11 @@ INSERT INTO Category_Level1 (Category1_Name) VALUES ('股票型');
 ---
 ### 第二分類表 (Category_Level2)
 
-| 欄位名稱              | 資料型態    | 是否可為空 | 欄位說明       | 值域                                   |
-| --------------------- | ----------- | ---------- | -------------- | -------------------------------------- |
-| Category2_Id (PK)     | INT         | N          | 第二分類代號   | 從 1 開始遞增的整數                  |
-| Category1_Id (FK)     | INT         | N          | 第一分類代號   | 參考 Category_Level1.Category1_Id      |
-| Category2_Name        | VARCHAR(20) | N          | 第二分類名稱   | 長度 1~20 的文字                     |
+| 欄位名稱              | 資料型態    | 是否可為空 | 欄位說明       | 值域                                      | 實際資料舉例  |
+| --------------------- | ----------- | ---------- | -------------- | -------------------------------------- | ------------ |
+| Category2_Id (PK)     | INT         | N          | 第二分類代號   | 從 1 開始遞增的整數                      | 1            |
+| Category1_Id (FK)     | INT         | N          | 第一分類代號   | 參考 Category_Level1.Category1_Id       | 1            |
+| Category2_Name        | VARCHAR(20) | N          | 第二分類名稱   | 長度 1~20 的文字                        | 市值型        |
 
 ```sql
 -- 建立第二分類表
@@ -256,11 +258,11 @@ INSERT INTO Category_Level2 (Category1_Id, Category2_Name) VALUES (1, '大型權
 ---
 ### 紀錄分類表 (ETF_Category)
 
-| 欄位名稱            | 資料型態    | 是否可為空 | 欄位說明       | 值域                                   |
-| ------------------- | ----------- | ---------- | -------------- | -------------------------------------- |
-| Category_Id (PK)    | INT         | N          | 紀錄分類代號   | 從 1 開始遞增的整數                  |
-| ETF_Id (FK)         | VARCHAR(10) | N          | ETF 代號       | 參考 ETF.ETF_Id                      |
-| Category2_Id (FK)   | INT         | N          | 第二分類代號   | 參考 Category_Level2.Category2_Id     |
+| 欄位名稱            | 資料型態    | 是否可為空 | 欄位說明       | 值域                                   | 實際資料舉例    |
+| ------------------- | ----------- | ---------- | -------------- | ------------------------------------ | -------------- |
+| Category_Id (PK)    | INT         | N          | 紀錄分類代號   | 從 1 開始遞增的整數                    | 1              |
+| ETF_Id (FK)         | VARCHAR(10) | N          | ETF 代號       | 參考 ETF.ETF_Id                      | 0050        |
+| Category2_Id (FK)   | INT         | N          | 第二分類代號   | 參考 Category_Level2.Category2_Id     | 1              |
 
 ```sql
 -- 建立ETF與分類對應表
@@ -279,16 +281,16 @@ INSERT INTO ETF_Category (ETF_Id, Category2_Id) VALUES ('0050', 1);
 ---
 ### 使用者基本資料表 (Users)
 
-| 欄位名稱              | 資料型態             | 是否可為空 | 欄位說明       | 值域                            |
-| --------------------- | -------------------- | ---------- | -------------- | ------------------------------- |
-| User_Id (PK)          | INT                  | N          | 使用者代號     | 從 1 開始遞增的整數              |
-| User_Name             | VARCHAR(50)          | N          | 使用者名稱     | 長度 1~50 的文字                 |
-| Full_Name             | VARCHAR(100)         | N          | 全名           | 長度 1~100 的文字                |
-| Email                 | VARCHAR(100)         | N          | 電子郵件       | Email 格式                     |
-| Phone_Number          | VARCHAR(10)          | N          | 電話號碼       | 長度固定為 10 碼               |
-| Role                  | ENUM('user','admin') | N          | 權限           | 僅限 'user' 或 'admin'          |
-| Max_Amount            | INT                  | N          | 當日最大交易量 | ≥ 0 的整數                    |
-| Users_Created_At      | TIMESTAMP            | N          | 帳號創建日期   | 時間格式：YYYY-MM-DD           |
+| 欄位名稱              | 資料型態             | 是否可為空 | 欄位說明       | 值域                              | 實際資料舉例             |
+| --------------------- | -------------------- | ---------- | -------------- | ------------------------------- | ----------------------- |
+| User_Id (PK)          | INT                  | N          | 使用者代號     | 從 1 開始遞增的整數               | 1                       |
+| User_Name             | VARCHAR(50)          | N          | 使用者名稱     | 長度 1~50 的文字                 | alice                   |
+| Full_Name             | VARCHAR(100)         | N          | 全名           | 長度 1~100 的文字                 | Alice Chen              |
+| Email                 | VARCHAR(100)         | N          | 電子郵件       | Email 格式                       | alice@example.com       |
+| Phone_Number          | VARCHAR(10)          | N          | 電話號碼       | 長度固定為 10 碼                  | 0912345678              |
+| Role                  | ENUM('user','admin') | N          | 權限           | 僅限 'user' 或 'admin'           | user                    |
+| Max_Amount            | INT                  | N          | 當日最大交易量 | ≥ 0 的整數                        | 1000000                 |
+| Users_Created_At      | TIMESTAMP            | N          | 帳號創建日期   | 時間格式：YYYY-MM-DD             | 2025-01-01              |
 
 ```sql
 -- 建立使用者資料表
@@ -311,11 +313,11 @@ VALUES ('bob', 'Bob Lee', 'bob@example.com', '0987654321', 'user', 500000);
 
 ---
 ### 使用者密碼 (Auth)
-| 欄位名稱          | 資料型態         | 是否可為空 | 欄位說明  | 值域              |
-| ------------- | ------------ | ----- | ----- | --------------- |
-| User\_Id (PK) | INT          | N     | 使用者代號 | 從 1 開始遞增的整數     |
-| Password      | VARCHAR(255) | N     | 使用者密碼 | 長度 1\~255 的文字   |
-| Last\_Login   | TIMESTAMP    | N     | 最近登入  | 時間格式：YYYY-MM-DD |
+| 欄位名稱            | 資料型態         | 是否可為空 | 欄位說明  | 值域                         | 實際資料舉例               |
+| -------------- | ------------ | ----- | ----- | ------------------------------------------ | ------------------------ |
+| User_Id (PK)    | INT          | N     | 使用者代號 | 從 1 開始遞增的整數                     | 1                        |
+| Password        | VARCHAR(255) | N     | 使用者密碼 | 長度 1~255 的文字                      | abcdef                 |
+| Last_Login      | TIMESTAMP    | N     | 最近登入  | 時間格式：YYYY-MM-DD HH:MM:SS           | 2025-05-06 10:00:00    |
 
 ```sql
 -- 建立使用者密碼資料表 Auth
@@ -331,5 +333,6 @@ VALUES ('abcd');
 ```
 
 ## ER Diagram及詳細說明
-![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)
+<!--![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/ER%20Diagram.png)-->
+![image](https://github.com/twl-Benchen/Database_final_porject/blob/main/final_project.drawio.png)
 
