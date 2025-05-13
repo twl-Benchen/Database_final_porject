@@ -40,7 +40,7 @@
 3. 小王的朋友跟他推薦了一檔ETF，波動低報酬又高，但他想先了解該ETF過去的模擬表現。於是使用我們的投資組合管理系統進行回測分析，計算出該ETF在歷史最大跌幅及年化報酬率，並比較了該ETF與市場上其他ETF的波動差異。
 
 **使用案例**  
-![image](../image/%E4%BD%BF%E7%94%A8%E8%80%85.jpg) ![image](../image/%E7%AE%A1%E7%90%86%E8%80%85.jpg)
+![image](image/%E4%BD%BF%E7%94%A8%E8%80%85.jpg) ![image](image/%E7%AE%A1%E7%90%86%E8%80%85.jpg)
  - 使用者
    - 檢視ETF資訊與技術指標
    - 使用ETF篩選器
@@ -329,14 +329,14 @@ VALUES ('abcd');
 ```
 
 ## ER Diagram及詳細說明
-<!--![image](../image/ER%20Diagram.png)-->
+<!--![image](image/ER%20Diagram.png)-->
 **簡略圖**
 
-![image](../image/ERD_simp.png)
+![image](image/ERD_simp.png)
 
 **完整圖**
 
-![image](../image/er_diagram.drawio.png)
+![image](image/er_diagram.drawio.png)
 **1. 使用者密碼 (User_Auth) 資料表屬性**
 - 使用者代號 (User_Id)
 - 使用者密碼 (Password)
