@@ -144,7 +144,7 @@ VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-
 | Transaction\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空，用於唯一識別每一筆交易。           | `CHECK (Transaction_Id >= 1)`                |
 | User\_Id (FK)        | 必須為長度不超過 50 個字元的字串，且不可為空，且其值必須對應至 Users 表中的 User\_Id。 | `CHECK (char_length(User_Id) <= 50)`         |
 | ETF\_Id (FK)         | 必須為長度 1 至 10 個字元的字串，且不可為空，且其值必須對應至 ETF 表中的 ETF\_Id。   | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')`     |
-| Transaction\_Type    | 僅可接受字串 'Buy' 或 'Sell'，且不可為空，用以區分買入或賣出交易類型。            | `Transaction_Type ENUM('Buy','Sell') NOT NULL` |
+| Transaction\_Type    | 僅可接受字串 'Buy' 或 'Sell'，且不可為空，用以區分買入或賣出交易類型。            | `CHECK (Transaction_Type IN ('Buy','Sell'))` |
 | Shares               | 必須為大於 0 的整數，且不可為空，用以表示此筆交易的股數。                        | `CHECK (Shares > 0)`                         |
 | Price                | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，用以記錄每單位交易價格。          | `CHECK (Price >= 0)`                         |
 | Transaction\_Date    | 必須符合 YYYY-MM-DD 格式的有效日期，且不可為空，用以記錄交易發生的日期，不得為未來日期。    | `CHECK (Transaction_Date <= CURRENT_DATE)`   |
