@@ -21,17 +21,17 @@
     產生投資組合資料（收益率、ETF 配置等圖表）
 ### 成員
 
-- **組員一**：資工系 - 41143210 - 田晉嘉 [JustinTien10](https://github.com/JustinTien10)
-  - 負責項目：[]
+>組員一：資工系 - 41143210 - 田晉嘉 [JustinTien10](https://github.com/JustinTien10)<br>
+>負責項目：[]
 
-- **組員二**：資工系 - 41143239 - 陳億穎 [yiyingg1226](https://github.com/yiyingg1226)
-  - 負責項目：[]
+>組員二：資工系 - 41143239 - 陳億穎 [yiyingg1226](https://github.com/yiyingg1226)<br>
+>負責項目：[]
 
-- **組員三**：資工系 - 41143238 -  陳峻宇 [twl-Benchen](https://github.com/twl-Benchen)
-  - 負責項目：[]
+>組員三：資工系 - 41143238 -  陳峻宇 [twl-Benchen](https://github.com/twl-Benchen)<br>
+>負責項目：[]
 
-- **組員四**：資工系 - 41143219 -  周偉宸 [WeiChen-Zhou](https://github.com/WeiChen-Zhou)
-  - 負責項目：[]
+>組員四：資工系 - 41143219 -  周偉宸 [WeiChen-Zhou](https://github.com/WeiChen-Zhou)<br>
+>負責項目：[]
 
 ## 應用情境與使用案例
 **應用情境**
