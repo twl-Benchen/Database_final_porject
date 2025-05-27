@@ -102,7 +102,7 @@
 | ---------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
 | ETF\_Id (PK)     | 必須為 1 到 10 個字元長度的字串，僅可包含阿拉伯數字（0–9）與英文字母（A–Z、a–z），且不可為空，用以唯一識別每檔 ETF。 | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')`          |
 | ETF\_Name        | 必須為 1 到 100 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示 ETF 的完整名稱。       | `CHECK (CHAR_LENGTH(ETF_Name) BETWEEN 1 AND 100)` |
-| Devidend\_Yield  | 必須為大於或等於 0 且最多保留兩位小數的十進位數，範圍下限為 0.00，無上限限制，用以表示該檔 ETF 的年度配息殖利率。      | `CHECK (Dividend_Yield >= 0)`                     |
+| Dividend\_Yield  | 必須為大於或等於 0 且最多保留兩位小數的十進位數，範圍下限為 0.00，無上限限制，用以表示該檔 ETF 的年度配息殖利率。      | `CHECK (Dividend_Yield >= 0)`                     |
 | Holders          | 必須為大於或等於 0 的整數，且不可為空，用以統計目前持有該 ETF 的投資人總數。                           | `CHECK (Holders >= 0)`                            |
 | IndexName        | 必須為 1 到 50 個字元長度的文字，可包含中英文、空格及常見標點符號，且不可為空，用以記錄該 ETF 所追蹤的基準指數名稱。     | `CHECK (CHAR_LENGTH(IndexName) BETWEEN 1 AND 50)` |
 | Scale            | 必須為大於或等於 0 的整數，且不可為空，以「億元」為單位表示該 ETF 的管理規模，實際儲存時以整數形式存放。             | `CHECK (Scale >= 0)`                              |
@@ -137,7 +137,7 @@ VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-
  
 | 欄位名稱               | 資料型態                 | 是否可為空 | 欄位說明     | 值域                                     | 實際資料舉例          |
 | ---------------------- | ------------------------ | ---------- | ------------ | ------------------------------------- | -------------------- |
-| Transaction_Id (PK)    | INT                      | N          | 交易代號     | 從 1 開始遞增的整數                     | 1                    |
+| Transaction_Id (PK)    | INT                      | N          | 交易代號     |         ≥ 1 的整數                     | 1                    |
 | User_Id (FK)           | VARCHAR(50)              | N          | 使用者代號   | 參考 Users.User_Id                     | U000001                    |
 | ETF_Id (FK)            | VARCHAR(10)              | N          | ETF 代號     | 參考 ETF.ETF_Id                        | 0050                |
 | Transaction_Type       | ENUM('Buy','Sell')       | N          | 交易類型     | 僅可為 'Buy' 或 'Sell'                  | Buy                  |
@@ -147,7 +147,7 @@ VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-
 
 | 欄位名稱                 | 值域限制說明                                                | 確認方式（MySQL）                                    |
 | -------------------- | ----------------------------------------------------- | -------------------------------------------- |
-| Transaction\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空，用於唯一識別每一筆交易。           | `CHECK (Transaction_Id >= 1)`                |
+| Transaction\_Id (PK) | 必須為大於等於 1 的整數，且不可為空，用於唯一識別每一筆交易                   | `CHECK (Transaction_Id >= 1)`                |
 | User\_Id (FK)        | 必須為長度不超過 50 個字元的字串，且不可為空，且其值必須對應至 Users 表中的 User\_Id。 | `CHECK (char_length(User_Id) <= 50)`         |
 | ETF\_Id (FK)         | 必須為長度 1 至 10 個字元的字串，且不可為空，且其值必須對應至 ETF 表中的 ETF\_Id。   | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')`     |
 | Transaction\_Type    | 僅可接受字串 'Buy' 或 'Sell'，且不可為空，用以區分買入或賣出交易類型。            | `CHECK (Transaction_Type IN ('Buy','Sell'))` |
@@ -185,7 +185,7 @@ VALUES ('U000001', '0050', 'Buy', 100, 168.80, '2025-04-29');
 
 | 欄位名稱               | 資料型態       | 是否可為空 | 欄位說明     | 值域                                     | 實際資料舉例          |
 | ---------------------- | -------------- | ---------- | ------------ | ------------------------------------- | -------------------- |
-| Portfolio_Id (PK)      | INT            | N          | 持倉代號     | 從 1 開始遞增的整數                      | 1                    |
+| Portfolio_Id (PK)      | INT            | N          | 持倉代號     | ≥ 1 的整數                             | 1                    |
 | User_Id (FK)           | VARCHAR(50)    | N          | 使用者代號   | 參考 Users.User_Id                      | U000001              |
 | ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                        | 0050                |
 | Shares_Held            | INT            | N          | 持有股數     | > 0 的整數                             | 500                   |
@@ -194,7 +194,7 @@ VALUES ('U000001', '0050', 'Buy', 100, 168.80, '2025-04-29');
 
 | 欄位名稱               | 值域限制說明                                      | 確認方式（MySQL）                                |
 | ------------------ | ------------------------------------------- | ---------------------------------------- |
-| Portfolio\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空，用以唯一識別持倉紀錄。  | `CHECK (Portfolio_Id >= 1)`              |
+| Portfolio\_Id (PK) | 必須為大於等於 1 的整數，且不可為空，用以唯一識別持倉紀錄             | `CHECK (Portfolio_Id >= 1)`              |
 | User\_Id (FK)      | 必須為長度不超過 50 個字元的字串，且不可為空，對應 Users.User\_Id。 | `CHECK (CHAR_LENGTH(User_Id) <= 50)`     |
 | ETF\_Id (FK)       | 必須為長度 1 至 10 個字元的字串，且不可為空，對應 ETF.ETF\_Id。   | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')` |
 | Shares\_Held       | 必須為大於 0 的整數，且不可為空，用以表示目前持有該檔 ETF 的股數。       | `CHECK (Shares_Held > 0)`                |
@@ -255,7 +255,7 @@ VALUES ('U000001', '0050', 100, 167.80);
 ```sql
 -- 建立歷史價格表
 CREATE TABLE ETF_HistoryPrice (
-  PriceRecord_Id INT PRIMARY KEY ,
+  PriceRecord_Id INT PRIMARY KEY AUTO_INCREMENT,
   ETF_Id VARCHAR(10) NOT NULL,
   Open_Price DECIMAL(10,2) NOT NULL,
   Close_Price DECIMAL(10,2) NOT NULL,
@@ -413,7 +413,7 @@ CREATE TABLE Users (
   CHECK (Max_Amount >= 0)
 );
 
--- 範例：新增使用者 Bob (User_Id 自動產生為1)
+-- 範例：新增使用者 Bob
 INSERT INTO Users (User_Name, Full_Name, Email, Phone_Number, Role, Max_Amount)
 VALUES ('bob', 'Bob Lee', 'bob@example.com', '0987654321', 'user', 500000);
 ```
@@ -438,7 +438,6 @@ CREATE TABLE Auth (
 
 -- 範例：新增使用者密碼為 'abcd'
 INSERT INTO Auth (User_Id, Password) VALUES ('U000001', 'abcd');
-VALUES ('abcd');
 ```
 
 ## ER Diagram及詳細說明
