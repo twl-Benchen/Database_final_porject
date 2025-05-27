@@ -92,7 +92,6 @@
 | ------------------- | -------------- | ---------- | ---------- | -------------------------------- | ---------------------- |
 | ETF_Id (PK)         | VARCHAR(10)    | N          | ETF 代號   | 數字 + 英文字串                  | 0050                  |
 | ETF_Name            | VARCHAR(100)   | N          | ETF 名稱   | 長度 1~100 的文字                | 元大台灣50             |
-| Dividend_Yield      | DECIMAL(5,2)   | N          | 殖利率     | ≥ 0，最多小數第 2 位              | 2.15                  |
 | Holders             | INT            | N          | 持有人數   | ≥ 0 的整數                       | 900000                |
 | IndexName           | VARCHAR(50)    | N          | 追蹤指數   | 長度 1~50 的文字                 | 台灣50指數             |
 | Scale               | INT            | N          | 規模 (億)  | ≥ 0 的整數                       | 5000                 |
@@ -102,7 +101,6 @@
 | ---------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
 | ETF\_Id (PK)     | 必須為 1 到 10 個字元長度的字串，僅可包含阿拉伯數字（0–9）與英文字母（A–Z、a–z），且不可為空，用以唯一識別每檔 ETF。 | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')`          |
 | ETF\_Name        | 必須為 1 到 100 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示 ETF 的完整名稱。       | `CHECK (CHAR_LENGTH(ETF_Name) BETWEEN 1 AND 100)` |
-| Dividend\_Yield  | 必須為大於或等於 0 且最多保留兩位小數的十進位數，範圍下限為 0.00，無上限限制，用以表示該檔 ETF 的年度配息殖利率。      | `CHECK (Dividend_Yield >= 0)`                     |
 | Holders          | 必須為大於或等於 0 的整數，且不可為空，用以統計目前持有該 ETF 的投資人總數。                           | `CHECK (Holders >= 0)`                            |
 | IndexName        | 必須為 1 到 50 個字元長度的文字，可包含中英文、空格及常見標點符號，且不可為空，用以記錄該 ETF 所追蹤的基準指數名稱。     | `CHECK (CHAR_LENGTH(IndexName) BETWEEN 1 AND 50)` |
 | Scale            | 必須為大於或等於 0 的整數，且不可為空，以「億元」為單位表示該 ETF 的管理規模，實際儲存時以整數形式存放。             | `CHECK (Scale >= 0)`                              |
@@ -115,22 +113,20 @@
 CREATE TABLE ETF (
   ETF_Id VARCHAR(10) PRIMARY KEY,
   ETF_Name VARCHAR(100) NOT NULL,
-  Dividend_Yield DECIMAL(5,2) NOT NULL,
   Holders INT NOT NULL,
   IndexName VARCHAR(50) NOT NULL,
   Scale INT NOT NULL,
   ETF_Created_At DATE NOT NULL,
   CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$'),
   CHECK (CHAR_LENGTH(ETF_Name) BETWEEN 1 AND 100),
-  CHECK (Dividend_Yield >= 0),
   CHECK (Holders >= 0),
   CHECK (CHAR_LENGTH(IndexName) BETWEEN 1 AND 50),
   CHECK (Scale >= 0)
 );
 
 -- 範例：插入0050 (台灣50) 之ETF資料
-INSERT INTO ETF (ETF_Id, ETF_Name, Dividend_Yield, Holders, IndexName, Scale, ETF_Created_At)
-VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-25');
+INSERT INTO ETF (ETF_Id, ETF_Name, Holders, IndexName, Scale, ETF_Created_At)
+VALUES ('0050', '元大台灣50', 500000, '臺灣50指數', 250, '2003-06-25');
 ``` 
 ---
 ### 交易紀錄表 (Transaction)
@@ -484,7 +480,6 @@ INSERT INTO Auth (User_Id, Password) VALUES ('U000001', 'abcd');
 **5. ETF 基本資料 (ETF) 資料表屬性**
 - ETF 代號 (ETF_Id)
 - ETF 名稱 (ETF_Name)
-- 殖利率 (Dividend_Yield)
 - 持有人數 (Holders)
 - 追蹤指數 (IndexName)
 - 規模 (Scale)
