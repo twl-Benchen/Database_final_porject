@@ -96,7 +96,7 @@
 | Holders             | INT            | N          | 持有人數   | ≥ 0 的整數                       | 900000                |
 | IndexName           | VARCHAR(50)    | N          | 追蹤指數   | 長度 1~50 的文字                 | 台灣50指數             |
 | Scale               | INT            | N          | 規模 (億)  | ≥ 0 的整數                       | 5000                 |
-| ETF_Created_At      | TIMESTAMP      | N          | 創立時間   | 時間格式：YYYY-MM-DD             | 2003-06-30            |
+| ETF_Created_At      | TIMESTAMP      | N          | 創立時間   | 時間格式：YYYY-MM-DD HH:MM:SS     | 2025-05-06 10:00:00    |
 
 | 欄位名稱             | 值域限制說明                                                               | 確認方式（MySQL）                                         |
 | ---------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
@@ -106,7 +106,7 @@
 | Holders          | 必須為大於或等於 0 的整數，且不可為空，用以統計目前持有該 ETF 的投資人總數。                           | `CHECK (Holders >= 0)`                            |
 | IndexName        | 必須為 1 到 50 個字元長度的文字，可包含中英文、空格及常見標點符號，且不可為空，用以記錄該 ETF 所追蹤的基準指數名稱。     | `CHECK (CHAR_LENGTH(IndexName) BETWEEN 1 AND 50)` |
 | Scale            | 必須為大於或等於 0 的整數，且不可為空，以「億元」為單位表示該 ETF 的管理規模，實際儲存時以整數形式存放。             | `CHECK (Scale >= 0)`                              |
-| ETF\_Created\_At | 必須時間格式：YYYY-MM-DD HH:MM:SS                                                                             |          2025-05-06 10:00:00    |
+| ETF\_Created\_At | 必須時間格式：YYYY-MM-DD HH:MM:SS                                                                             |              |
 
 
 
@@ -143,7 +143,7 @@ VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-
 | Transaction_Type       | ENUM('Buy','Sell')       | N          | 交易類型     | 僅可為 'Buy' 或 'Sell'                  | Buy                  |
 | Shares                 | INT                      | N          | 買賣股數     | > 0 的整數                             | 100                  |
 | Price                  | DECIMAL(10,2)            | N          | 交易價格     | ≥ 0，最多小數第 2 位                    | 125.50                |
-| Transaction_Date       | TIMESTAMP                | N          | 交易時間     | 時間格式：YYYY-MM-DD                    | 2025-05-05           |
+| Transaction_Date       | TIMESTAMP                | N          | 交易時間     | 時間格式：YYYY-MM-DD HH:MM:SS          | 2025-05-06 10:00:00    |
 
 | 欄位名稱                 | 值域限制說明                                                | 確認方式（MySQL）                                    |
 | -------------------- | ----------------------------------------------------- | -------------------------------------------- |
@@ -153,7 +153,7 @@ VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-
 | Transaction\_Type    | 僅可接受字串 'Buy' 或 'Sell'，且不可為空，用以區分買入或賣出交易類型。            | `CHECK (Transaction_Type IN ('Buy','Sell'))` |
 | Shares               | 必須為大於 0 的整數，且不可為空，用以表示此筆交易的股數。                        | `CHECK (Shares > 0)`                         |
 | Price                | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，用以記錄每單位交易價格。          | `CHECK (Price >= 0)`                         |
-| Transaction\_Date    | 必須時間格式：YYYY-MM-DD HH:MM:SS                                                         |          2025-05-06 10:00:00    |
+| Transaction\_Date    | 必須時間格式：YYYY-MM-DD HH:MM:SS                                                         |             |
 
 
 
@@ -186,7 +186,7 @@ VALUES (1, '0050', 'Buy', 100, 168.80, '2025-04-29');
 | ETF_Id (FK)            | VARCHAR(10)    | N          | ETF 代號     | 參考 ETF.ETF_Id                        | 0050                |
 | Shares_Held            | INT            | N          | 持有股數     | > 0 的整數                             | 500                   |
 | Average_Cost           | DECIMAL(10,2)  | N          | 平均成本     | ≥ 0，最多小數第 2 位                    | 175                |
-| Last_Updated           | TIMESTAMP      | N          | 最後更新日期 | 時間格式：YYYY-MM-DD                    | 2025-05-06           |
+| Last_Updated           | TIMESTAMP      | N          | 最後更新日期 | 時間格式：YYYY-MM-DD HH:MM:SS           | 2025-05-06 10:00:00    |
 
 | 欄位名稱               | 值域限制說明                                      | 確認方式（MySQL）                                |
 | ------------------ | ------------------------------------------- | ---------------------------------------- |
@@ -195,7 +195,7 @@ VALUES (1, '0050', 'Buy', 100, 168.80, '2025-04-29');
 | ETF\_Id (FK)       | 必須為長度 1 至 10 個字元的字串，且不可為空，對應 ETF.ETF\_Id。   | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')` |
 | Shares\_Held       | 必須為大於 0 的整數，且不可為空，用以表示目前持有該檔 ETF 的股數。       | `CHECK (Shares_Held > 0)`                |
 | Average\_Cost      | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，用以記錄每股平均成本。 | `CHECK (Average_Cost >= 0)`              |
-| Last\_Updated      | 必須時間格式：YYYY-MM-DD HH:MM:SS                                           |          2025-05-06 10:00:00    |
+| Last\_Updated      | 必須時間格式：YYYY-MM-DD HH:MM:SS                                           |            |
 
 
 
@@ -241,7 +241,7 @@ VALUES (1, '0050', 100, 167.80);
 | High\_Price          | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，記錄當日最高價。   | `CHECK (High_Price >= 0)`                |
 | Low\_Price           | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，記錄當日最低價。   | `CHECK (Low_Price >= 0)`                 |
 | Volume               | 必須為大於或等於 0 的整數，且不可為空，用以表示當日成交量。            | `CHECK (Volume >= 0)`                    |
-| History\_Date        | 必須時間格式：YYYY-MM-DD HH:MM:SS                                     |          2025-05-06 10:00:00    |
+| History\_Date        | 必須時間格式：YYYY-MM-DD                                  |             |
 
 
 
@@ -362,7 +362,7 @@ INSERT INTO ETF_Category (ETF_Id, Category2_Id) VALUES ('0050', 1);
 | Phone_Number          | VARCHAR(10)          | N          | 電話號碼       | 長度固定為 10 碼                  | 0912345678              |
 | Role                  | ENUM('user','admin') | N          | 權限           | 僅限 'user' 或 'admin'           | user                    |
 | Max_Amount            | INT                  | N          | 當日最大交易量 | ≥ 0 的整數                        | 1000000                 |
-| Users_Created_At      | TIMESTAMP            | N          | 帳號創建日期   | 時間格式：YYYY-MM-DD             | 2025-01-01              |
+| Users_Created_At      | TIMESTAMP            | N          | 帳號創建日期   | 時間格式：YYYY-MM-DD HH:MM:SS     | 2025-05-06 10:00:00    |
 
 | 欄位名稱               | 值域限制說明                                                 | 確認方式（MySQL）                                                             |
 | ------------------ | ------------------------------------------------------ | --------------------------------------------------------------------- |
