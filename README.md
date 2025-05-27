@@ -106,7 +106,7 @@
 | Holders          | 必須為大於或等於 0 的整數，且不可為空，用以統計目前持有該 ETF 的投資人總數。                           | `CHECK (Holders >= 0)`                            |
 | IndexName        | 必須為 1 到 50 個字元長度的文字，可包含中英文、空格及常見標點符號，且不可為空，用以記錄該 ETF 所追蹤的基準指數名稱。     | `CHECK (CHAR_LENGTH(IndexName) BETWEEN 1 AND 50)` |
 | Scale            | 必須為大於或等於 0 的整數，且不可為空，以「億元」為單位表示該 ETF 的管理規模，實際儲存時以整數形式存放。             | `CHECK (Scale >= 0)`                              |
-| ETF\_Created\_At | 必須符合 YYYY-MM-DD 的日期格式，且為有效日期，表示該 ETF 的成立時間，不可為空，不得填入未來日期。            | `CHECK (ETF_Created_At <= CURRENT_DATE)`          |
+| ETF\_Created\_At | 必須時間格式：YYYY-MM-DD HH:MM:SS                                                                             |          2025-05-06 10:00:00    |
 
 
 
@@ -153,7 +153,7 @@ VALUES ('0050', '元大台灣50', 4.20, 500000, '臺灣50指數', 250, '2003-06-
 | Transaction\_Type    | 僅可接受字串 'Buy' 或 'Sell'，且不可為空，用以區分買入或賣出交易類型。            | `CHECK (Transaction_Type IN ('Buy','Sell'))` |
 | Shares               | 必須為大於 0 的整數，且不可為空，用以表示此筆交易的股數。                        | `CHECK (Shares > 0)`                         |
 | Price                | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，用以記錄每單位交易價格。          | `CHECK (Price >= 0)`                         |
-| Transaction\_Date    | 必須符合 YYYY-MM-DD 格式的有效日期，且不可為空，用以記錄交易發生的日期，不得為未來日期。    | `CHECK (Transaction_Date <= CURRENT_DATE)`   |
+| Transaction\_Date    | 必須時間格式：YYYY-MM-DD HH:MM:SS                                                         |          2025-05-06 10:00:00    |
 
 
 
@@ -195,7 +195,7 @@ VALUES (1, '0050', 'Buy', 100, 168.80, '2025-04-29');
 | ETF\_Id (FK)       | 必須為長度 1 至 10 個字元的字串，且不可為空，對應 ETF.ETF\_Id。   | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')` |
 | Shares\_Held       | 必須為大於 0 的整數，且不可為空，用以表示目前持有該檔 ETF 的股數。       | `CHECK (Shares_Held > 0)`                |
 | Average\_Cost      | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，用以記錄每股平均成本。 | `CHECK (Average_Cost >= 0)`              |
-| Last\_Updated      | 必須符合 YYYY-MM-DD 格式的有效日期，且不可為空，不得為未來日期。      | `CHECK (Last_Updated <= CURRENT_DATE)`   |
+| Last\_Updated      | 必須時間格式：YYYY-MM-DD HH:MM:SS                                           |          2025-05-06 10:00:00    |
 
 
 
@@ -241,7 +241,7 @@ VALUES (1, '0050', 100, 167.80);
 | High\_Price          | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，記錄當日最高價。   | `CHECK (High_Price >= 0)`                |
 | Low\_Price           | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，記錄當日最低價。   | `CHECK (Low_Price >= 0)`                 |
 | Volume               | 必須為大於或等於 0 的整數，且不可為空，用以表示當日成交量。            | `CHECK (Volume >= 0)`                    |
-| History\_Date        | 必須符合 YYYY-MM-DD 格式的有效日期，且不可為空，不得為未來日期。     | `CHECK (History_Date <= CURRENT_DATE)`   |
+| History\_Date        | 必須時間格式：YYYY-MM-DD HH:MM:SS                                     |          2025-05-06 10:00:00    |
 
 
 
