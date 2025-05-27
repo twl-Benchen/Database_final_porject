@@ -119,7 +119,13 @@ CREATE TABLE ETF (
   Holders INT NOT NULL,
   IndexName VARCHAR(50) NOT NULL,
   Scale INT NOT NULL,
-  ETF_Created_At DATE NOT NULL
+  ETF_Created_At DATE NOT NULL,
+  CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$'),
+  CHECK (CHAR_LENGTH(ETF_Name) BETWEEN 1 AND 100),
+  CHECK (Devidend_Yield >= 0),
+  CHECK (Holders >= 0),
+  CHECK (CHAR_LENGTH(IndexName) BETWEEN 1 AND 50),
+  CHECK (Scale >= 0)
 );
 
 -- 範例：插入0050 (台灣50) 之ETF資料
@@ -381,8 +387,15 @@ CREATE TABLE Users (
   Phone_Number VARCHAR(10) NOT NULL,
   Role ENUM('user','admin') NOT NULL,
   Max_Amount INT NOT NULL DEFAULT 0,
-  Users_Created_At TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  Users_Created_At TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (CHAR_LENGTH(User_Name) BETWEEN 1 AND 50),
+  CHECK (CHAR_LENGTH(Full_Name) BETWEEN 1 AND 100),
+  CHECK (Email REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$'),
+  CHECK (Phone_Number REGEXP '^[0-9]{10}$'),
+  CHECK (Role IN ('user','admin')),
+  CHECK (Max_Amount >= 0)
 );
+
 
 -- 範例：新增使用者 Bob (User_Id 自動產生為1)
 INSERT INTO Users (User_Name, Full_Name, Email, Phone_Number, Role, Max_Amount)
