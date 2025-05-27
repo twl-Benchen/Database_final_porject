@@ -373,7 +373,7 @@ INSERT INTO ETF_Category (ETF_Id, Category2_Id) VALUES ('0050', 1);
 | Phone\_Number      | 必須為長度固定 10 碼且僅包含數字的字串，格式如 0912345678，且不可為空。            | `CHECK (Phone_Number REGEXP '^[0-9]{10}$')`                                |
 | Role               | 僅可接受字串 'user' 或 'admin' 其中之一，且不可為空，用以設定使用者權限等級。        | `CHECK (Role IN ('user','admin'))`                                    |
 | Max\_Amount        | 必須為大於或等於 0 的整數，且不可為空，用以限制使用者於單日內可執行之最大交易數量。            | `CHECK (Max_Amount >= 0)`                                             |
-| Users\_Created\_At | 必須符合 YYYY-MM-DD 格式的有效日期，且不可為空，用以記錄使用者帳號建立之日期，不得填入未來日期。 | `CHECK (Users_Created_At <= CURRENT_DATE)`                            |
+| Users\_Created\_At | 日期時間格式：YYYY-MM-DD HH:MM:SS，預設為當前時間 |                             |
 
 
 
