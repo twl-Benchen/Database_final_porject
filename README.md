@@ -429,11 +429,10 @@ CREATE TABLE Auth (
   User_Id VARCHAR(50) PRIMARY KEY,
   Password VARCHAR(255) NOT NULL,
   Last_Login TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (User_Id) REFERENCES Users(User_Id) ON DELETE CASCADE
 );
 
 -- 範例：新增使用者密碼為 'abcd'
-INSERT INTO Auth (User_Id, Password) VALUES ('U000001', 'abcd');
+INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ```
 
 ## ER Diagram及詳細說明
