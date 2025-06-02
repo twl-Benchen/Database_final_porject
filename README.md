@@ -434,7 +434,7 @@ CREATE TABLE Auth (
 -- 範例：新增使用者密碼為 'abcd'
 INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ```
-
+## View
 ## ER Diagram及詳細說明
 <!--![image](image/ER%20Diagram.png)-->
 **簡略圖**
