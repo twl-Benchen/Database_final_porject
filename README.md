@@ -217,7 +217,7 @@ CREATE TABLE Portfolio (
   Last_Updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (User_Id) REFERENCES Users(User_Id),
   FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
-  CHECK (Shares_Held > 0),
+  CHECK (Shares_Held >= 0),
   CHECK (Average_Cost >= 0)
 );
 
