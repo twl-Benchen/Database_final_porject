@@ -200,7 +200,7 @@ VALUES ('U000001', '0050', 'Buy', 100, 168.80, '2025-04-29');
 | Portfolio\_Id (PK) | 必須為大於等於 1 的整數，且不可為空，用以唯一識別持倉紀錄             | `CHECK (Portfolio_Id >= 1)`              |
 | User\_Id (FK)      | 必須為長度不超過 50 個字元的字串，且不可為空，對應 Users.User\_Id。 | `CHECK (CHAR_LENGTH(User_Id) <= 50)`     |
 | ETF\_Id (FK)       | 必須為長度 1 至 10 個字元的字串，且不可為空，對應 ETF.ETF\_Id。   | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')` |
-| Shares\_Held       | 必須為大於等於 0 的整數，且不可為空，用以表示目前持有該檔 ETF 的股數。       | `CHECK (Shares_Held > 0)`                |
+| Shares\_Held       | 必須為大於等於 0 的整數，且不可為空，用以表示目前持有該檔 ETF 的股數。       | `CHECK (Shares_Held >= 0)`                |
 | Average\_Cost      | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，用以記錄每股平均成本。 | `CHECK (Average_Cost >= 0)`              |
 | Last\_Updated      | 必須時間格式：YYYY-MM-DD HH:MM:SS                                           | 無需額外CHECK約束（MySQL內建驗證）    |
 
@@ -219,7 +219,7 @@ CREATE TABLE Portfolio (
   FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
   CHECK (Portfolio_Id >= 1),                  
   CHECK (CHAR_LENGTH(User_Id) <= 50),      
-  CHECK (Shares_Held > 0),
+  CHECK (Shares_Held >= 0),
   CHECK (Average_Cost >= 0)
 );
 
