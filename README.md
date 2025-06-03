@@ -734,20 +734,30 @@ SELECT * FROM vw_portfolio_summary WHERE User_Id = 'user001';
 ---
 
 ```sql
+--(3.1)
+--交易記錄相關 View
+CREATE OR REPLACE VIEW vw_recent_transactions AS
+SELECT 
+    t.Transaction_Id,
+    u.Full_Name,
+    e.ETF_Name,
+    t.Transaction_Type,
+    t.Shares,
+    t.Price,
+    (t.Shares * t.Price) AS Total_Amount,
+    t.Transaction_Date
+FROM `Transaction` t
+JOIN Users u ON t.User_Id = u.User_Id
+JOIN ETF e ON t.ETF_Id = e.ETF_Id
+ORDER BY t.Transaction_Date DESC;
 
+-- 查詢最新10筆交易記錄
+SELECT * FROM vw_recent_transactions LIMIT 10;
 ```
 ### 說明
 ### 執行結果:
 <img src="image/DB8.png" width="900px"><br><br>
 
----
-
-```sql
-
-```
-### 說明
-### 執行結果:
-<img src="image/DB9.png" width="800px"><br><br>
 ---
 
 ## ER Diagram及詳細說明
