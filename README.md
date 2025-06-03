@@ -442,15 +442,313 @@ CREATE TABLE Auth (
 INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ```
 ## View
+
+```sql
+SELECT
+    c1.Category1_Id,
+    c1.Category1_Name AS 父標籤名稱,
+    c2.Category2_Id,
+    c2.Category2_Name AS 子標籤名稱
+FROM
+    Category_Level1 c1
+LEFT JOIN
+    Category_Level2 c2
+ON
+    c2.Category1_Id = c1.Category1_Id
+ORDER BY
+    c1.Category1_Name,
+    c2.Category2_Name;
+```
+### 說明
+### 執行結果:
 <img src="image/DB1.png" width="700px"><br><br>
+
+---
+
+```sql
+SELECT DISTINCT 
+    e.ETF_Id, 
+    e.ETF_Name, 
+    e.Holders, 
+    e.Scale, 
+    e.ETF_Created_At, 
+    c1.Category1_Name, 
+    c2.Category2_Name
+FROM ETF e
+LEFT JOIN ETF_Category ec 
+    ON e.ETF_Id = ec.ETF_Id
+LEFT JOIN Category_Level2 c2 
+    ON ec.Category2_Id = c2.Category2_Id
+LEFT JOIN Category_Level1 c1 
+    ON c2.Category1_Id = c1.Category1_Id
+WHERE 
+    c1.Category1_Name = '股票型'
+    AND c2.Category2_Name = '大型權值'
+ORDER BY e.ETF_Id;
+```
+### 說明
+### 執行結果:
 <img src="image/DB2.png" width="700px"><br><br>
+
+---
+
+```sql
+--(2.1)
+--功能1取得下拉選單 ETF 列表
+SELECT ETF_Id, ETF_Name
+FROM ETF
+ORDER BY ETF_Id;
+
+-- 取得ETF名稱包含'元大'的列表
+SELECT ETF_Id, ETF_Name
+FROM ETF
+WHERE ETF_Name LIKE '%元大%'
+ORDER BY ETF_Id;
+```
+### 說明
+### 執行結果:
 <img src="image/DB3.png" width="400px"><br><br>
+
+---
+
+```sql
+--查詢 ETF '0050'，從 2025-01-01 到 2025-05-30 這段期間漲幅
+SELECT
+    t_start.History_Date   AS `實際起始日`,
+    t_start.Close_Price    AS `起始收盤價`,
+    t_end.History_Date     AS `實際結束日`,
+    t_end.Close_Price      AS `結束收盤價`,
+    ROUND(
+        (t_end.Close_Price - t_start.Close_Price)
+        / t_start.Close_Price * 100,
+        2
+    )                     AS `期間漲跌幅（％）`
+FROM
+    (
+        SELECT
+            History_Date,
+            Close_Price
+        FROM
+            ETF_HistoryPrice
+        WHERE
+            ETF_Id      = '0050'
+            AND History_Date BETWEEN '2024-01-01' AND '2025-05-30'
+        ORDER BY
+            History_Date ASC
+        LIMIT 1
+    ) AS t_start
+    JOIN
+    (
+        SELECT
+            History_Date,
+            Close_Price
+        FROM
+            ETF_HistoryPrice
+        WHERE
+            ETF_Id      = '0050'
+            AND History_Date BETWEEN '2024-01-01' AND '2025-05-30'
+        ORDER BY
+            History_Date DESC
+        LIMIT 1
+    ) AS t_end
+    ON 1 = 1;
+```
+### 說明
+### 執行結果:
 <img src="image/DB4.png" width="700px"><br><br>
+
+---
+
+```sql
+--(3.1)使用者買入後更新交易紀錄跟投資組合
+
+-- 買入操作 - 直接SQL（修改引號內的參數）
+INSERT INTO Transaction (
+    Transaction_Id, 
+    User_Id, 
+    ETF_Id, 
+    Transaction_Type, 
+    Shares, 
+    Price, 
+    Transaction_Date
+) VALUES (
+    (SELECT COALESCE(MAX(Transaction_Id), 0) + 1 FROM Transaction t),
+    'user001',      -- 修改：用戶ID
+    '0057',         -- 修改：ETF代碼
+    'Buy',          -- 固定：買入
+    100,            -- 修改：股數
+    150.50,         -- 修改：價格
+    NOW()
+);
+
+-- 買入後更新投資組合（修改引號內的參數）
+INSERT INTO Portfolio (
+    Portfolio_Id,
+    User_Id, 
+    ETF_Id, 
+    Shares_Held, 
+    Average_Cost, 
+    Last_Updated
+) VALUES (
+    (SELECT COALESCE(MAX(Portfolio_Id), 0) + 1 FROM Portfolio p),
+    'user001',      -- 修改：用戶ID
+    '0057',         -- 修改：ETF代碼
+    100,            -- 修改：股數
+    150.50,         -- 修改：價格
+    NOW()
+) ON DUPLICATE KEY UPDATE
+    Shares_Held = Shares_Held + VALUES(Shares_Held),
+    Average_Cost = ((Shares_Held * Average_Cost) + (VALUES(Shares_Held) * VALUES(Average_Cost))) / (Shares_Held + VALUES(Shares_Held)),
+    Last_Updated = NOW();
+
+```
+### 說明
+### 執行結果:
+<img src="image/DB5須改.png" width="900px"><br><br>
+
+---
+
+```sql
+--(3.2)使用者賣出後更新交易紀錄跟投資組合(股數為0則刪除ETF)
+
+-- 1. 插入賣出交易紀錄
+INSERT INTO `Transaction` (
+    Transaction_Id, User_Id, ETF_Id, Transaction_Type, 
+    Shares, Price, Transaction_Date
+) VALUES (
+    (SELECT COALESCE(MAX(Transaction_Id), 0) + 1 FROM `Transaction` t),
+    'user001', '0057', 'Sell', 50, 160.00, NOW()
+);
+
+-- 2. 更新持倉股數
+UPDATE Portfolio
+SET 
+    Shares_Held = Shares_Held - 50,
+    Last_Updated = NOW()
+WHERE 
+    User_Id = 'user001'
+    AND ETF_Id = '0057'
+    AND Shares_Held >= 50;
+
+-- 3. 刪除股數為 0 的持倉
+DELETE FROM Portfolio
+WHERE User_Id = 'user001'
+  AND ETF_Id = '0057'
+  AND Shares_Held = 0;
+
+```
+### 說明
+### 執行結果:
+<img src="image/DB5須改.png" width="900px"><br><br>
+
+---
+
+
+
+```sql
+-- 查詢0050在2025/1/10到2025/3/16每日K線資料及每日變動%
+SELECT 
+    ETF_Id,
+    History_Date,
+    Open_Price,
+    High_Price,
+    Low_Price,
+    Close_Price,
+    Volume,
+    -- 計算前一日收盤價
+    LAG(Close_Price) OVER (ORDER BY History_Date) AS prev_close,
+    -- 計算每日變動金額
+    Close_Price - LAG(Close_Price) OVER (ORDER BY History_Date) AS daily_change,
+    -- 計算每日變動%
+    CASE 
+        WHEN LAG(Close_Price) OVER (ORDER BY History_Date) IS NOT NULL 
+        THEN ROUND(((Close_Price - LAG(Close_Price) OVER (ORDER BY History_Date)) / LAG(Close_Price) OVER (ORDER BY History_Date)) * 100, 2)
+        ELSE NULL 
+    END AS daily_change_percent
+FROM ETF_HistoryPrice
+WHERE ETF_Id = '0050'
+  AND History_Date BETWEEN '2025-01-10' AND '2025-03-16'
+ORDER BY History_Date;
+
+```
+### 說明
+### 執行結果:
 <img src="image/DB5.png" width="900px"><br><br>
+
+---
+
+```sql
+-- 用戶投資組合持股明細
+CREATE OR REPLACE VIEW vw_portfolio_detail AS
+SELECT 
+    p.Portfolio_Id,
+    p.User_Id,
+    u.Full_Name,
+    p.ETF_Id,
+    e.ETF_Name,
+    p.Shares_Held,
+    p.Average_Cost,
+    (p.Shares_Held * p.Average_Cost) AS Cost_Basis,
+    p.Last_Updated
+FROM Portfolio p
+JOIN Users u ON p.User_Id = u.User_Id
+JOIN ETF e ON p.ETF_Id = e.ETF_Id
+WHERE p.Shares_Held > 0
+ORDER BY p.User_Id, e.ETF_Id;
+
+--(1.2)
+---- 查詢特定用戶的投資組合詳細
+SELECT * FROM vw_portfolio_detail WHERE User_Id = 'user001';
+
+```
+### 說明
+### 執行結果:
 <img src="image/DB6.png" width="800px"><br><br>
+
+---
+
+```sql
+--(2.1)
+-- 用戶投資組合統計資料(筆數、總張數等)
+CREATE OR REPLACE VIEW vw_portfolio_summary AS
+SELECT 
+    p.User_Id,
+    u.Full_Name,
+    COUNT(DISTINCT p.ETF_Id) AS total_etfs,
+    SUM(p.Shares_Held) AS total_shares,
+    SUM(p.Shares_Held * p.Average_Cost) AS total_cost_basis,
+    AVG(p.Average_Cost) AS avg_cost_per_share
+FROM Portfolio p
+JOIN Users u ON p.User_Id = u.User_Id
+WHERE p.Shares_Held > 0
+GROUP BY p.User_Id, u.Full_Name;
+
+
+-- 查詢用戶投資組合統計摘要
+SELECT * FROM vw_portfolio_summary WHERE User_Id = 'user001';
+```
+### 說明
+### 執行結果:
 <img src="image/DB7.png" width="800px"><br><br>
+
+---
+
+```sql
+
+```
+### 說明
+### 執行結果:
 <img src="image/DB8.png" width="900px"><br><br>
+
+---
+
+```sql
+
+```
+### 說明
+### 執行結果:
 <img src="image/DB9.png" width="800px"><br><br>
+---
 
 ## ER Diagram及詳細說明
 <!--![image](image/ER%20Diagram.png)-->
