@@ -442,6 +442,16 @@ CREATE TABLE Auth (
 INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ```
 ## View
+<img src="image/DB1.png" width="700px"><br><br>
+<img src="image/DB2.png" width="700px"><br><br>
+<img src="image/DB3.png" width="400px"><br><br>
+<img src="image/DB4.png" width="700px"><br><br>
+<img src="image/DB5.png" width="900px"><br><br>
+<img src="image/DB6.png" width="800px"><br><br>
+<img src="image/DB7.png" width="800px"><br><br>
+<img src="image/DB8.png" width="900px"><br><br>
+<img src="image/DB9.png" width="800px"><br><br>
+
 ## ER Diagram及詳細說明
 <!--![image](image/ER%20Diagram.png)-->
 **簡略圖**
