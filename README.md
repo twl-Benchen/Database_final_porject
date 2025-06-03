@@ -927,7 +927,7 @@ FLUSH PRIVILEGES;
 <!--![image](image/ER%20Diagram.png)-->
 **簡略圖**
 
-![image](image/ERD_simp.png)
+![image](image/ERD_simp2.png)
 
 **完整圖**
 
