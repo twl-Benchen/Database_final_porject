@@ -322,7 +322,7 @@ INSERT INTO Category_Level1 (Category1_Name) VALUES ('股票型');
 | 欄位名稱               | 值域限制說明                                                      | 確認方式（MySQL）                                              |
 | ------------------ | ----------------------------------------------------------- | ------------------------------------------------------ |
 | Category2\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空。                             | 使用 AUTO_INCREMENT 已確保遞增                            |
-| Category1\_Id (FK) | 必須為大於等於 1 的整數，且不可為空，其值必須對應至 Category\_Level1.Category1\_Id。 | 鍵約束已確保參照完整性                            |
+| Category1\_Id (FK) | 必須為大於等於 1 的整數，且不可為空，其值必須對應至 Category\_Level1.Category1\_Id。 | 外鍵約束已確保參照完整性                            |
 | Category2\_Name    | 必須為長度 1 到 20 個字元的文字，且不可為空，僅可包含中、英文與數字。                      | `CHECK (CHAR_LENGTH(Category2_Name) BETWEEN 1 AND 20)` |
 
 
