@@ -836,6 +836,93 @@ SELECT * FROM vw_recent_transactions LIMIT 10;
 
 ---
 
+## 使用者權限設定
+
+#### 1. 使用者
+ETF_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| ETF | SELECT | 查看ETF |
+| Transaction | SELECT,INSERT,UPDATE,DELETE | 讀寫交易紀錄 |
+| Portfolio | SELECT,INSERT,UPDATE,DELETE | 讀寫持倉 |
+| ETF_HistoryPrice | SELECT | 查看歷史價格 |
+| Category_Level1 | SELECT | 查看第一分類 |
+| Category_Level2 | SELECT | 查看第二分類 |
+| ETF_Category | SELECT | 查看分類 |
+| Users | SELECT | 查看使用者基本資料 |
+
+AUTH_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| Auth | SELECT,UPDATE | 比對密碼輸入是否正確及更新最後登入 |
+
+#### SQL語法
+
+```sql
+CREATE USER 'user'@'%' IDENTIFIED BY '222';
+GRANT SELECT ON etf_db.* TO 'user'@'%';
+GRANT INSERT,UPDATE,DELETE ON etf_db.Transaction TO 'user'@'%';
+GRANT INSERT,UPDATE,DELETE ON etf_db.Portfolio TO 'user'@'%';
+GRANT SELECT, UPDATE ON auth_db.* TO 'user'@'%';
+FLUSH PRIVILEGES;
+```
+
+#### 2. 管理者
+ETF_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| ETF | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫ETF |
+| Transaction | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫交易紀錄 |
+| Portfolio | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫持倉 |
+| ETF_HistoryPrice | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫歷史價格 |
+| Category_Level1 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫第一分類 |
+| Category_Level2 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫第二分類 |
+| ETF_Category | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫分類 |
+| Users | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP | 讀寫使用者基本資料 |
+
+AUTH_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| Auth | SELECT,UPDATE | 比對密碼輸入是否正確及更新最後登入 |
+
+
+#### SQL語法
+
+```sql
+CREATE USER 'admin'@'%' IDENTIFIED BY '111';
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP ON etf_db.* TO 'admin'@'%';
+GRANT SELECT, UPDATE ON auth_db.* TO 'admin'@'%';
+FLUSH PRIVILEGES;
+```
+
+#### 3. 資料庫管理者
+ETF_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| ETF | ALL | 讀寫ETF |
+| Transaction | ALL  | 讀寫交易紀錄 |
+| Portfolio | ALL  | 讀寫持倉 |
+| ETF_HistoryPrice | ALL  | 讀寫歷史價格 |
+| Category_Level1 | ALL  | 讀寫第一分類 |
+| Category_Level2 | ALL  | 讀寫第二分類 |
+| ETF_Category | ALL  | 讀寫分類 |
+| Users | ALL | 讀寫使用者基本資料 |
+
+AUTH_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| Auth | ALL | 讀寫密碼 |
+
+#### SQL語法
+
+```sql
+CREATE USER 'DBA'@'localhost' IDENTIFIED BY '000';
+GRANT ALL PRIVILEGES ON etf_db.* TO 'DBA'@'localhost';
+GRANT ALL PRIVILEGES ON auth_db.* TO 'DBA'@'localhost';
+FLUSH PRIVILEGES;
+```
+---
+
 ## ER Diagram及詳細說明
 <!--![image](image/ER%20Diagram.png)-->
 **簡略圖**
