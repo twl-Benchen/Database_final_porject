@@ -22,16 +22,21 @@
 ### 成員
 
 >組員一：資工系 - 41143210 - 田晉嘉 [JustinTien10](https://github.com/JustinTien10)<br>
->負責項目：[]
-
->組員二：資工系 - 41143239 - 陳億穎 [yiyingg1226](https://github.com/yiyingg1226)<br>
->負責項目：[]
-
->組員三：資工系 - 41143238 -  陳峻宇 [twl-Benchen](https://github.com/twl-Benchen)<br>
->負責項目：[]
+>負責項目：[ETF歷史走勢爬取、編排文件、協助View製作]<br>
+>Email：41143210@nfu.edu.tw
 
 >組員四：資工系 - 41143219 -  周偉宸 [WeiChen-Zhou](https://github.com/WeiChen-Zhou)<br>
->負責項目：[]
+>負責項目：[權限設計&實作、建立View]<br>
+>Email：41143219@nfu.edu.tw
+
+>組員三：資工系 - 41143238 -  陳峻宇 [twl-Benchen](https://github.com/twl-Benchen)<br>
+>負責項目：[值域規劃、MariaDB建立&實作、建立View、網頁實作]<br>
+>Email：41143238@nfu.edu.tw
+
+>組員二：資工系 - 41143239 - 陳億穎 [yiyingg1226](https://github.com/yiyingg1226)<br>
+>負責項目：[資料庫概念層建立、ER digram製作]<br>
+>Email：41143239@nfu.edu.tw
+
 
 ## 應用情境與使用案例
 **應用情境**
