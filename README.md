@@ -153,7 +153,7 @@ VALUES ('0050', '元大台灣50', 500000, '臺灣50指數', 250, '2003-06-25');
 | Transaction\_Id (PK) | 必須為大於等於 1 的整數，且不可為空，用於唯一識別每一筆交易                   | `CHECK (Transaction_Id >= 1)`                |
 | User\_Id (FK)        | 必須為長度不超過 50 個字元的字串，且不可為空，且其值必須對應至 Users 表中的 User\_Id。 | `CHECK (char_length(User_Id) <= 50)`         |
 | ETF\_Id (FK)         | 必須為長度 1 至 10 個字元的字串，且不可為空，且其值必須對應至 ETF 表中的 ETF\_Id。   | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')`     |
-| Transaction\_Type    | 僅可接受字串 'Buy' 或 'Sell'，且不可為空，用以區分買入或賣出交易類型。            | `CHECK (Transaction_Type IN ('Buy','Sell'))` |
+| Transaction\_Type    | 僅可接受字串 'Buy' 或 'Sell'，且不可為空，用以區分買入或賣出交易類型。            | 已使用 ENUM('Buy','Sell') 約束 |
 | Shares               | 必須為大於 0 的整數，且不可為空，用以表示此筆交易的股數。                        | `CHECK (Shares > 0)`                         |
 | Price                | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，用以記錄每單位交易價格。          | `CHECK (Price >= 0)`                         |
 | Transaction\_Date    | 必須時間格式：YYYY-MM-DD HH:MM:SS                                                        | 無需額外CHECK約束（MySQL內建驗證）    |
@@ -217,7 +217,9 @@ CREATE TABLE Portfolio (
   Last_Updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (User_Id) REFERENCES Users(User_Id),
   FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
-  CHECK (Shares_Held >= 0),
+  CHECK (Portfolio_Id >= 1),                  
+  CHECK (CHAR_LENGTH(User_Id) <= 50),      
+  CHECK (Shares_Held > 0),
   CHECK (Average_Cost >= 0)
 );
 
@@ -244,7 +246,7 @@ VALUES ('U000001', '0050', 100, 167.80);
 
 | 欄位名稱                 | 值域限制說明                                     | 確認方式（MySQL）                                |
 | -------------------- | ------------------------------------------ | ---------------------------------------- |
-| PriceRecord\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空，用以唯一識別每筆紀錄。 | `CHECK (PriceRecord_Id >= 1)`            |
+| PriceRecord\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空，用以唯一識別每筆紀錄。 | 使用 AUTO_INCREMENT 已確保遞增            |
 | ETF\_Id (FK)         | 必須為長度 1 至 10 個字元的字串，且不可為空，對應 ETF.ETF\_Id。  | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')` |
 | Open\_Price          | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，記錄當日開盤價。   | `CHECK (Open_Price >= 0)`                |
 | Close\_Price         | 必須為大於或等於 0 且最多保留兩位小數的十進位數，且不可為空，記錄收盤價。     | `CHECK (Close_Price >= 0)`               |
@@ -290,7 +292,7 @@ VALUES ('0050', 167.15, 167.80, 168.00, 166.50, 10830, '2025-04-28');
 
 | 欄位名稱               | 值域限制說明                                 | 確認方式（MySQL）                                              |
 | ------------------ | -------------------------------------- | ------------------------------------------------------ |
-| Category1\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空。        | `CHECK (Category1_Id >= 1)`                            |
+| Category1\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空。        | 使用 AUTO_INCREMENT 已確保遞增                            |
 | Category1\_Name    | 必須為長度 1 到 20 個字元的文字，且不可為空，僅可包含中、英文與數字。 | `CHECK (CHAR_LENGTH(Category1_Name) BETWEEN 1 AND 20)` |
 
 
@@ -319,8 +321,8 @@ INSERT INTO Category_Level1 (Category1_Name) VALUES ('股票型');
 
 | 欄位名稱               | 值域限制說明                                                      | 確認方式（MySQL）                                              |
 | ------------------ | ----------------------------------------------------------- | ------------------------------------------------------ |
-| Category2\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空。                             | `CHECK (Category2_Id >= 1)`                            |
-| Category1\_Id (FK) | 必須為大於等於 1 的整數，且不可為空，其值必須對應至 Category\_Level1.Category1\_Id。 | `CHECK (Category1_Id >= 1)`                            |
+| Category2\_Id (PK) | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空。                             | 使用 AUTO_INCREMENT 已確保遞增                            |
+| Category1\_Id (FK) | 必須為大於等於 1 的整數，且不可為空，其值必須對應至 Category\_Level1.Category1\_Id。 | 鍵約束已確保參照完整性                            |
 | Category2\_Name    | 必須為長度 1 到 20 個字元的文字，且不可為空，僅可包含中、英文與數字。                      | `CHECK (CHAR_LENGTH(Category2_Name) BETWEEN 1 AND 20)` |
 
 
@@ -350,9 +352,9 @@ INSERT INTO Category_Level2 (Category1_Id, Category2_Name) VALUES (1, '大型權
 
 | 欄位名稱               | 值域限制說明                                                      | 確認方式（MySQL）                                |
 | ------------------ | ----------------------------------------------------------- | ---------------------------------------- |
-| Category\_Id (PK)  | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空。                             | `CHECK (Category_Id >= 1)`               |
-| ETF\_Id (FK)       | 必須為長度 1 到 10 個字元的字串，且不可為空，其值必須對應至 ETF.ETF\_Id。              | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')` |
-| Category2\_Id (FK) | 必須為大於等於 1 的整數，且不可為空，其值必須對應至 Category\_Level2.Category2\_Id。 | `CHECK (Category2_Id >= 1)`              |
+| Category\_Id (PK)  | 必須為從 1 開始連續遞增且大於等於 1 的整數，且不可為空。                             | 使用 AUTO_INCREMENT 已確保遞增               |
+| ETF\_Id (FK)       | 必須為長度 1 到 10 個字元的字串，且不可為空，其值必須對應至 ETF.ETF\_Id。              | 外鍵約束已確保參照完整性 |
+| Category2\_Id (FK) | 必須為大於等於 1 的整數，且不可為空，其值必須對應至 Category\_Level2.Category2\_Id。 | 外鍵約束已確保參照完整性              |
 
 
 ```sql
