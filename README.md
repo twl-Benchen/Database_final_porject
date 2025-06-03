@@ -854,7 +854,7 @@ ETF_DB
 AUTH_DB
 | 資料表 | 權限 | 說明 |
 |---------|---------|------|
-| Auth | SELECT,UPDATE | 比對密碼輸入是否正確及更新最後登入 |
+| Auth | SELECT | 比對密碼輸入是否正確 |
 
 #### SQL語法
 
@@ -863,7 +863,7 @@ CREATE USER 'user'@'%' IDENTIFIED BY '222';
 GRANT SELECT ON etf_db.* TO 'user'@'%';
 GRANT INSERT,UPDATE,DELETE ON etf_db.Transaction TO 'user'@'%';
 GRANT INSERT,UPDATE,DELETE ON etf_db.Portfolio TO 'user'@'%';
-GRANT SELECT, UPDATE ON auth_db.* TO 'user'@'%';
+GRANT SELECT ON auth_db.* TO 'user'@'%';
 FLUSH PRIVILEGES;
 ```
 
@@ -883,7 +883,7 @@ ETF_DB
 AUTH_DB
 | 資料表 | 權限 | 說明 |
 |---------|---------|------|
-| Auth | SELECT,UPDATE | 比對密碼輸入是否正確及更新最後登入 |
+| Auth | SELECT | 比對密碼輸入是否正確 |
 
 
 #### SQL語法
@@ -891,7 +891,7 @@ AUTH_DB
 ```sql
 CREATE USER 'admin'@'%' IDENTIFIED BY '111';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,DROP ON etf_db.* TO 'admin'@'%';
-GRANT SELECT, UPDATE ON auth_db.* TO 'admin'@'%';
+GRANT SELECT ON auth_db.* TO 'admin'@'%';
 FLUSH PRIVILEGES;
 ```
 
@@ -911,7 +911,7 @@ ETF_DB
 AUTH_DB
 | 資料表 | 權限 | 說明 |
 |---------|---------|------|
-| Auth | ALL | 讀寫密碼 |
+| Auth | ALL | 讀寫密碼及更新最後登入 |
 
 #### SQL語法
 
