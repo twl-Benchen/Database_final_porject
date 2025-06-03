@@ -591,7 +591,27 @@ FROM
 <img src="image/DB4.png" width="700px"><br><br>
 
 ---
+```sql
+--查看'user001'持倉
+USE etf_db;
 
+SELECT 
+    p.User_Id,
+    p.ETF_Id,
+    e.ETF_Name,
+    p.Shares_Held,
+    p.Average_Cost,
+    p.Last_Updated
+FROM 
+    Portfolio p
+JOIN 
+    ETF e ON p.ETF_Id = e.ETF_Id
+WHERE 
+    p.User_Id = 'user001';
+
+```
+### 執行結果:
+<img src="image/start.png" width="900px"><br><br>
 ```sql
 --(3.1)使用者買入後更新交易紀錄跟投資組合
 
@@ -647,7 +667,7 @@ INSERT INTO Portfolio (
 新增或更新投資組合記錄：<br>
 更新 Last_Updated 時間。<br>
 ### 執行結果:
-<img src="image/DB5須改.png" width="900px"><br><br>
+<img src="image/buy.png" width="900px"><br><br>
 
 ---
 
@@ -691,7 +711,7 @@ WHERE User_Id = 'user001'
 刪除投資組合記錄：<br>
 若 Shares_Held變為零，則移除該投資組合記錄。
 ### 執行結果:
-<img src="image/DB5須改.png" width="900px"><br><br>
+<img src="image/sell.png" width="900px"><br><br>
 
 ---
 
