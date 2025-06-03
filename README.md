@@ -450,7 +450,8 @@ INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 
 **完整圖**
 
-![image](image/er_diagram.drawio.png)
+![image](image/EFT.drawio.png)
+![image](image/PASSWORD.drawio.png)
 **1. 使用者密碼 (User_Auth) 資料表屬性**
 - 使用者代號 (User_Id)
 - 使用者密碼 (Password)
