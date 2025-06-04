@@ -593,8 +593,6 @@ FROM
 ---
 ```sql
 --查看'user001'持倉
-USE etf_db;
-
 SELECT 
     p.User_Id,
     p.ETF_Id,
