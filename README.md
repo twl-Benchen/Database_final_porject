@@ -34,7 +34,7 @@
 >Email：41143219@nfu.edu.tw
 
 >組員三：資工系 - 41143238 -  陳峻宇 [twl-Benchen](https://github.com/twl-Benchen)<br>
->負責項目：[值域規劃、MariaDB建立&實作、建立View、網頁實作]<br>
+>負責項目：[值域規劃、MariaDB建立&實作、建立View、ETF分類標籤整理、網頁實作]<br>
 >Email：41143238@nfu.edu.tw
 
 >組員二：資工系 - 41143239 - 陳億穎 [yiyingg1226](https://github.com/yiyingg1226)<br>
@@ -1048,4 +1048,6 @@ FLUSH PRIVILEGES;
 
 **ETF 歷史價格表 (ETF_HistoryPrice):**
 - Yahoo finance套件: yfinance (官網頁面顯示，以ETF:0050舉例 https://finance.yahoo.com/quote/0050.TW/history/)
+
+**### 紀錄分類表 (ETF_Category)、第一分類表 (Category_Level1)、第二分類表 (Category_Level2)**
 
