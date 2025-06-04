@@ -1042,10 +1042,10 @@ FLUSH PRIVILEGES;
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/Hx2qvtQ5Txk/0.jpg)](https://www.youtube.com/watch?v=Hx2qvtQ5Txk "YouTube Video")
 
 ## 資料來源 & 處理方式
-ETF 基本資料表 (ETF):<br>
-證交所: https://www.twse.com.tw/zh/ETFortune/ajaxProductsResult<br>
-櫃買中心: https://info.tpex.org.tw/api/etfFilter <br><br>
+**ETF 基本資料表 (ETF):**
+- 證交所: https://www.twse.com.tw/zh/ETFortune/ajaxProductsResult
+- 櫃買中心: https://info.tpex.org.tw/api/etfFilter 
 
-ETF 歷史價格表 (ETF_HistoryPrice):<br>
-
+**ETF 歷史價格表 (ETF_HistoryPrice):**
+- Yahoo finance套件: yfinance (官網頁面顯示，以ETF:0050舉例 https://finance.yahoo.com/quote/0050.TW/history/)
 
