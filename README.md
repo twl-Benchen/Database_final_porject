@@ -1044,5 +1044,8 @@ FLUSH PRIVILEGES;
 ## 資料來源 & 處理方式
 ETF 基本資料表 (ETF):<br>
 證交所: https://www.twse.com.tw/zh/ETFortune/ajaxProductsResult<br>
-櫃買中心: <br>
+櫃買中心: https://info.tpex.org.tw/api/etfFilter <br><br>
+
+ETF 歷史價格表 (ETF_HistoryPrice):<br>
+
 
