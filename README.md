@@ -1049,5 +1049,7 @@ FLUSH PRIVILEGES;
 **ETF 歷史價格表 (ETF_HistoryPrice):**
 - Yahoo finance套件: yfinance (官網頁面顯示，以ETF:0050舉例 https://finance.yahoo.com/quote/0050.TW/history/)
 
-**### 紀錄分類表 (ETF_Category)、第一分類表 (Category_Level1)、第二分類表 (Category_Level2)**
-
+**紀錄分類表 (ETF_Category)、第一分類表 (Category_Level1)、第二分類表 (Category_Level2):**
+- 利用證交所、櫃買中心篩選器的篩選結果: https://www.twse.com.tw/zh/ETFortune/products <br>
+比如總共有A~E這些ETF，選擇"股票型"標籤後，剩下A、C、D這些ETF，就可以將"股票型"這個分類標籤分配給A、C、D這三檔ETF
+- 配息月份標籤 : https://www.twse.com.tw/zh/ETFortune/dividendCalendar
