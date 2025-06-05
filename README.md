@@ -1051,7 +1051,7 @@ FLUSH PRIVILEGES;
 
 **紀錄分類表 (ETF_Category)、第一分類表 (Category_Level1)、第二分類表 (Category_Level2):**
 - 利用證交所、櫃買中心篩選器的篩選結果: https://www.twse.com.tw/zh/ETFortune/products <br>
-比如總共有A~E這些ETF，選擇"股票型"標籤後，剩下A、C、D這些ETF，就可以將"股票型"這個分類標籤分配給A、C、D這三檔ETF
+比如總共有A~E這些ETF，選擇"股票型"標籤後，剩下A、C、D這些ETF，就可以將"股票型"這個標籤分配給A、C、D這三檔ETF，其餘標籤同理
 - 配息月份標籤 : https://www.twse.com.tw/zh/ETFortune/dividendCalendar
 
 **網頁端即時股價**
