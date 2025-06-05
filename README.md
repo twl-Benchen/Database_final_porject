@@ -1047,7 +1047,8 @@ FLUSH PRIVILEGES;
 - 櫃買中心api: https://info.tpex.org.tw/api/etfFilter 
 
 **ETF 歷史價格表 (ETF_HistoryPrice):**
-- Yahoo finance套件: yfinance (官網頁面顯示，以ETF:0050舉例 https://finance.yahoo.com/quote/0050.TW/history/)
+- 2008年前資料：finmind https://finmindtrade.com/analysis/#/data/document
+- 2008年後資料：Yahoo finance套件: yfinance (官網頁面顯示，以ETF:0050舉例 https://finance.yahoo.com/quote/0050.TW/history/)
 
 **紀錄分類表 (ETF_Category)、第一分類表 (Category_Level1)、第二分類表 (Category_Level2):**
 - 利用證交所、櫃買中心篩選器的篩選結果: https://www.twse.com.tw/zh/ETFortune/products <br>
