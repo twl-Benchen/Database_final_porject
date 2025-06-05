@@ -449,7 +449,7 @@ CREATE TABLE Auth (
 -- 範例：新增使用者密碼為 'abcd'
 INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ```
-## View
+## 使用者View
 
 ```sql
 SELECT
@@ -713,8 +713,6 @@ WHERE User_Id = 'user001'
 
 ---
 
-
-
 ```sql
 -- 查詢0050在2025/1/10到2025/3/16每日K線資料及每日變動%
 SELECT 
@@ -753,8 +751,7 @@ ORDER BY History_Date;
 ### 執行結果:
 <img src="image/DB5.png" width="900px"><br><br>
 
----
-
+## 管理員View
 ```sql
 -- 用戶投資組合持股明細
 CREATE OR REPLACE VIEW vw_portfolio_detail AS
@@ -794,38 +791,6 @@ SELECT * FROM vw_portfolio_detail WHERE User_Id = 'user001';
 從 vw_portfolio_detail 選擇所有欄位，篩選 User_Id = 'user001'。
 ### 執行結果:
 <img src="image/DB6.png" width="800px"><br><br>
-
----
-
-```sql
---(2.1)
--- 用戶投資組合統計資料(筆數、總張數等)
-CREATE OR REPLACE VIEW vw_portfolio_summary AS
-SELECT 
-    p.User_Id,
-    u.Full_Name,
-    COUNT(DISTINCT p.ETF_Id) AS total_etfs,
-    SUM(p.Shares_Held) AS total_shares,
-    SUM(p.Shares_Held * p.Average_Cost) AS total_cost_basis,
-    AVG(p.Average_Cost) AS avg_cost_per_share
-FROM Portfolio p
-JOIN Users u ON p.User_Id = u.User_Id
-WHERE p.Shares_Held > 0
-GROUP BY p.User_Id, u.Full_Name;
-
-
--- 查詢用戶投資組合統計摘要
-SELECT * FROM vw_portfolio_summary WHERE User_Id = 'user001';
-```
-### 說明
-功能：此視圖（ vw_portfolio_summary ）提供每個用戶投資組合的統計摘要。<br>
-目的：彙總投資組合數據，例如持有的 ETF 數量、總股數和總成本基礎。<br>
-詳情：<br>
-關聯Portfolio和Users表，檢索User_Id、Full_Name、不同 ETF 數量（total_etfs）、總股數（total_shares）、總成本基礎（股數 * 平均成本之和）和每股平均成本。<br>
-篩選持有股數大於零的投資組合。<br>
-按User_Id和Full_Name分組。
-### 執行結果:
-<img src="image/DB7.png" width="800px"><br><br>
 
 ---
 
