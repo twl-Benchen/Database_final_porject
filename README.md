@@ -551,8 +551,10 @@ ON
 ORDER BY
     c1.Category1_Name,
     c2.Category2_Name;
-
--- 使用方式 : 查看所有標籤層次結構
+```
+### 使用方式
+```sql
+--1.1查看所有標籤層次結構
 SELECT * FROM vw_etf_category_overview;
 ```
 ### 說明
@@ -586,8 +588,10 @@ LEFT JOIN Category_Level2 c2
 LEFT JOIN Category_Level1 c1 
     ON c2.Category1_Id = c1.Category1_Id
 ORDER BY e.ETF_Id;
-
---使用方式 : 查看特定父標籤和子標籤的 ETF
+```
+### 使用方式
+```sql
+--2.1查看特定父標籤和子標籤的 ETF
 SELECT * FROM vw_etf_by_category 
 WHERE 父標籤名稱 = '股票型' AND 子標籤名稱 = '大型權值';
 ```
@@ -612,11 +616,13 @@ SELECT
     ETF_Name
 FROM ETF
 ORDER BY ETF_Id;
-
--- 使用方式:
+```
+### 使用方式
+```sql
 -- 3.1取得所有 ETF 列表（用於下拉選單）
 SELECT * FROM vw_etf_dropdown;
-
+```
+```sql
 -- 3.2搜尋包含特定關鍵字的 ETF
 SELECT * FROM vw_etf_dropdown 
 WHERE ETF_Name LIKE '%元大%';
@@ -850,7 +856,7 @@ ORDER BY History_Date;
 
 ## 管理員View
 ```sql
--- 8用戶投資組合持股明細
+-- 8.建立用戶投資組合持股明細 View
 CREATE OR REPLACE VIEW vw_portfolio_detail AS
 SELECT 
     p.Portfolio_Id,
@@ -867,10 +873,28 @@ JOIN Users u ON p.User_Id = u.User_Id
 JOIN ETF e ON p.ETF_Id = e.ETF_Id
 WHERE p.Shares_Held > 0
 ORDER BY p.User_Id, e.ETF_Id;
-
---(1.2)
----- 查詢特定用戶的投資組合詳細
-SELECT * FROM vw_portfolio_detail WHERE User_Id = 'user001';
+```
+### 使用方式
+```sql
+-- 8.1查看所有用戶的投資組合詳細
+SELECT * FROM vw_portfolio_detail;
+```
+```sql
+-- 8.2查看特定用戶的投資組合詳細
+SELECT * FROM vw_portfolio_detail 
+WHERE User_Id = 'user001';
+```
+```sql
+-- 8.3統計用戶投資分佈
+SELECT 
+    ETF_Id, 
+    ETF_Name, 
+    COUNT(*) as 持有人數, 
+    SUM(Shares_Held) as 總持股數,
+    SUM(Cost_Basis) as 總投資成本
+FROM vw_portfolio_detail 
+GROUP BY ETF_Id, ETF_Name
+ORDER BY 持有人數 DESC;
 
 ```
 ### 說明
@@ -892,12 +916,13 @@ SELECT * FROM vw_portfolio_detail WHERE User_Id = 'user001';
 ---
 
 ```sql
---9
---交易記錄相關 View
+-- 9.建立近期交易記錄 View
 CREATE OR REPLACE VIEW vw_recent_transactions AS
 SELECT 
     t.Transaction_Id,
+    t.User_Id,
     u.Full_Name,
+    t.ETF_Id,
     e.ETF_Name,
     t.Transaction_Type,
     t.Shares,
@@ -908,9 +933,42 @@ FROM `Transaction` t
 JOIN Users u ON t.User_Id = u.User_Id
 JOIN ETF e ON t.ETF_Id = e.ETF_Id
 ORDER BY t.Transaction_Date DESC;
-
--- 查詢最新10筆交易記錄
+```
+### 使用方式
+```sql
+-- 9.1查看最新 10 筆交易記錄
 SELECT * FROM vw_recent_transactions LIMIT 10;
+```
+```sql
+-- 9.2查看今日所有交易
+SELECT * FROM vw_recent_transactions 
+WHERE DATE(Transaction_Date) = CURDATE();
+```
+```sql
+-- 9.3統計交易量分析
+SELECT 
+    ETF_Id,
+    ETF_Name,
+    Transaction_Type,
+    COUNT(*) as 交易次數,
+    SUM(Shares) as 總股數,
+    SUM(Total_Amount) as 總金額
+FROM vw_recent_transactions 
+WHERE Transaction_Date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+GROUP BY ETF_Id, ETF_Name, Transaction_Type
+ORDER BY 總金額 DESC;
+```
+```sql
+-- 9.4查看用戶交易活躍度
+SELECT 
+    User_Id,
+    Full_Name,
+    COUNT(*) as 交易次數,
+    SUM(Total_Amount) as 總交易金額
+FROM vw_recent_transactions 
+WHERE Transaction_Date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+GROUP BY User_Id, Full_Name
+ORDER BY 交易次數 DESC;
 ```
 ### 說明
 功能：此視圖（ vw_recent_transactions ）提供所有用戶的近期 ETF 交易摘要。<br>
