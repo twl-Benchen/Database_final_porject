@@ -535,7 +535,8 @@ INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ## 使用者View
 
 ```sql
---1
+-- 1.ETF 標籤層次結構 View
+CREATE OR REPLACE VIEW vw_etf_category_overview AS
 SELECT
     c1.Category1_Id,
     c1.Category1_Name AS 父標籤名稱,
@@ -550,6 +551,9 @@ ON
 ORDER BY
     c1.Category1_Name,
     c2.Category2_Name;
+
+-- 使用方式: 查看所有標籤層次結構
+SELECT * FROM vw_etf_category_overview;
 ```
 ### 說明
 功能：此查詢用於檢索ETF的標籤列表，包含父標籤及其對應的子標籤。<br>
