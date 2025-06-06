@@ -552,7 +552,7 @@ ORDER BY
     c1.Category1_Name,
     c2.Category2_Name;
 
--- 使用方式: 查看所有標籤層次結構
+-- 使用方式 : 查看所有標籤層次結構
 SELECT * FROM vw_etf_category_overview;
 ```
 ### 說明
@@ -568,15 +568,16 @@ SELECT * FROM vw_etf_category_overview;
 ---
 
 ```sql
---2
+-- 2.建立特定分類 ETF View
+CREATE OR REPLACE VIEW vw_etf_by_category AS
 SELECT DISTINCT 
     e.ETF_Id, 
     e.ETF_Name, 
     e.Holders, 
     e.Scale, 
     e.ETF_Created_At, 
-    c1.Category1_Name, 
-    c2.Category2_Name
+    c1.Category1_Name AS 父標籤名稱, 
+    c2.Category2_Name AS 子標籤名稱
 FROM ETF e
 LEFT JOIN ETF_Category ec 
     ON e.ETF_Id = ec.ETF_Id
@@ -584,10 +585,11 @@ LEFT JOIN Category_Level2 c2
     ON ec.Category2_Id = c2.Category2_Id
 LEFT JOIN Category_Level1 c1 
     ON c2.Category1_Id = c1.Category1_Id
-WHERE 
-    c1.Category1_Name = '股票型'
-    AND c2.Category2_Name = '大型權值'
 ORDER BY e.ETF_Id;
+
+--使用方式 : 查看特定父標籤和子標籤的 ETF
+SELECT * FROM vw_etf_by_category 
+WHERE 父標籤名稱 = '股票型' AND 子標籤名稱 = '大型權值';
 ```
 ### 說明
 功能：此查詢檢索符合特定父標籤(ex:股票型)和子標籤(ex:大型權值)的 ETF。<br>
@@ -603,17 +605,21 @@ ORDER BY e.ETF_Id;
 ---
 
 ```sql
---3
---功能1取得下拉選單 ETF 列表
-SELECT ETF_Id, ETF_Name
+-- 3.建立 ETF 下拉選單 View
+CREATE OR REPLACE VIEW vw_etf_dropdown AS
+SELECT 
+    ETF_Id, 
+    ETF_Name
 FROM ETF
 ORDER BY ETF_Id;
 
--- 取得ETF名稱包含'元大'的列表
-SELECT ETF_Id, ETF_Name
-FROM ETF
-WHERE ETF_Name LIKE '%元大%'
-ORDER BY ETF_Id;
+-- 使用方式:
+-- 3.1取得所有 ETF 列表（用於下拉選單）
+SELECT * FROM vw_etf_dropdown;
+
+-- 3.2搜尋包含特定關鍵字的 ETF
+SELECT * FROM vw_etf_dropdown 
+WHERE ETF_Name LIKE '%元大%';
 ```
 ### 說明
 功能：此查詢檢索所有 ETF 的列表，用於填充下拉選單。<br>
