@@ -535,6 +535,7 @@ INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ## 使用者View
 
 ```sql
+--1
 SELECT
     c1.Category1_Id,
     c1.Category1_Name AS 父標籤名稱,
@@ -563,6 +564,7 @@ ORDER BY
 ---
 
 ```sql
+--2
 SELECT DISTINCT 
     e.ETF_Id, 
     e.ETF_Name, 
@@ -597,7 +599,7 @@ ORDER BY e.ETF_Id;
 ---
 
 ```sql
---(2.1)
+--3
 --功能1取得下拉選單 ETF 列表
 SELECT ETF_Id, ETF_Name
 FROM ETF
@@ -622,6 +624,7 @@ ORDER BY ETF_Id;
 ---
 
 ```sql
+--4
 --查詢 ETF '0050'，從 2025-01-01 到 2025-05-30 這段期間漲幅
 SELECT
     t_start.History_Date   AS `實際起始日`,
@@ -675,6 +678,7 @@ FROM
 
 ---
 ```sql
+--5
 --查看'user001'持倉
 SELECT 
     p.User_Id,
@@ -694,7 +698,7 @@ WHERE
 ### 執行結果:
 <img src="image/start.png" width="900px"><br><br>
 ```sql
---(3.1)使用者買入後更新交易紀錄跟投資組合
+--6使用者買入後更新交易紀錄跟投資組合
 
 -- 買入操作 - 直接SQL（修改引號內的參數）
 INSERT INTO Transaction (
@@ -753,7 +757,7 @@ INSERT INTO Portfolio (
 ---
 
 ```sql
---(3.2)使用者賣出後更新交易紀錄跟投資組合(股數為0則刪除ETF)
+--6.2使用者賣出後更新交易紀錄跟投資組合(股數為0則刪除ETF)
 
 -- 1. 插入賣出交易紀錄
 INSERT INTO `Transaction` (
@@ -797,7 +801,7 @@ WHERE User_Id = 'user001'
 ---
 
 ```sql
--- 查詢0050在2025/1/10到2025/3/16每日K線資料及每日變動%
+-- 7查詢0050在2025/1/10到2025/3/16每日K線資料及每日變動%
 SELECT 
     ETF_Id,
     History_Date,
@@ -836,7 +840,7 @@ ORDER BY History_Date;
 
 ## 管理員View
 ```sql
--- 用戶投資組合持股明細
+-- 8用戶投資組合持股明細
 CREATE OR REPLACE VIEW vw_portfolio_detail AS
 SELECT 
     p.Portfolio_Id,
@@ -878,7 +882,7 @@ SELECT * FROM vw_portfolio_detail WHERE User_Id = 'user001';
 ---
 
 ```sql
---(3.1)
+--9
 --交易記錄相關 View
 CREATE OR REPLACE VIEW vw_recent_transactions AS
 SELECT 
