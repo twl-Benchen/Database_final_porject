@@ -1,6 +1,8 @@
-[查看投影片](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E7%AC%AC%E5%85%AB%E7%B5%84_ETF%20%E6%8A%95%E8%B3%87%E7%B5%84%E5%90%88%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1.pdf)
+### 檔案
+> [!IMPORTANT]
+> [簡報PPT](./資料庫PPT) 、 [WORD](./資料庫PPT) 、 [5/14作業](./hw0514.md)<br>
 
-### 題目 ETF 投資組合管理系統(第八組)
+## 題目 ETF 投資組合管理系統(第八組)
 - **專案簡介**  
     協助投資者整合與管理其 ETF 投資資訊，提供利用標籤查詢ETF、即時交易與持倉更新，並產生投資組合明細與統計。
 
