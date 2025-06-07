@@ -623,7 +623,7 @@ FLUSH PRIVILEGES;
 ```
 ---
 ## 使用者View(1~6)
-
+### 使用者查詢ETF標籤層次結構
 ```sql
 -- 1.ETF 標籤層次結構 View
 CREATE OR REPLACE VIEW vw_etf_category_overview AS
@@ -654,7 +654,7 @@ SELECT * FROM vw_etf_category_overview;
 <img src="image/DB1.png" width="600px"><br><br>
 
 ---
-
+### 使用者依分類查詢ETF產品
 ```sql
 -- 2.建立特定分類 ETF View
 CREATE OR REPLACE VIEW vw_etf_by_category AS
@@ -688,7 +688,7 @@ WHERE Category1_Name = '股票型' AND Category2_Name = '大型權值';
 <img src="image/DB2.png" width="700px"><br><br>
 
 ---
-
+### 使用者透過名稱搜尋ETF
 ```sql
 -- 3.建立 ETF 下拉選單 View
 CREATE OR REPLACE VIEW vw_etf_dropdown AS
@@ -718,7 +718,7 @@ WHERE ETF_Name LIKE '%元大%';
 <img src="image/DB3.1.png" width="400px"><br><br>
 
 ---
-
+### 使用者查詢ETF歷史價格與漲跌幅
 ```sql
 -- 4. 建立 ETF 歷史價格 View 
 CREATE OR REPLACE VIEW vw_etf_price_history AS
@@ -759,6 +759,7 @@ ON start_data.ETF_Id = end_data.ETF_Id;
 <img src="image/DB4.png" width="700px"><br><br>
 
 ---
+### 使用者管理投資組合持倉
 ```sql
 -- 5. 用戶持倉查看視圖（相同ETF合併顯示）
 CREATE VIEW v_user_portfolio AS
@@ -866,7 +867,7 @@ SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
 <img src="image/sell.png" width="900px"><br><br>
 
 ---
-
+### 使用者查看ETF K線資料與每日變動
 ```sql
 -- 6.建立 ETF K線資料與每日變動 View
 CREATE OR REPLACE VIEW vw_etf_daily_kline AS
@@ -912,6 +913,7 @@ WHERE History_Date = '2025-06-07';
 <img src="image/DB5.2.png" width="900px"><br><br>
 
 ## 管理員View(7~8)
+### 管理員查看用戶投資組合持股明細
 ```sql
 -- 7.建立用戶投資組合持股明細 View
 CREATE OR REPLACE VIEW vw_portfolio_detail AS
@@ -966,7 +968,7 @@ ORDER BY Holders DESC;
 <img src="image/DB6.3.png" width="600px"><br><br>
 
 ---
-
+### 管理員查看近期交易記錄與統計分析
 ```sql
 -- 8.建立近期交易記錄 View
 CREATE OR REPLACE VIEW vw_recent_transactions AS
