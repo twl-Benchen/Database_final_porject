@@ -886,6 +886,7 @@ WHERE User_Id = 'user001'
   - 刪除投資組合記錄：<br>
   - 若 Shares_Held變為零，則移除該投資組合記錄。
 ### 執行結果:
+<img src="image/start.png" width="900px"><br><br>
 <img src="image/buy.png" width="900px"><br><br>
 <img src="image/sell.png" width="900px"><br><br>
 
