@@ -1073,17 +1073,17 @@ mysqldump -u admin -p etf_db > etf_db_backup.sql
 ```
 還原:<br>
 ```bash
-mysql -u root -p etf_db < etf_db_backup.sql
+mysql -u DBA -p etf_db < etf_db_backup.sql
 ```
 
 auth_db(密碼) <br>
 備份:<br>
 ```bash
-mysqldump -u root -p auth_db > auth_db_backup.sql
+mysqldump -u DBA -p auth_db > auth_db_backup.sql
 ```
 還原:<br>
 ```bash
-mysql -u root -p auth_db < auth_db_backup.sql
+mysql -u DBA -p auth_db < auth_db_backup.sql
 ```
 ## 參考資料/處理方式
 **ETF 基本資料表 (ETF):**
