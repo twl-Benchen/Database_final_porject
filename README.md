@@ -722,7 +722,10 @@ WHERE ETF_Name LIKE '%元大%';
   - 使用(ex:元大)匹配名稱包含「元大」的 ETF。
   - 按 ETF_Id 排序。
 ### 執行結果:
+(3.1)<br>
 <img src="image/DB3.png" width="400px"><br><br>
+(3.2)<br>
+<img src="image/DB3.1.png" width="400px"><br><br>
 
 ---
 
@@ -889,8 +892,11 @@ SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
   - 刪除投資組合記錄：<br>
   - 若 Shares_Held變為零，則移除該投資組合記錄。
 ### 執行結果:
+(5.1初始持倉)<br>
 <img src="image/start.png" width="900px"><br><br>
+(5.2買入100股的0057)<br>
 <img src="image/buy.png" width="900px"><br><br>
+(5.3賣出50股的0057)<br>
 <img src="image/sell.png" width="900px"><br><br>
 
 ---
