@@ -645,12 +645,12 @@ ORDER BY
 SELECT * FROM vw_etf_category_overview;
 ```
 ### 說明
-功能：此查詢用於檢索ETF的標籤列表，包含父標籤及其對應的子標籤。<br>
-目的：提供ETF分類層次的結構化視圖，展示ETF在廣泛的父分類及其更具體的子分類下組織。<br>
-詳情：<br>
-選擇 Category1_Id、 Category1_Name（父標籤名稱）、 Category2_Id 和 Category2_Name（子標籤名稱）。<br>
-使用 LEFT JOIN 確保包含所有父標籤，即使某些父標籤沒有對應的子標籤。<br>
-按父標籤名稱和子標籤名稱排序。
+- 功能：此查詢用於檢索ETF的標籤列表，包含父標籤及其對應的子標籤。
+- 目的：提供ETF分類層次的結構化視圖，展示ETF在廣泛的父分類及其更具體的子分類下組織。
+- 詳情：
+   - 選擇 Category1_Id、 Category1_Name（父標籤名稱）、 Category2_Id 和 Category2_Name（子標籤名稱）。
+   - 使用 LEFT JOIN 確保包含所有父標籤，即使某些父標籤沒有對應的子標籤
+   - 按父標籤名稱和子標籤名稱排序。
 ### 執行結果:
 <img src="image/DB1.png" width="700px"><br><br>
 
@@ -683,13 +683,13 @@ SELECT * FROM vw_etf_by_category
 WHERE 父標籤名稱 = '股票型' AND 子標籤名稱 = '大型權值';
 ```
 ### 說明
-功能：此查詢檢索符合特定父標籤(ex:股票型)和子標籤(ex:大型權值)的 ETF。<br>
-目的：根據特定分類條件過濾ETF並輸出。<br>
-詳情：<br>
-選擇不重複的 ETF 詳細資訊，包括 ETF_Id、ETF_Name、Holders、Scale、ETF_Created_At、父標籤名稱和子標籤名稱。<br>
-關聯 ETF、ETF_Category、Category_Level2和Category_Level1表，以連結ETF與其分類。<br>
-篩選條件為父標籤(ex:股票型)和子標籤(ex:大型權值)。<br>
-按 ETF_Id 排序。
+- 功能：此查詢檢索符合特定父標籤(ex:股票型)和子標籤(ex:大型權值)的 ETF。
+- 目的：根據特定分類條件過濾ETF並輸出。
+- 詳情：
+  - 選擇不重複的 ETF 詳細資訊，包括 ETF_Id、ETF_Name、Holders、Scale、ETF_Created_At、父標籤名稱和子標籤名稱。
+  - 關聯 ETF、ETF_Category、Category_Level2和Category_Level1表，以連結ETF與其分類。
+  - 篩選條件為父標籤(ex:股票型)和子標籤(ex:大型權值)。
+  - 按 ETF_Id 排序。
 ### 執行結果:
 <img src="image/DB2.png" width="700px"><br><br>
 
@@ -715,12 +715,12 @@ SELECT * FROM vw_etf_dropdown
 WHERE ETF_Name LIKE '%元大%';
 ```
 ### 說明
-功能：此查詢檢索所有 ETF 的列表，用於填充下拉選單。<br>
-目的：提供簡單的 ETF ID 和名稱列表，供用戶在介面中選擇。<br>
-詳情：<br>
-從 ETF 表選擇 ETF_Id 和 ETF_Name。<br>
-使用(ex:元大)匹配名稱包含「元大」的 ETF。<br>
-按 ETF_Id 排序。
+- 功能：此查詢檢索所有 ETF 的列表，用於填充下拉選單。
+- 目的：提供簡單的 ETF ID 和名稱列表，供用戶在介面中選擇。
+- 詳情：
+  - 從 ETF 表選擇 ETF_Id 和 ETF_Name。
+  - 使用(ex:元大)匹配名稱包含「元大」的 ETF。
+  - 按 ETF_Id 排序。
 ### 執行結果:
 <img src="image/DB3.png" width="400px"><br><br>
 
@@ -760,12 +760,12 @@ JOIN
 ON start_data.ETF_Id = end_data.ETF_Id;
 ```
 ### 說明
-功能：此查詢計算 ETF '0050' 在 2024 年 1 月 1 日至 2025 年 5 月 30 日期間的價格漲跌幅百分比。<br>
-目的：展示ETF在指定期間價格漲跌幅的表現。<br>
-詳情：<br>
-選取指定日期範圍內最早（t_start）和最晚（t_end）的收盤價。<br>
-計算漲跌幅百分比：((結束價 - 起始價) / 起始價) * 100，四捨五入至小數點後兩位。<br>
-返回實際起始日、起始收盤價、實際結束日、結束收盤價和漲跌幅百分比。
+- 功能：此查詢計算 ETF '0050' 在 2024 年 1 月 1 日至 2025 年 5 月 30 日期間的價格漲跌幅百分比。
+- 目的：展示ETF在指定期間價格漲跌幅的表現。
+- 詳情：
+  - 選取指定日期範圍內最早（t_start）和最晚（t_end）的收盤價。
+  - 計算漲跌幅百分比：((結束價 - 起始價) / 起始價) * 100，四捨五入至小數點後兩位。
+  - 返回實際起始日、起始收盤價、實際結束日、結束收盤價和漲跌幅百分比。
 ### 執行結果:
 <img src="image/DB4.png" width="700px"><br><br>
 
@@ -863,33 +863,30 @@ WHERE User_Id = 'user001'
 ```
 
 ### 說明
-功能：此程式碼處理ETF買入交易，並相應更新用戶的投資組合。<br>
-目的：記錄購買交易，並在投資組合中新增或更新相應記錄。<br>
-詳情：<br>
-插入交易記錄：<br>
-記錄買入交易，包含唯一的 Transaction_Id、用戶 ID、ETF ID、交易類型（'Buy'）、股數、價格和時間。<br>
-插入/更新投資組合：<br>
-若用戶首次持有該 ETF，則插入新記錄，包含指定股數和成本。<br>
-若用戶已持有該 ETF，則更新 Shares_Held，並使用加權平均公式重新計算 Average_Cost。<br>
-新增或更新投資組合記錄：<br>
-更新 Last_Updated 時間。<br>
+(5.2)
+- 功能：此程式碼處理ETF買入交易，並相應更新用戶的投資組合。
+- 目的：記錄購買交易，並在投資組合中新增或更新相應記錄。
+- 詳情：
+  - 插入交易記錄：
+  - 記錄買入交易，包含唯一的 Transaction_Id、用戶 ID、ETF ID、交易類型（'Buy'）、股數、價格和時間。
+  - 插入/更新投資組合：
+  - 若用戶首次持有該 ETF，則插入新記錄，包含指定股數和成本。
+  - 若用戶已持有該 ETF，則更新 Shares_Held，並使用加權平均公式重新計算 Average_Cost。
+  - 新增或更新投資組合記錄：
+  - 更新 Last_Updated 時間<br>
+  
+(5.3)
+- 功能：此程式碼處理ETF賣出交易，並更新或移除用戶的投資組合記錄。<br>
+- 目的：記錄賣出交易，並調整投資組合，若剩餘股數為零則移除該ETF。<br>
+- 詳情：<br>
+  - 插入交易記錄：<br>
+  - 記錄賣出交易，包含唯一的Transaction_Id、用戶 ID、ETF ID、交易類型（'Sell'）、股數、價格和時間戳。<br>
+  - 更新投資組合：<br>
+  - 減少Shares_Held並更新Last_Updated時間戳，確保持有股數足夠。<br>
+  - 刪除投資組合記錄：<br>
+  - 若 Shares_Held變為零，則移除該投資組合記錄。
 ### 執行結果:
 <img src="image/buy.png" width="900px"><br><br>
-
----
-
-
-### 說明
-功能：此程式碼處理ETF賣出交易，並更新或移除用戶的投資組合記錄。<br>
-目的：記錄賣出交易，並調整投資組合，若剩餘股數為零則移除該ETF。<br>
-詳情：<br>
-插入交易記錄：<br>
-記錄賣出交易，包含唯一的Transaction_Id、用戶 ID、ETF ID、交易類型（'Sell'）、股數、價格和時間戳。<br>
-更新投資組合：<br>
-減少Shares_Held並更新Last_Updated時間戳，確保持有股數足夠。<br>
-刪除投資組合記錄：<br>
-若 Shares_Held變為零，則移除該投資組合記錄。
-### 執行結果:
 <img src="image/sell.png" width="900px"><br><br>
 
 ---
@@ -930,14 +927,14 @@ WHERE History_Date = '2025-06-07';
 
 ```
 ### 說明
-功能：此查詢檢索 ETF '0050' 在 2025 年 1 月 10 日至 3 月 16 日期間的每日 K 線資料（開盤、最高、最低、收盤價）及每日價格變動百分比。<br>
-目的：提供詳細的每日價格數據和表現指標，供技術分析使用。<br>
-詳情：<br>
-選擇 ETF_Id、 History_Date、 Open_Price、 High_Price、 Low_Price、 Close_Price 和 Volume。<br>
-使用LAG函數取得前一日收盤價。<br>
-計算每日變動金額（當日收盤價 - 前日收盤價）和每日變動百分比（變動金額 / 前日收盤價 * 100，四捨五入至小數點後兩位）。<br>
-篩選 ETF '0050' 在指定日期範圍內的數據。<br>
-按History_Date排序。
+- 功能：此查詢檢索 ETF '0050' 在 2025 年 1 月 10 日至 3 月 16 日期間的每日 K 線資料（開盤、最高、最低、收盤價）及每日價格變動百分比。<br>
+- 目的：提供詳細的每日價格數據和表現指標，供技術分析使用。<br>
+- 詳情：<br>
+  - 選擇 ETF_Id、 History_Date、 Open_Price、 High_Price、 Low_Price、 Close_Price 和 Volume。<br>
+  - 使用LAG函數取得前一日收盤價。<br>
+  - 計算每日變動金額（當日收盤價 - 前日收盤價）和每日變動百分比（變動金額 / 前日收盤價 * 100，四捨五入至小數點後兩位）。<br>
+  - 篩選 ETF '0050' 在指定日期範圍內的數據。<br>
+  - 按History_Date排序。
 ### 執行結果:
 <img src="image/DB5.png" width="900px"><br><br>
 
@@ -985,18 +982,18 @@ ORDER BY 持有人數 DESC;
 
 ```
 ### 說明
-(1.1)<br>
-功能：此視圖vw_portfolio_detail提供用戶投資組合持股的詳細摘要。<br>
-目的：展示每個用戶的 ETF 持股詳情，包括用戶資訊和成本基礎。<br>
-詳情：<br>
-關聯Portfolio、Users和ETF表，檢索Portfolio_Id、User_Id、Full_Name、ETF_Id、ETF_Name、Shares_Held、Average_Cost、計算的Cost_Basis（股數 * 平均成本）和Last_Updated。<br>
-篩選持有股數大於零的投資組合。<br>
-按User_Id和ETF_Id排序。<br>
-(1.2)<br>
-功能：此查詢使用 vw_portfolio_detail視圖檢索特定用戶（ex:user001）的投資組合詳情。<br>
-目的：提供特定用戶的投資組合持股快照。<br>
-詳情：<br>
-從 vw_portfolio_detail 選擇所有欄位，篩選 User_Id = 'user001'。
+(7.1)<br>
+  - 功能：此視圖vw_portfolio_detail提供用戶投資組合持股的詳細摘要。
+  - 目的：展示每個用戶的 ETF 持股詳情，包括用戶資訊和成本基礎。
+  - 詳情：<br>
+    - 關聯Portfolio、Users和ETF表，檢索Portfolio_Id、User_Id、Full_Name、ETF_Id、ETF_Name、Shares_Held、Average_Cost、計算的Cost_Basis（股數 * 平均成本）和Last_Updated。
+    - 篩選持有股數大於零的投資組合。
+    - 按User_Id和ETF_Id排序。
+(7.2)<br>
+  - 功能：此查詢使用 vw_portfolio_detail視圖檢索特定用戶（ex:user001）的投資組合詳情。
+  - 目的：提供特定用戶的投資組合持股快照。
+  - 詳情：
+    - 從 vw_portfolio_detail 選擇所有欄位，篩選 User_Id = 'user001'。
 ### 執行結果:
 <img src="image/DB6.png" width="800px"><br><br>
 
@@ -1058,12 +1055,12 @@ GROUP BY User_Id, Full_Name
 ORDER BY 交易次數 DESC;
 ```
 ### 說明
-功能：此視圖（ vw_recent_transactions ）提供所有用戶的近期 ETF 交易摘要。<br>
-目的：展示交易詳情，包括用戶和 ETF 資訊，供監控或報表使用。<br>
-詳情：<br>
-關聯Transaction、Users 和ETF表，檢索Transaction_Id、Full_Name、ETF_Name、Transaction_Type、Shares、Price、計算的Total_Amount（股數 * 價格）和Transaction_Date。<br>
-按Transaction_Date降序排序。<br>
-查詢顯示最新的10筆交易記錄。<br>
+- 功能：此視圖（ vw_recent_transactions ）提供所有用戶的近期 ETF 交易摘要。
+- 目的：展示交易詳情，包括用戶和 ETF 資訊，供監控或報表使用。
+- 詳情：
+    - 關聯Transaction、Users 和ETF表，檢索Transaction_Id、Full_Name、ETF_Name、Transaction_Type、Shares、Price、計算的Total_Amount（股數 * 價格）和Transaction_Date。
+    - 按Transaction_Date降序排序。
+    - 查詢顯示最新的10筆交易記錄。
 ### 執行結果:
 <img src="image/DB8.png" width="900px"><br><br>
 
