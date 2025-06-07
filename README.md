@@ -1046,19 +1046,19 @@ ORDER BY Transaction_Count DESC;
 ## DEMO
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/Hx2qvtQ5Txk/0.jpg)](https://www.youtube.com/watch?v=Hx2qvtQ5Txk "YouTube Video")
 ### 頁面預覽
-1.<br>
+1.帳密登入<br>
 <img src="image/WEB1.png" width="800px"><br><br>
-2.<br>
+2.資訊總覽&查看最近交易紀錄<br>
 <img src="image/WEB2.png" width="800px"><br><br>
-3.<br>
+3.透過附標籤根子標籤篩選ETF，也可以透過查詢名稱<br>
 <img src="image/WEB3.png" width="800px"><br><br>
-4.<br>
+4.用戶管理<br>
 <img src="image/WEB4.png" width="800px"><br><br>
-5.<br>
+5.即時交易，透過證交所抓取最新價格，用戶選擇好ETF後，可以按"使用此價格"後，數字會帶入到交易時的價格，下方會列出交易紀錄<br>
 <img src="image/WEB5.png" width="800px"><br><br>
-6.<br>
+6.投資組合統計，可以查看用戶當前持倉佔比與ETF損益，上方可查看詳細持股清單<br>
 <img src="image/WEB6.png" width="800px"><br><br>
-7.<br>
+7.顯示該區間K線圖表，下方附有交易量長條圖<br>
 <img src="image/WEB7.png" width="800px"><br><br>
 ## 備份&還原資料庫
 etf_db(一般內容) - 由管理員負責<br>
