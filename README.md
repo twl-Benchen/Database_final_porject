@@ -1,4 +1,4 @@
-[查看投影片](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E7%AC%AC%E5%85%AB%E7%B5%84_ETF%20%E6%8A%95%E8%B3%87%E7%B5%84%E5%90%88%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1.pdf)
+![image](https://github.com/user-attachments/assets/30987003-d31a-4c0e-852f-519ea2d4ef69)![image](https://github.com/user-attachments/assets/a30e0817-d41a-4ddd-89e4-1a381794db8a)[查看投影片](https://github.com/twl-Benchen/Database_final_porject/blob/main/%E7%AC%AC%E5%85%AB%E7%B5%84_ETF%20%E6%8A%95%E8%B3%87%E7%B5%84%E5%90%88%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1.pdf)
 
 ### 題目 ETF 投資組合管理系統(第八組)
 - **專案簡介**  
@@ -1008,8 +1008,11 @@ ORDER BY Holders DESC;
   - 詳情：
     - 從 vw_portfolio_detail 選擇所有欄位，篩選 User_Id = 'user001'。
 ### 執行結果:
+( 8.1 查看所有用戶投資組合)<br>
 <img src="image/DB6.png" width="800px"><br><br>
+( 8.2 查看特定用戶投資組合)<br>
 <img src="image/DB6.2.png" width="800px"><br><br>
+( 8.3 查看ETF持有狀況)<br>
 <img src="image/DB6.3.png" width="800px"><br><br>
 ---
 
@@ -1044,29 +1047,29 @@ WHERE DATE(Transaction_Date) = CURDATE();
 ```
 ```sql
 -- 8.3統計交易量分析
-SELECT 
-    ETF_Id,
-    ETF_Name,
-    Transaction_Type,
-    COUNT(*) as 交易次數,
-    SUM(Shares) as 總股數,
-    SUM(Total_Amount) as 總金額
-FROM vw_recent_transactions 
+SELECT
+    ETF_Id,
+    ETF_Name,
+    Transaction_Type,
+    COUNT(*) AS Transactions_Time,
+    SUM(Shares) AS Total_Shares,
+    SUM(Total_Amount) AS Total_Amount
+FROM vw_recent_transactions
 WHERE Transaction_Date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
 GROUP BY ETF_Id, ETF_Name, Transaction_Type
-ORDER BY 總金額 DESC;
+ORDER BY Total_Amount DESC;
 ```
 ```sql
 -- 8.4查看用戶交易活躍度
-SELECT 
+SELECT
     User_Id,
     Full_Name,
-    COUNT(*) as 交易次數,
-    SUM(Total_Amount) as 總交易金額
-FROM vw_recent_transactions 
+    COUNT(*) AS Transaction_Count,
+    SUM(Total_Amount) AS Transaction_Amount
+FROM vw_recent_transactions
 WHERE Transaction_Date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
 GROUP BY User_Id, Full_Name
-ORDER BY 交易次數 DESC;
+ORDER BY Transaction_Count DESC;
 ```
 ### 說明
 - 功能：此視圖（ vw_recent_transactions ）提供所有用戶的近期 ETF 交易摘要。
@@ -1076,7 +1079,15 @@ ORDER BY 交易次數 DESC;
     - 按Transaction_Date降序排序。
     - 查詢顯示最新的10筆交易記錄。
 ### 執行結果:
-<img src="image/DB8.png" width="900px"><br><br>
+
+(8.1 查看最新十筆交易)<br>
+<img src="image/DB8.png" width="800px"><br><br>
+(8.2 統計今日所有交易)<br>
+<img src="image/DB8.2.png" width="900px"><br><br>
+(8.3 統計ETF近30天買賣次數與金額)<br>
+<img src="image/DB8.3.png" width="800px"><br><br>
+(8.4 統計用戶近30天總交易次數與金額)<br>
+<img src="image/DB8.4.png" width="900px"><br><br>
 
 ---
 
