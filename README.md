@@ -532,6 +532,93 @@ CREATE TABLE Auth (
 INSERT INTO Auth (User_Id, Password) VALUES ('U000001', '王小明');
 ```
 ---
+
+## 使用者權限設定
+
+#### 1. 使用者
+ETF_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| ETF | SELECT | 查看ETF |
+| Transaction | SELECT,INSERT,UPDATE,DELETE | 讀寫交易紀錄 |
+| Portfolio | SELECT,INSERT,UPDATE,DELETE | 讀寫持倉 |
+| ETF_HistoryPrice | SELECT | 查看歷史價格 |
+| Category_Level1 | SELECT | 查看第一分類 |
+| Category_Level2 | SELECT | 查看第二分類 |
+| ETF_Category | SELECT | 查看分類 |
+| Users | SELECT | 查看使用者基本資料 |
+
+AUTH_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| Auth | SELECT | 比對密碼輸入是否正確 |
+
+#### SQL語法
+
+```sql
+CREATE USER 'user'@'%' IDENTIFIED BY '222';
+GRANT SELECT ON etf_db.* TO 'user'@'%';
+GRANT INSERT,UPDATE,DELETE ON etf_db.Transaction TO 'user'@'%';
+GRANT INSERT,UPDATE,DELETE ON etf_db.Portfolio TO 'user'@'%';
+GRANT SELECT ON auth_db.* TO 'user'@'%';
+FLUSH PRIVILEGES;
+```
+
+#### 2. 管理者
+ETF_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| ETF | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫ETF及備份 |
+| Transaction | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫交易紀錄及備份 |
+| Portfolio | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫持倉及備份 |
+| ETF_HistoryPrice | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫歷史價格及備份 |
+| Category_Level1 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫第一分類及備份 |
+| Category_Level2 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫第二分類及備份 |
+| ETF_Category | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫分類及備份 |
+| Users | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫使用者基本資料及備份 |
+
+AUTH_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| Auth | SELECT | 比對密碼輸入是否正確 |
+
+
+#### SQL語法
+
+```sql
+CREATE USER 'admin'@'%' IDENTIFIED BY '111';
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP ON etf_db.* TO 'admin'@'%';
+GRANT SELECT ON auth_db.* TO 'admin'@'%';
+FLUSH PRIVILEGES;
+```
+
+#### 3. 資料庫管理者
+ETF_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| ETF | ALL | 讀寫ETF |
+| Transaction | ALL  | 讀寫交易紀錄 |
+| Portfolio | ALL  | 讀寫持倉 |
+| ETF_HistoryPrice | ALL  | 讀寫歷史價格 |
+| Category_Level1 | ALL  | 讀寫第一分類 |
+| Category_Level2 | ALL  | 讀寫第二分類 |
+| ETF_Category | ALL  | 讀寫分類 |
+| Users | ALL | 讀寫使用者基本資料 |
+
+AUTH_DB
+| 資料表 | 權限 | 說明 |
+|---------|---------|------|
+| Auth | ALL | 讀寫密碼及更新最後登入 |
+
+#### SQL語法
+
+```sql
+CREATE USER 'DBA'@'localhost' IDENTIFIED BY '000';
+GRANT ALL PRIVILEGES ON etf_db.* TO 'DBA'@'localhost';
+GRANT ALL PRIVILEGES ON auth_db.* TO 'DBA'@'localhost';
+FLUSH PRIVILEGES;
+```
+---
 ## 使用者View
 
 ```sql
@@ -684,8 +771,8 @@ ON start_data.ETF_Id = end_data.ETF_Id;
 
 ---
 ```sql
---5
---查看'user001'持倉
+-- 5. 用戶持倉查看視圖（對應原本的查詢5）
+CREATE VIEW v_user_portfolio AS
 SELECT 
     p.User_Id,
     p.ETF_Id,
@@ -696,17 +783,16 @@ SELECT
 FROM 
     Portfolio p
 JOIN 
-    ETF e ON p.ETF_Id = e.ETF_Id
-WHERE 
-    p.User_Id = 'user001';
-
+    ETF e ON p.ETF_Id = e.ETF_Id;
 ```
-### 執行結果:
-<img src="image/start.png" width="900px"><br><br>
+### 使用方式
 ```sql
---6使用者買入後更新交易紀錄跟投資組合
+-- 5.1查看 user001 的持倉
+SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
+```
 
--- 買入操作 - 直接SQL（修改引號內的參數）
+```sql
+-- 5.2買入操作 - 直接SQL（修改引號內的參數）
 INSERT INTO Transaction (
     Transaction_Id, 
     User_Id, 
@@ -746,24 +832,8 @@ INSERT INTO Portfolio (
     Last_Updated = NOW();
 
 ```
-### 說明
-功能：此程式碼處理ETF買入交易，並相應更新用戶的投資組合。<br>
-目的：記錄購買交易，並在投資組合中新增或更新相應記錄。<br>
-詳情：<br>
-插入交易記錄：<br>
-記錄買入交易，包含唯一的 Transaction_Id、用戶 ID、ETF ID、交易類型（'Buy'）、股數、價格和時間。<br>
-插入/更新投資組合：<br>
-若用戶首次持有該 ETF，則插入新記錄，包含指定股數和成本。<br>
-若用戶已持有該 ETF，則更新 Shares_Held，並使用加權平均公式重新計算 Average_Cost。<br>
-新增或更新投資組合記錄：<br>
-更新 Last_Updated 時間。<br>
-### 執行結果:
-<img src="image/buy.png" width="900px"><br><br>
-
----
-
 ```sql
---6.2使用者賣出後更新交易紀錄跟投資組合(股數為0則刪除ETF)
+--5.3使用者賣出後更新交易紀錄跟投資組合(股數為0則刪除ETF)
 
 -- 1. 插入賣出交易紀錄
 INSERT INTO `Transaction` (
@@ -791,6 +861,24 @@ WHERE User_Id = 'user001'
   AND Shares_Held = 0;
 
 ```
+
+### 說明
+功能：此程式碼處理ETF買入交易，並相應更新用戶的投資組合。<br>
+目的：記錄購買交易，並在投資組合中新增或更新相應記錄。<br>
+詳情：<br>
+插入交易記錄：<br>
+記錄買入交易，包含唯一的 Transaction_Id、用戶 ID、ETF ID、交易類型（'Buy'）、股數、價格和時間。<br>
+插入/更新投資組合：<br>
+若用戶首次持有該 ETF，則插入新記錄，包含指定股數和成本。<br>
+若用戶已持有該 ETF，則更新 Shares_Held，並使用加權平均公式重新計算 Average_Cost。<br>
+新增或更新投資組合記錄：<br>
+更新 Last_Updated 時間。<br>
+### 執行結果:
+<img src="image/buy.png" width="900px"><br><br>
+
+---
+
+
 ### 說明
 功能：此程式碼處理ETF賣出交易，並更新或移除用戶的投資組合記錄。<br>
 目的：記錄賣出交易，並調整投資組合，若剩餘股數為零則移除該ETF。<br>
@@ -807,7 +895,7 @@ WHERE User_Id = 'user001'
 ---
 
 ```sql
--- 7.建立 ETF K線資料與每日變動 View
+-- 6.建立 ETF K線資料與每日變動 View
 CREATE OR REPLACE VIEW vw_etf_daily_kline AS
 SELECT 
     ETF_Id,
@@ -829,14 +917,14 @@ ORDER BY ETF_Id, History_Date;
 ```
 ### 使用方式
 ```sql
--- 7.1查看特定 ETF 在特定期間的 K 線資料
+-- 6.1查看特定 ETF 在特定期間的 K 線資料
 SELECT * FROM vw_etf_daily_kline
 WHERE ETF_Id = '0050'
   AND History_Date BETWEEN '2025-01-10' AND '2025-03-16'
 ORDER BY History_Date;
 ```
 ```sql
--- 7.2查看特定日期所有 ETF 的表現
+-- 6.2查看特定日期所有 ETF 的表現
 SELECT * FROM vw_etf_daily_kline
 WHERE History_Date = '2025-06-07';
 
@@ -855,7 +943,7 @@ WHERE History_Date = '2025-06-07';
 
 ## 管理員View
 ```sql
--- 8.建立用戶投資組合持股明細 View
+-- 7.建立用戶投資組合持股明細 View
 CREATE OR REPLACE VIEW vw_portfolio_detail AS
 SELECT 
     p.Portfolio_Id,
@@ -875,16 +963,16 @@ ORDER BY p.User_Id, e.ETF_Id;
 ```
 ### 使用方式
 ```sql
--- 8.1查看所有用戶的投資組合詳細
+-- 7.1查看所有用戶的投資組合詳細
 SELECT * FROM vw_portfolio_detail;
 ```
 ```sql
--- 8.2查看特定用戶的投資組合詳細
+-- 7.2查看特定用戶的投資組合詳細
 SELECT * FROM vw_portfolio_detail 
 WHERE User_Id = 'user001';
 ```
 ```sql
--- 8.3統計用戶投資分佈
+-- 7.3統計用戶投資分佈
 SELECT 
     ETF_Id, 
     ETF_Name, 
@@ -915,7 +1003,7 @@ ORDER BY 持有人數 DESC;
 ---
 
 ```sql
--- 9.建立近期交易記錄 View
+-- 8.建立近期交易記錄 View
 CREATE OR REPLACE VIEW vw_recent_transactions AS
 SELECT 
     t.Transaction_Id,
@@ -935,16 +1023,16 @@ ORDER BY t.Transaction_Date DESC;
 ```
 ### 使用方式
 ```sql
--- 9.1查看最新 10 筆交易記錄
+-- 8.1查看最新 10 筆交易記錄
 SELECT * FROM vw_recent_transactions LIMIT 10;
 ```
 ```sql
--- 9.2查看今日所有交易
+-- 8.2查看今日所有交易
 SELECT * FROM vw_recent_transactions 
 WHERE DATE(Transaction_Date) = CURDATE();
 ```
 ```sql
--- 9.3統計交易量分析
+-- 8.3統計交易量分析
 SELECT 
     ETF_Id,
     ETF_Name,
@@ -958,7 +1046,7 @@ GROUP BY ETF_Id, ETF_Name, Transaction_Type
 ORDER BY 總金額 DESC;
 ```
 ```sql
--- 9.4查看用戶交易活躍度
+-- 8.4查看用戶交易活躍度
 SELECT 
     User_Id,
     Full_Name,
@@ -979,93 +1067,6 @@ ORDER BY 交易次數 DESC;
 ### 執行結果:
 <img src="image/DB8.png" width="900px"><br><br>
 
----
-
-## 使用者權限設定
-
-#### 1. 使用者
-ETF_DB
-| 資料表 | 權限 | 說明 |
-|---------|---------|------|
-| ETF | SELECT | 查看ETF |
-| Transaction | SELECT,INSERT,UPDATE,DELETE | 讀寫交易紀錄 |
-| Portfolio | SELECT,INSERT,UPDATE,DELETE | 讀寫持倉 |
-| ETF_HistoryPrice | SELECT | 查看歷史價格 |
-| Category_Level1 | SELECT | 查看第一分類 |
-| Category_Level2 | SELECT | 查看第二分類 |
-| ETF_Category | SELECT | 查看分類 |
-| Users | SELECT | 查看使用者基本資料 |
-
-AUTH_DB
-| 資料表 | 權限 | 說明 |
-|---------|---------|------|
-| Auth | SELECT | 比對密碼輸入是否正確 |
-
-#### SQL語法
-
-```sql
-CREATE USER 'user'@'%' IDENTIFIED BY '222';
-GRANT SELECT ON etf_db.* TO 'user'@'%';
-GRANT INSERT,UPDATE,DELETE ON etf_db.Transaction TO 'user'@'%';
-GRANT INSERT,UPDATE,DELETE ON etf_db.Portfolio TO 'user'@'%';
-GRANT SELECT ON auth_db.* TO 'user'@'%';
-FLUSH PRIVILEGES;
-```
-
-#### 2. 管理者
-ETF_DB
-| 資料表 | 權限 | 說明 |
-|---------|---------|------|
-| ETF | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫ETF及備份 |
-| Transaction | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫交易紀錄及備份 |
-| Portfolio | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫持倉及備份 |
-| ETF_HistoryPrice | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫歷史價格及備份 |
-| Category_Level1 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫第一分類及備份 |
-| Category_Level2 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫第二分類及備份 |
-| ETF_Category | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫分類及備份 |
-| Users | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫使用者基本資料及備份 |
-
-AUTH_DB
-| 資料表 | 權限 | 說明 |
-|---------|---------|------|
-| Auth | SELECT | 比對密碼輸入是否正確 |
-
-
-#### SQL語法
-
-```sql
-CREATE USER 'admin'@'%' IDENTIFIED BY '111';
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP ON etf_db.* TO 'admin'@'%';
-GRANT SELECT ON auth_db.* TO 'admin'@'%';
-FLUSH PRIVILEGES;
-```
-
-#### 3. 資料庫管理者
-ETF_DB
-| 資料表 | 權限 | 說明 |
-|---------|---------|------|
-| ETF | ALL | 讀寫ETF |
-| Transaction | ALL  | 讀寫交易紀錄 |
-| Portfolio | ALL  | 讀寫持倉 |
-| ETF_HistoryPrice | ALL  | 讀寫歷史價格 |
-| Category_Level1 | ALL  | 讀寫第一分類 |
-| Category_Level2 | ALL  | 讀寫第二分類 |
-| ETF_Category | ALL  | 讀寫分類 |
-| Users | ALL | 讀寫使用者基本資料 |
-
-AUTH_DB
-| 資料表 | 權限 | 說明 |
-|---------|---------|------|
-| Auth | ALL | 讀寫密碼及更新最後登入 |
-
-#### SQL語法
-
-```sql
-CREATE USER 'DBA'@'localhost' IDENTIFIED BY '000';
-GRANT ALL PRIVILEGES ON etf_db.* TO 'DBA'@'localhost';
-GRANT ALL PRIVILEGES ON auth_db.* TO 'DBA'@'localhost';
-FLUSH PRIVILEGES;
-```
 ---
 
 ## 資料筆數
