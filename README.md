@@ -665,8 +665,8 @@ SELECT DISTINCT
     e.Holders, 
     e.Scale, 
     e.ETF_Created_At, 
-    c1.Category1_Name AS 父標籤名稱, 
-    c2.Category2_Name AS 子標籤名稱
+    c1.Category1_Name, 
+    c2.Category2_Name 
 FROM ETF e
 LEFT JOIN ETF_Category ec 
     ON e.ETF_Id = ec.ETF_Id
@@ -679,8 +679,8 @@ ORDER BY e.ETF_Id;
 ### 使用方式
 ```sql
 --2.1查看特定父標籤和子標籤的 ETF
-SELECT * FROM vw_etf_by_category 
-WHERE 父標籤名稱 = '股票型' AND 子標籤名稱 = '大型權值';
+SELECT *FROM vw_etf_by_category
+WHERE Category1_Name = '股票型' AND Category2_Name = '大型權值';
 ```
 ### 說明
 - 功能：此查詢檢索符合特定父標籤(ex:股票型)和子標籤(ex:大型權值)的 ETF。
@@ -744,21 +744,21 @@ ORDER BY hp.ETF_Id, hp.History_Date;
 ### 使用方式
 ```sql
 -- 4.1期間漲跌幅計算
-SELECT 
+SELECT
     start_data.ETF_Id,
     start_data.ETF_Name,
-    start_data.History_Date AS 起始日期,
-    start_data.Close_Price AS 起始價格,
-    end_data.History_Date AS 結束日期,
-    end_data.Close_Price AS 結束價格,
-    ROUND((end_data.Close_Price - start_data.Close_Price) / start_data.Close_Price * 100, 2) AS 漲跌幅
-FROM 
-    (SELECT * FROM vw_etf_price_history 
-     WHERE ETF_Id = '0050' AND History_Date >= '2024-01-01' 
+    start_data.History_Date AS Start_Date,
+    start_data.Close_Price AS Start_Price,
+    end_data.History_Date AS End_Date,
+    end_data.Close_Price AS End_Price,
+    ROUND((end_data.Close_Price - start_data.Close_Price) / start_data.Close_Price * 100, 2) AS Price_Change_Percentage
+FROM
+    (SELECT * FROM vw_etf_price_history
+     WHERE ETF_Id = '0050' AND History_Date >= '2024-01-01'
      ORDER BY History_Date ASC LIMIT 1) start_data
-JOIN 
-    (SELECT * FROM vw_etf_price_history 
-     WHERE ETF_Id = '0050' AND History_Date <= '2025-05-30' 
+JOIN
+    (SELECT * FROM vw_etf_price_history
+     WHERE ETF_Id = '0050' AND History_Date <= '2025-05-30'
      ORDER BY History_Date DESC LIMIT 1) end_data
 ON start_data.ETF_Id = end_data.ETF_Id;
 ```
@@ -1013,7 +1013,8 @@ ORDER BY Holders DESC;
 ( 8.2 查看特定用戶投資組合)<br>
 <img src="image/DB6.2.png" width="800px"><br><br>
 ( 8.3 查看ETF持有狀況)<br>
-<img src="image/DB6.3.png" width="800px"><br><br>
+<img src="image/DB6.3.png" width="600px"><br><br>
+
 ---
 
 ```sql
@@ -1087,7 +1088,7 @@ ORDER BY Transaction_Count DESC;
 (8.3 統計ETF近30天買賣次數與金額)<br>
 <img src="image/DB8.3.png" width="800px"><br><br>
 (8.4 統計用戶近30天總交易次數與金額)<br>
-<img src="image/DB8.4.png" width="900px"><br><br>
+<img src="image/DB8.4.png" width="700px"><br><br>
 
 ---
 
