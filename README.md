@@ -1050,7 +1050,7 @@ ORDER BY Transaction_Count DESC;
 <img src="image/WEB1.png" width="800px"><br><br>
 2.資訊總覽&查看最近交易紀錄<br>
 <img src="image/WEB2.png" width="800px"><br><br>
-3.透過附標籤根子標籤篩選ETF，也可以透過查詢名稱<br>
+3.透過附標籤跟子標籤篩選ETF，也可以透過查詢名稱來篩選<br>
 <img src="image/WEB3.png" width="800px"><br><br>
 4.用戶管理<br>
 <img src="image/WEB4.png" width="800px"><br><br>
