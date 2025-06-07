@@ -626,9 +626,9 @@ FLUSH PRIVILEGES;
 CREATE OR REPLACE VIEW vw_etf_category_overview AS
 SELECT
     c1.Category1_Id,
-    c1.Category1_Name AS 父標籤名稱,
+    c1.Category1_Name,
     c2.Category2_Id,
-    c2.Category2_Name AS 子標籤名稱
+    c2.Category2_Name
 FROM
     Category_Level1 c1
 LEFT JOIN
