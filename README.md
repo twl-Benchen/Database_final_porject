@@ -717,7 +717,7 @@ WHERE ETF_Name LIKE '%元大%';
 ---
 
 ```sql
--- 4建立 ETF 歷史價格 View 
+-- 4. 建立 ETF 歷史價格 View 
 CREATE OR REPLACE VIEW vw_etf_price_history AS
 SELECT
     hp.ETF_Id,
@@ -780,7 +780,7 @@ SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
 ```
 
 ```sql
--- 5.2買入操作 - 直接SQL（修改引號內的參數）
+-- 5.2使用者買入後更新交易紀錄跟投資組合（修改引號內的參數）
 INSERT INTO Transaction (
     Transaction_Id, 
     User_Id, 
@@ -1041,6 +1041,26 @@ ORDER BY Transaction_Count DESC;
 ## DEMO
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/Hx2qvtQ5Txk/0.jpg)](https://www.youtube.com/watch?v=Hx2qvtQ5Txk "YouTube Video")
 
+## 備份&還原資料庫
+etf_db(一般內容) - 由管理員負責<br>
+```bash
+#備份
+mysqldump -u admin -p etf_db > etf_db_backup.sql
+```
+```bash
+#還原
+mysql -u admin -p etf_db < etf_db_backup.sql
+```
+
+auth_db(密碼) - 由資料庫管理員負責<br>
+```bash
+#備份
+mysqldump -u root -p auth_db > auth_db_backup.sql
+```
+```bash
+#還原
+mysql -u root -p auth_db < auth_db_backup.sql
+```
 ## 資料來源 & 處理方式
 **ETF 基本資料表 (ETF):**
 - 證交所api: https://www.twse.com.tw/zh/ETFortune/ajaxProductsResult
