@@ -1045,7 +1045,21 @@ ORDER BY Transaction_Count DESC;
 
 ## DEMO
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/Hx2qvtQ5Txk/0.jpg)](https://www.youtube.com/watch?v=Hx2qvtQ5Txk "YouTube Video")
-
+### 頁面預覽
+1.<br>
+<img src="image/WEB1.png" width="800px"><br><br>
+2.<br>
+<img src="image/WEB2.png" width="800px"><br><br>
+3.<br>
+<img src="image/WEB3.png" width="800px"><br><br>
+4.<br>
+<img src="image/WEB4.png" width="800px"><br><br>
+5.<br>
+<img src="image/WEB5.png" width="800px"><br><br>
+6.<br>
+<img src="image/WEB6.png" width="800px"><br><br>
+7.<br>
+<img src="image/WEB7.png" width="800px"><br><br>
 ## 備份&還原資料庫
 etf_db(一般內容) - 由管理員負責<br>
 備份:<br>
