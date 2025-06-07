@@ -1043,22 +1043,22 @@ ORDER BY Transaction_Count DESC;
 
 ## 備份&還原資料庫
 etf_db(一般內容) - 由管理員負責<br>
+備份:<br>
 ```bash
-#備份
 mysqldump -u admin -p etf_db > etf_db_backup.sql
 ```
+還原:<br>
 ```bash
-#還原
 mysql -u admin -p etf_db < etf_db_backup.sql
 ```
 
 auth_db(密碼) - 由資料庫管理員負責<br>
+備份:<br>
 ```bash
-#備份
 mysqldump -u root -p auth_db > auth_db_backup.sql
 ```
+還原:<br>
 ```bash
-#還原
 mysql -u root -p auth_db < auth_db_backup.sql
 ```
 ## 資料來源 & 處理方式
