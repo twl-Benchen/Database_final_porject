@@ -640,47 +640,37 @@ WHERE ETF_Name LIKE '%元大%';
 ---
 
 ```sql
---4
---查詢 ETF '0050'，從 2025-01-01 到 2025-05-30 這段期間漲幅
+-- 4建立 ETF 歷史價格 View 
+CREATE OR REPLACE VIEW vw_etf_price_history AS
 SELECT
-    t_start.History_Date   AS `實際起始日`,
-    t_start.Close_Price    AS `起始收盤價`,
-    t_end.History_Date     AS `實際結束日`,
-    t_end.Close_Price      AS `結束收盤價`,
-    ROUND(
-        (t_end.Close_Price - t_start.Close_Price)
-        / t_start.Close_Price * 100,
-        2
-    )                     AS `期間漲跌幅（％）`
-FROM
-    (
-        SELECT
-            History_Date,
-            Close_Price
-        FROM
-            ETF_HistoryPrice
-        WHERE
-            ETF_Id      = '0050'
-            AND History_Date BETWEEN '2024-01-01' AND '2025-05-30'
-        ORDER BY
-            History_Date ASC
-        LIMIT 1
-    ) AS t_start
-    JOIN
-    (
-        SELECT
-            History_Date,
-            Close_Price
-        FROM
-            ETF_HistoryPrice
-        WHERE
-            ETF_Id      = '0050'
-            AND History_Date BETWEEN '2024-01-01' AND '2025-05-30'
-        ORDER BY
-            History_Date DESC
-        LIMIT 1
-    ) AS t_end
-    ON 1 = 1;
+    hp.ETF_Id,
+    e.ETF_Name,
+    hp.History_Date,
+    hp.Close_Price
+FROM ETF_HistoryPrice hp
+JOIN ETF e ON hp.ETF_Id = e.ETF_Id
+ORDER BY hp.ETF_Id, hp.History_Date;
+```
+### 使用方式
+```sql
+-- 4.1期間漲跌幅計算
+SELECT 
+    start_data.ETF_Id,
+    start_data.ETF_Name,
+    start_data.History_Date AS 起始日期,
+    start_data.Close_Price AS 起始價格,
+    end_data.History_Date AS 結束日期,
+    end_data.Close_Price AS 結束價格,
+    ROUND((end_data.Close_Price - start_data.Close_Price) / start_data.Close_Price * 100, 2) AS 漲跌幅
+FROM 
+    (SELECT * FROM vw_etf_price_history 
+     WHERE ETF_Id = '0050' AND History_Date >= '2024-01-01' 
+     ORDER BY History_Date ASC LIMIT 1) start_data
+JOIN 
+    (SELECT * FROM vw_etf_price_history 
+     WHERE ETF_Id = '0050' AND History_Date <= '2025-05-30' 
+     ORDER BY History_Date DESC LIMIT 1) end_data
+ON start_data.ETF_Id = end_data.ETF_Id;
 ```
 ### 說明
 功能：此查詢計算 ETF '0050' 在 2024 年 1 月 1 日至 2025 年 5 月 30 日期間的價格漲跌幅百分比。<br>
