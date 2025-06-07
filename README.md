@@ -601,14 +601,14 @@ FLUSH PRIVILEGES;
 ETF_DB
 | 資料表 | 權限 | 說明 |
 |---------|---------|------|
-| ETF | ALL | 讀寫ETF |
-| Transaction | ALL  | 讀寫交易紀錄 |
-| Portfolio | ALL  | 讀寫持倉 |
-| ETF_HistoryPrice | ALL  | 讀寫歷史價格 |
-| Category_Level1 | ALL  | 讀寫第一分類 |
-| Category_Level2 | ALL  | 讀寫第二分類 |
-| ETF_Category | ALL  | 讀寫分類 |
-| Users | ALL | 讀寫使用者基本資料 |
+| ETF | ALL | 讀寫ETF及備份與還原 |
+| Transaction | ALL  | 讀寫交易紀錄及備份與還原 |
+| Portfolio | ALL  | 讀寫持倉及備份與還原 |
+| ETF_HistoryPrice | ALL  | 讀寫歷史價格及備份與還原 |
+| Category_Level1 | ALL  | 讀寫第一分類及備份與還原 |
+| Category_Level2 | ALL  | 讀寫第二分類及備份與還原 |
+| ETF_Category | ALL  | 讀寫分類及備份與還原 |
+| Users | ALL | 讀寫使用者基本資料及備份與還原 |
 
 AUTH_DB
 | 資料表 | 權限 | 說明 |
@@ -1063,17 +1063,20 @@ ORDER BY Transaction_Count DESC;
 7.顯示該區間K線圖表，下方附有交易量長條圖<br>
 <img src="image/WEB7.png" width="800px"><br><br>
 ## 備份&還原資料庫
-etf_db(一般內容) - 由管理員負責<br>
+管理員:etf_db備份
+資料庫管理員:auth_db備份、auth_db還原、etf_db還原
+
+etf_db(一般內容)<br>
 備份:<br>
 ```bash
 mysqldump -u admin -p etf_db > etf_db_backup.sql
 ```
 還原:<br>
 ```bash
-mysql -u admin -p etf_db < etf_db_backup.sql
+mysql -u root -p etf_db < etf_db_backup.sql
 ```
 
-auth_db(密碼) - 由資料庫管理員負責<br>
+auth_db(密碼) <br>
 備份:<br>
 ```bash
 mysqldump -u root -p auth_db > auth_db_backup.sql
