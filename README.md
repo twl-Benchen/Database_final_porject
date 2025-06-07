@@ -817,7 +817,8 @@ WHERE User_Id = 'user001'
 ---
 
 ```sql
--- 7查詢0050在2025/1/10到2025/3/16每日K線資料及每日變動%
+-- 7.建立 ETF K線資料與每日變動 View
+CREATE OR REPLACE VIEW vw_etf_daily_kline AS
 SELECT 
     ETF_Id,
     History_Date,
@@ -826,20 +827,28 @@ SELECT
     Low_Price,
     Close_Price,
     Volume,
-    -- 計算前一日收盤價
-    LAG(Close_Price) OVER (ORDER BY History_Date) AS prev_close,
-    -- 計算每日變動金額
-    Close_Price - LAG(Close_Price) OVER (ORDER BY History_Date) AS daily_change,
-    -- 計算每日變動%
+    LAG(Close_Price) OVER (PARTITION BY ETF_Id ORDER BY History_Date) AS prev_close,
+    Close_Price - LAG(Close_Price) OVER (PARTITION BY ETF_Id ORDER BY History_Date) AS daily_change,
     CASE 
-        WHEN LAG(Close_Price) OVER (ORDER BY History_Date) IS NOT NULL 
-        THEN ROUND(((Close_Price - LAG(Close_Price) OVER (ORDER BY History_Date)) / LAG(Close_Price) OVER (ORDER BY History_Date)) * 100, 2)
+        WHEN LAG(Close_Price) OVER (PARTITION BY ETF_Id ORDER BY History_Date) IS NOT NULL 
+        THEN ROUND(((Close_Price - LAG(Close_Price) OVER (PARTITION BY ETF_Id ORDER BY History_Date)) / LAG(Close_Price) OVER (PARTITION BY ETF_Id ORDER BY History_Date)) * 100, 2)
         ELSE NULL 
     END AS daily_change_percent
 FROM ETF_HistoryPrice
+ORDER BY ETF_Id, History_Date;
+```
+### 使用方式
+```sql
+-- 7.1查看特定 ETF 在特定期間的 K 線資料
+SELECT * FROM vw_etf_daily_kline
 WHERE ETF_Id = '0050'
   AND History_Date BETWEEN '2025-01-10' AND '2025-03-16'
 ORDER BY History_Date;
+```
+```sql
+-- 7.2查看特定日期所有 ETF 的表現
+SELECT * FROM vw_etf_daily_kline
+WHERE History_Date = '2025-06-07';
 
 ```
 ### 說明
