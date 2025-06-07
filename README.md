@@ -812,6 +812,7 @@ INSERT INTO Transaction (
     150.50,         -- 修改：價格
     NOW()
 );
+SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
 
 -- 買入後更新投資組合（修改引號內的參數）
 INSERT INTO Portfolio (
@@ -832,6 +833,7 @@ INSERT INTO Portfolio (
     Shares_Held = Shares_Held + VALUES(Shares_Held),
     Average_Cost = ((Shares_Held * Average_Cost) + (VALUES(Shares_Held) * VALUES(Average_Cost))) / (Shares_Held + VALUES(Shares_Held)),
     Last_Updated = NOW();
+SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
 
 ```
 ```sql
