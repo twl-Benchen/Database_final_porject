@@ -1098,10 +1098,11 @@ mysql -u root -p auth_db < auth_db_backup.sql
 - 證交所api(以ETF:0050舉例) : https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_0050.tw
 
  **網頁端實作**
+- 此專題網頁端實作有透過生成式AI協助製作
 - streamlit : 網頁端框架
 - Plotly : 圖表顯示
 - 參考教學:
   - https://codinglu.tw/2024/10/streamlit-dashboard/
   - https://hackmd.io/@aaronlife/python-ex-stock-by-api
   - https://ithelp.ithome.com.tw/articles/10341344
-- 此專題網頁端實作有透過生成式AI協助製作
+
