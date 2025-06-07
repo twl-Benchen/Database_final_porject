@@ -946,7 +946,10 @@ WHERE History_Date = '2025-06-07';
   - 篩選 ETF '0050' 在指定日期範圍內的數據。<br>
   - 按History_Date排序。
 ### 執行結果:
+(6.1 ETF 0050在區間內價格變動)<br>
 <img src="image/DB5.png" width="900px"><br><br>
+(6.2 特定日期所有ETF的價格變動)<br>
+<img src="image/DB5.2.png" width="900px"><br><br>
 
 ## 管理員View
 ```sql
@@ -980,15 +983,15 @@ WHERE User_Id = 'user001';
 ```
 ```sql
 -- 7.3統計用戶投資分佈
-SELECT 
-    ETF_Id, 
-    ETF_Name, 
-    COUNT(*) as 持有人數, 
-    SUM(Shares_Held) as 總持股數,
-    SUM(Cost_Basis) as 總投資成本
-FROM vw_portfolio_detail 
+SELECT
+    ETF_Id,
+    ETF_Name,
+    COUNT(*) AS Holders,
+    SUM(Shares_Held) AS Total_Shares,
+    SUM(Cost_Basis) AS Total_Cost
+FROM vw_portfolio_detail
 GROUP BY ETF_Id, ETF_Name
-ORDER BY 持有人數 DESC;
+ORDER BY Holders DESC;
 
 ```
 ### 說明
@@ -1006,7 +1009,8 @@ ORDER BY 持有人數 DESC;
     - 從 vw_portfolio_detail 選擇所有欄位，篩選 User_Id = 'user001'。
 ### 執行結果:
 <img src="image/DB6.png" width="800px"><br><br>
-
+<img src="image/DB6.2.png" width="800px"><br><br>
+<img src="image/DB6.3.png" width="800px"><br><br>
 ---
 
 ```sql
