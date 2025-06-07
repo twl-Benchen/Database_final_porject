@@ -1,6 +1,6 @@
 ### 檔案
 > [!IMPORTANT]
-> [簡報PPT](./資料庫PPT) 、 [WORD](./資料庫PPT) 、 [5/14作業](./hw0514.md)<br>
+> [簡報PPT](./資料庫PPT) 、 [WORD](./資料庫PPT) 、 [5/14作業](./homework/hw0514.md)<br>
 
 ## 題目 ETF 投資組合管理系統(第八組)
 - **專案簡介**  
