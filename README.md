@@ -619,7 +619,7 @@ GRANT ALL PRIVILEGES ON auth_db.* TO 'DBA'@'localhost';
 FLUSH PRIVILEGES;
 ```
 ---
-## 使用者View
+## 使用者View(1~6)
 
 ```sql
 -- 1.ETF 標籤層次結構 View
@@ -908,7 +908,7 @@ WHERE History_Date = '2025-06-07';
 (6.2 特定日期所有ETF的價格變動)<br>
 <img src="image/DB5.2.png" width="900px"><br><br>
 
-## 管理員View
+## 管理員View(7~8)
 ```sql
 -- 7.建立用戶投資組合持股明細 View
 CREATE OR REPLACE VIEW vw_portfolio_detail AS
