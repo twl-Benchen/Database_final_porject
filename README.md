@@ -771,19 +771,21 @@ ON start_data.ETF_Id = end_data.ETF_Id;
 
 ---
 ```sql
--- 5. 用戶持倉查看視圖（對應原本的查詢5）
+-- 5. 用戶持倉查看視圖（相同ETF合併顯示）
 CREATE VIEW v_user_portfolio AS
 SELECT 
     p.User_Id,
     p.ETF_Id,
     e.ETF_Name,
-    p.Shares_Held,
-    p.Average_Cost,
-    p.Last_Updated
+    SUM(p.Shares_Held) as Shares_Held,
+    SUM(p.Shares_Held * p.Average_Cost) / SUM(p.Shares_Held) as Average_Cost,
+    MAX(p.Last_Updated) as Last_Updated
 FROM 
     Portfolio p
 JOIN 
-    ETF e ON p.ETF_Id = e.ETF_Id;
+    ETF e ON p.ETF_Id = e.ETF_Id
+GROUP BY 
+    p.User_Id, p.ETF_Id, e.ETF_Name;
 ```
 ### 使用方式
 ```sql
