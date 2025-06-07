@@ -1066,7 +1066,7 @@ mysqldump -u root -p auth_db > auth_db_backup.sql
 ```bash
 mysql -u root -p auth_db < auth_db_backup.sql
 ```
-## 資料來源 & 處理方式
+## 參考資料/處理方式
 **ETF 基本資料表 (ETF):**
 - 證交所api: https://www.twse.com.tw/zh/ETFortune/ajaxProductsResult
 - 櫃買中心api: https://info.tpex.org.tw/api/etfFilter 
@@ -1082,3 +1082,9 @@ mysql -u root -p auth_db < auth_db_backup.sql
 
 **網頁端即時股價**
 - 證交所api(以ETF:0050舉例) : https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_0050.tw
+
+ **網頁端實作**
+- streamlit : 網頁端框架
+- Plotly : 圖表顯示
+- 參考教學:https://codinglu.tw/2024/10/streamlit-dashboard/
+- 此專題網頁端實作有透過生成式AI協助製作
