@@ -1063,8 +1063,8 @@ ORDER BY Transaction_Count DESC;
 7.顯示該區間K線圖表，下方附有交易量長條圖<br>
 <img src="image/WEB7.png" width="800px"><br><br>
 ## 備份&還原資料庫
-管理員:etf_db備份
-資料庫管理員:auth_db備份、auth_db還原、etf_db還原
+管理員:etf_db備份<br>
+資料庫管理員:auth_db備份、auth_db還原、etf_db還原<br>
 
 etf_db(一般內容)<br>
 備份:<br>
