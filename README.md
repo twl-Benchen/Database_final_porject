@@ -799,7 +799,7 @@ INSERT INTO Transaction (
     NOW()
 );
 
--- 買入後更新投資組合（修改引號內的參數）
+-- 更新持股數
 INSERT INTO Portfolio (
     Portfolio_Id,
     User_Id, 
@@ -824,7 +824,7 @@ SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
 ```sql
 --5.3使用者賣出後更新交易紀錄跟投資組合(股數為0則刪除ETF)
 
--- 1. 插入賣出交易紀錄
+-- 插入賣出交易紀錄
 INSERT INTO `Transaction` (
     Transaction_Id, User_Id, ETF_Id, Transaction_Type, 
     Shares, Price, Transaction_Date
@@ -833,7 +833,7 @@ INSERT INTO `Transaction` (
     'user001', '0057', 'Sell', 50, 160.00, NOW()
 );
 
--- 2. 更新持倉股數
+-- 更新持股數
 UPDATE Portfolio
 SET 
     Shares_Held = Shares_Held - 50,
@@ -843,7 +843,7 @@ WHERE
     AND ETF_Id = '0057'
     AND Shares_Held >= 50;
 
--- 3. 刪除股數為 0 的持倉
+-- 刪除股數為 0 的持倉
 DELETE FROM Portfolio
 WHERE User_Id = 'user001'
   AND ETF_Id = '0057'
@@ -854,17 +854,6 @@ SELECT * FROM v_user_portfolio WHERE User_Id = 'user001';
 ### 說明
 - 功能與目的： 提供用戶投資組合的整合檢視，將相同ETF的多筆持倉記錄合併顯示，計算總持股數量和平均成本，並支援買入賣出交易操作和自動更新投資組合記錄。
 - 詳情：此查詢關聯Portfolio和ETF表，按用戶ID、ETF編號和ETF名稱進行分組，使用SUM函數計算總持股數量，透過加權平均公式計算平均成本，並取得最後更新時間。買入操作會自動插入交易記錄並更新投資組合，若已持有相同ETF則更新股數和重新計算平均成本。賣出操作會減少持股數量，當股數歸零時自動刪除該持倉記錄。
-  
-(5.3)
-- 功能：此程式碼處理ETF賣出交易，並更新或移除用戶的投資組合記錄。<br>
-- 目的：記錄賣出交易，並調整投資組合，若剩餘股數為零則移除該ETF。<br>
-- 詳情：<br>
-  - 插入交易記錄：<br>
-  - 記錄賣出交易，包含唯一的Transaction_Id、用戶 ID、ETF ID、交易類型（'Sell'）、股數、價格和時間戳。<br>
-  - 更新投資組合：<br>
-  - 減少Shares_Held並更新Last_Updated時間戳，確保持有股數足夠。<br>
-  - 刪除投資組合記錄：<br>
-  - 若 Shares_Held變為零，則移除該投資組合記錄。
 ### 執行結果:
 (5.1初始持倉)<br>
 <img src="image/start.png" width="900px"><br><br>
