@@ -1057,7 +1057,7 @@ ORDER BY Transaction_Count DESC;
 
 ## DEMO
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/Hx2qvtQ5Txk/0.jpg)](https://www.youtube.com/watch?v=Hx2qvtQ5Txk "YouTube Video")
-### 頁面預覽
+### 頁面預覽 (頁面存取權限)
 1.帳密登入 (使用者/管理員)<br>
 <img src="image/WEB1.png" width="800px"><br><br>
 2.資訊總覽&查看最近交易紀錄 (管理員)<br>
