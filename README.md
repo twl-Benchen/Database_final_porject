@@ -1117,7 +1117,7 @@ mysql -u DBA -p auth_db < auth_db_backup.sql
 - streamlit : 網頁端框架
 - Plotly : 圖表顯示
 - 參考教學:
-  - streamlit、streamlit套件: https://codinglu.tw/2024/10/streamlit-dashboard/
+  - streamlit、Plotly套件: https://codinglu.tw/2024/10/streamlit-dashboard/
   - 證交所API: https://hackmd.io/@aaronlife/python-ex-stock-by-api
   - Yahoo finance套件:https://ithelp.ithome.com.tw/articles/10341344
 
