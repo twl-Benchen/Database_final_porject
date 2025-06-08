@@ -712,7 +712,7 @@ ORDER BY ETF_Id;
 ```
 ### 使用方式
 ```sql
--- 3.1取得所有 ETF 列表（用於實作階段的下拉選單）
+-- 3.1取得所有 ETF 列表（用於網頁的下拉選單）
 SELECT * FROM vw_etf_dropdown;
 ```
 ```sql
