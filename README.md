@@ -47,7 +47,7 @@
 >Email：41143219@nfu.edu.tw
 
 >組員三：資工系 - 41143238 -  陳峻宇 [twl-Benchen](https://github.com/twl-Benchen)<br>
->負責項目：[值域規劃、MariaDB建立&實作、建立View、ETF分類標籤整理、網頁實作、Github總編輯]<br>
+>負責項目：[值域規劃、MariaDB建立&實作、建立View、ETF標籤&成分股的爬蟲與整理、網頁實作、Github總編輯]<br>
 >Email：41143238@nfu.edu.tw
 
 >組員二：資工系 - 41143239 - 陳億穎 [yiyingg1226](https://github.com/yiyingg1226)<br>
