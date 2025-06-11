@@ -236,6 +236,72 @@ INSERT INTO ETF (ETF_Id, ETF_Name, Holders, IndexName, Scale, ETF_Created_At)
 VALUES ('0050', '元大台灣50', 500000, '臺灣50指數', 250, '2003-06-25');
 ``` 
 ---
+### Stock 
+
+| 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                               | 實際資料舉例            |
+| ------------------- | -------------- | ---------- | ---------- | -------------------------------- | ---------------------- |
+| Ticker_Symbol(PK)   | VARCHAR(10)    | N          | 成分股代號  | 長度 1~10 的文字                  | 2330、AAPL             |
+| Stock_Name          | VARCHAR(100)   | N          | 成分股名稱  | 長度 1~100 的文字                 | 台積電                  |
+| Sector              | VARCHAR(50)	   | Y          | 所屬產業類別 | ≥ 0 的整數                       | 上市半導體業            |
+
+| 欄位名稱             | 值域限制說明                                                               | 確認方式（MySQL）                                         |
+| ---------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
+|Ticker_Symbol(PK) | 必須為 1 到 50 個字元長度的字串，僅可包含阿拉伯數字（0–9）與英文字母（A–Z、a–z），且不可為空，用以唯一識別每個股票。 | `CHECK (Ticker_Symbol REGEXP '^[A-Z0-9]{1,10}$')`          |
+| Stock_Name       | 必須為 1 到 100 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示股票的完整名稱。       | `CHECK (Stock_Name REGEXP '^[A-Za-z0-9()\\s\\u4e00-\\u9fa5]{2,100}$')` |
+| Sector           | 必須為 1 到 50 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示股票所屬的產業類別。                        | `CHECK (Sector IS NULL OR Sector REGEXP '^[A-Za-z ]{2,50}$')`                            |
+
+
+
+```sql
+-- 建立 Stock 資料表
+CREATE TABLE Stock (
+  Ticker_Symbol VARCHAR(10) NOT NULL PRIMARY KEY,
+  Stock_Name VARCHAR(100) NOT NULL,
+  Sector VARCHAR(50) DEFAULT NULL,
+  CHECK (Ticker_Symbol REGEXP '^[A-Za-z0-9]{1,10}$'),
+  CHECK (Stock_Name REGEXP '^[A-Za-z0-9\\u4e00-\\u9fa5()\\s]{1,100}$'),
+  CHECK (Sector IS NULL OR Sector REGEXP '^[A-Za-z\\u4e00-\\u9fa5\\s]{1,50}$')
+);
+
+-- 範例：插入成分股（2330 台積電、AAPL Apple）
+INSERT INTO Stock (Ticker_Symbol, Stock_Name, Sector)
+VALUES ('2330', '台積電', '半導體');
+``` 
+---
+### ETF_Stock 
+| 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                               | 實際資料舉例            |
+| ------------------- | -------------- | ---------- | ---------- | -------------------------------- | ---------------------- |
+| ETF_Id              | VARCHAR(10)    | N          | ETF 代號	  | 長度 1~50 的文字                  | 1                     |
+| Ticker_Symbol       | VARCHAR(10)    | N          | 成分股代號  | 長度 1~100 的文字                 | 2330                  |
+| Weight              | DECIMAL(5,2)   | N          | 該股票在ETF的比重 |0.00 到 100.00               | 12.75                 | 
+
+| 欄位名稱             | 值域限制說明                                                               | 確認方式（MySQL）                                         |
+| ---------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
+|ETF_Id               | 必須為 1 到 50 個字元長度的字串，僅可包含阿拉伯數字（0–9）與英文字母（A–Z、a–z），且不可為空，用以唯一識別每個股票。 | `CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$')`          |
+| Ticker_Symbol       | 必須為 1 到 100 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示股票的完整名稱。       | `CHECK (Ticker_Symbol REGEXP '^[A-Z0-9]{1,10}$')` |
+| Weight           | 必須為 1 到 50 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示股票所屬的產業類別。                        | `CHECK (Weight >= 0.00 AND Weight <= 100.00)`                            |
+
+
+
+```sql
+-- 建立 ETF_Stock 資料表
+CREATE TABLE ETF_Stock (
+  ETF_Id VARCHAR(10) NOT NULL,
+  Ticker_Symbol VARCHAR(10) NOT NULL,
+  Weight DECIMAL(5,2) NOT NULL,
+  PRIMARY KEY (ETF_Id, Ticker_Symbol),
+  FOREIGN KEY (Ticker_Symbol) REFERENCES Stock(Ticker_Symbol),
+  CHECK (ETF_Id REGEXP '^[A-Za-z0-9]{1,10}$'),
+  CHECK (Ticker_Symbol REGEXP '^[A-Za-z0-9]{1,10}$'),
+  CHECK (Weight >= 0.00 AND Weight <= 100.00)
+);
+
+
+-- 範例：插入 ETF「0050」的成分股組成
+INSERT INTO ETF_Stock (ETF_Id, Ticker_Symbol, Weight)
+VALUES ('0050', '2330', 45.00);
+``` 
+---
 ### 交易紀錄表 (Transaction)
  
 | 欄位名稱               | 資料型態                 | 是否可為空 | 欄位說明     | 值域                                     | 實際資料舉例          |
