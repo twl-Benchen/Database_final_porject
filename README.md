@@ -242,13 +242,13 @@ VALUES ('0050', '元大台灣50', 500000, '臺灣50指數', 250, '2003-06-25');
 | ------------------- | -------------- | ---------- | ---------- | -------------------------------- | ---------------------- |
 | Ticker_Symbol(PK)   | VARCHAR(10)    | N          | 成分股代號  | 長度 1~10 的文字                  | 2330、AAPL             |
 | Stock_Name          | VARCHAR(100)   | N          | 成分股名稱  | 長度 1~100 的文字                 | 台積電                  |
-| Sector              | VARCHAR(50)	   | Y          | 所屬產業類別 | ≥ 0 的整數                       | 上市半導體業            |
+| Sector              | VARCHAR(50)	   | Y          | 所屬產業類別 |長度 1~50 的文字                  | 上市半導體業            |
 
 | 欄位名稱             | 值域限制說明                                                               | 確認方式（MySQL）                                         |
 | ---------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
-|Ticker_Symbol(PK) | 必須為 1 到 50 個字元長度的字串，僅可包含阿拉伯數字（0–9）與英文字母（A–Z、a–z），且不可為空，用以唯一識別每個股票。 | `CHECK (Ticker_Symbol REGEXP '^[A-Z0-9]{1,10}$')`          |
+|Ticker_Symbol(PK) | 必須為 1 到 50 個字元長度的字串，僅可包含阿拉伯數字（0–9）與英文字母（A–Z、a–z），且不可為空，用以唯一識別每個股票。 | `CHECK (Stock_Name REGEXP '^[A-Za-z0-9\u4e00-\u9fa5()（）\\s]{1,100}$')`          |
 | Stock_Name       | 必須為 1 到 100 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示股票的完整名稱。       | `CHECK (Stock_Name REGEXP '^[A-Za-z0-9()\\s\\u4e00-\\u9fa5]{2,100}$')` |
-| Sector           | 必須為 1 到 50 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示股票所屬的產業類別。                        | `CHECK (Sector IS NULL OR Sector REGEXP '^[A-Za-z ]{2,50}$')`                            |
+| Sector           | 必須為 1 到 50 個字元長度的文字，可包含中英文、數字、空格及常見標點符號，且不可為空，用以顯示股票所屬的產業類別。                        | `CHECK (Sector IS NULL OR Sector REGEXP '^[A-Za-z\u4e00-\u9fa5\\s]{1,50}$')`                            |
 
 
 
@@ -259,9 +259,10 @@ CREATE TABLE Stock (
   Stock_Name VARCHAR(100) NOT NULL,
   Sector VARCHAR(50) DEFAULT NULL,
   CHECK (Ticker_Symbol REGEXP '^[A-Za-z0-9]{1,10}$'),
-  CHECK (Stock_Name REGEXP '^[A-Za-z0-9\\u4e00-\\u9fa5()\\s]{1,100}$'),
-  CHECK (Sector IS NULL OR Sector REGEXP '^[A-Za-z\\u4e00-\\u9fa5\\s]{1,50}$')
-);
+  CHECK (Stock_Name REGEXP '^[A-Za-z0-9\u4e00-\u9fa5()（）\\s]{1,100}$'),
+  CHECK (Sector IS NULL OR Sector REGEXP '^[A-Za-z\u4e00-\u9fa5\\s]{1,50}$')
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 
 -- 範例：插入成分股（2330 台積電、AAPL Apple）
 INSERT INTO Stock (Ticker_Symbol, Stock_Name, Sector)
