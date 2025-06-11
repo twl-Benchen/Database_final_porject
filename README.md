@@ -1187,4 +1187,5 @@ mysql -u DBA -p auth_db < auth_db_backup.sql
   - streamlit、Plotly套件: https://codinglu.tw/2024/10/streamlit-dashboard/
   - 證交所API: https://hackmd.io/@aaronlife/python-ex-stock-by-api
   - Yahoo finance套件:https://ithelp.ithome.com.tw/articles/10341344
+  - ETF成分股(只包含部分ETF的資料):https://mopsov.twse.com.tw/mops/web/t78sb03_q2
 
