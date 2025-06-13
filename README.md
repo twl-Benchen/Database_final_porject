@@ -1,4 +1,4 @@
- <!-- ### 檔案
+![image](https://github.com/user-attachments/assets/56f7db0a-6863-498b-b952-4ab036a761db) <!-- ### 檔案
 > [!IMPORTANT]
 > [簡報PPT](./資料庫PPT) 、 [WORD](./資料庫PPT) 、 [5/14作業](./homework/hw0514.md)<br>-->
 ## 目錄
@@ -102,7 +102,7 @@
 - **安全性**
   - 確保用戶個人資料與交易記錄的隱私性
   - 帳號與密碼分成兩個資料庫
-  - 管理員定期備份資料庫
+  - 管理員與資料庫管理員定期備份資料庫
 ## ER Diagram及詳細說明
 <!--![image](image/ER%20Diagram.png)-->
 **簡略圖**
