@@ -1,6 +1,7 @@
-![image](https://github.com/user-attachments/assets/56f7db0a-6863-498b-b952-4ab036a761db) <!-- ### 檔案
+![image](https://github.com/user-attachments/assets/4d41dd0b-9a93-42e7-84b5-202ddd205de2)
+### 檔案
 > [!IMPORTANT]
-> [簡報PPT](./資料庫PPT) 、 [WORD](./資料庫PPT) 、 [5/14作業](./homework/hw0514.md)<br>-->
+> [簡報PPT](./資料庫PPT) 、 [WORD](./資料庫PPT) 、 [5/14作業](./homework/hw0514.md)<br>
 ## 目錄
 1. [應用情境與使用案例](#應用情境與使用案例)
 2. [系統需求說明](#系統需求說明)
