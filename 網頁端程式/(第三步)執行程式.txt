@@ -1,0 +1,17 @@
+python部分:
+我用vscode 3.9.13 (64bit)
+(改成自己路徑)
+
+1.載套件
+& "C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python39_64/python.exe" -m pip install "streamlit>=1.28.0"
+& "C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python39_64/python.exe" -m pip install "mysql-connector-python>=8.2.0"
+& "C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python39_64/python.exe" -m pip install "pandas>=2.0.0"
+& "C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python39_64/python.exe" -m pip install "plotly>=5.17.0"
+
+
+2.執行a.py
+3.終端機輸入
+& "C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python39_64/python.exe" -m streamlit run a.py
+
+
+(就會跳出網頁)

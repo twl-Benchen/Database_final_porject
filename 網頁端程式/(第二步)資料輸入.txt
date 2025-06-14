@@ -1,0 +1,100 @@
+
+-- ETF資料庫測試資料插入
+-- 依照外鍵依賴順序插入資料
+
+-- 1. 插入 Users 資料（基礎表格，無外鍵依賴）
+INSERT INTO Users (User_Id, User_Name, Full_Name, Email, Phone_Number, Role, Max_Amount) 
+VALUES ('user001', 'john123', '王小明', 'john.wang@example.com', '0912345678', 'user', 1000000);
+INSERT INTO Users (User_Id, User_Name, Full_Name, Email, Phone_Number, Role, Max_Amount)
+VALUES ('adminbenchen', 'benchen', '陳峻宇', 'benchen@example.com', '0900000000', 'admin', 2000000);
+
+------------------------
+2.執行s1_intput_tag_data.py
+3.執行s2_input_history.py (可以只測一檔，例如0050 路徑:ETF_History\0050_history.csv)
+4.執行s3_input_stock.py 匯入成分股
+
+------------------------
+
+
+INSERT INTO Users (
+  User_Id,
+  User_Name,
+  Full_Name,
+  Email,
+  Phone_Number,
+  Role,
+  Max_Amount
+) VALUES
+  ('user002', 'alice',     '林小美',    'alice.lin@example.com',     '0922000001', 'user', 500000),
+  ('user003', 'bob',       '陳柏宇',    'bob.chen@example.com',      '0933000002', 'user', 300000),
+  ('user004', 'cindy',     '吳心怡',    'cindy.wu@example.com',      '0955000003', 'user', 800000),
+  ('user005', 'david',     '張大文',    'david.chang@example.com',   '0966000004', 'user', 250000),
+  ('user006', 'eva',       '陳怡君',    'eva.chen@example.com',      '0977000005', 'user', 600000),
+  ('user007', 'frank',     '黃天明',    'frank.huang@example.com',   '0988000006', 'user', 450000),
+  ('user008', 'grace',     '李靜怡',    'grace.li@example.com',      '0911000007', 'user', 700000),
+  ('user009', 'henry',     '吳宏辰',    'henry.wu@example.com',      '0900000008', 'user', 350000),
+  ('user010', 'irene',     '林怡君',    'irene.lin@example.com',     '0999000009', 'user', 900000);
+
+--切換到密碼資料表(可能要管理員或是root)
+INSERT INTO Auth (User_Id, Password) VALUES
+  ('user002', 'def456'),
+  ('user003', 'ghi789'),
+  ('user004', 'jkl012'),
+  ('user005', 'mno345'),
+  ('user006', 'pqr678'),
+  ('user007', 'stu901'),
+  ('user008', 'vwx234'),
+  ('user009', 'yzb567'),
+  ('user010', 'bcd890');
+
+
+---------------------------------------------
+
+--(以下不用做)查詢資料筆數
+USE etf_db;
+SELECT 'ETF' AS 資料表, COUNT(*) AS 筆數 FROM ETF
+UNION
+SELECT 'Users', COUNT(*) FROM Users
+UNION
+SELECT 'Transaction', COUNT(*) FROM `Transaction`
+UNION
+SELECT 'Portfolio', COUNT(*) FROM Portfolio
+UNION
+SELECT 'ETF_HistoryPrice', COUNT(*) FROM ETF_HistoryPrice
+UNION
+SELECT 'Category_Level1', COUNT(*) FROM Category_Level1
+UNION
+SELECT 'Category_Level2', COUNT(*) FROM Category_Level2
+UNION
+SELECT 'ETF_Category', COUNT(*) FROM ETF_Category
+UNION
+SELECT 'Auth', COUNT(*) FROM auth_db.Auth;
+
+
+-- 查詢驗證資料是否插入成功
+SELECT '=== ETF 資料 ===' AS Info;
+SELECT * FROM ETF;
+
+SELECT '=== Users 資料 ===' AS Info;
+SELECT * FROM Users;
+
+SELECT '=== Auth 資料 ===' AS Info;
+SELECT User_Id, LEFT(Password, 20) AS Password_Preview, Last_Login FROM Auth;
+
+SELECT '=== Category_Level1 資料 ===' AS Info;
+SELECT * FROM Category_Level1;
+
+SELECT '=== Category_Level2 資料 ===' AS Info;
+SELECT * FROM Category_Level2;
+
+SELECT '=== ETF_Category 資料 ===' AS Info;
+SELECT * FROM ETF_Category;
+
+SELECT '=== ETF_HistoryPrice 資料 ===' AS Info;
+SELECT * FROM ETF_HistoryPrice;
+
+SELECT '=== Transaction 資料 ===' AS Info;
+SELECT * FROM `Transaction`;
+
+SELECT '=== Portfolio 資料 ===' AS Info;
+SELECT * FROM Portfolio;

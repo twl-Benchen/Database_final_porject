@@ -1,0 +1,188 @@
+--或是透過還原檔案
+--0前置作業
+mysql -u root -p
+CREATE USER 'benchen'@'localhost' IDENTIFIED BY '000'; #帳benchen 密000
+GRANT ALL PRIVILEGES ON *.* TO 'benchen'@'localhost';
+--新
+CREATE USER 'admin'@'%' IDENTIFIED BY '111'; #帳admin 密111
+CREATE USER 'user'@'%' IDENTIFIED BY '222'; #帳user 密222
+FLUSH PRIVILEGES;
+exit;
+mysql -u benchen -p
+
+-- 1. 建立 etf_db 資料庫
+CREATE DATABASE IF NOT EXISTS etf_db
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+USE etf_db;
+
+
+-- 2. 建立 ETF 資料表
+CREATE TABLE ETF (
+  ETF_Id VARCHAR(10) PRIMARY KEY,
+  ETF_Name VARCHAR(100) NOT NULL,
+  Holders INT NOT NULL,
+  IndexName VARCHAR(50) NOT NULL,
+  Scale INT NOT NULL,
+  ETF_Created_At DATE NOT NULL,
+  CHECK (ETF_Id REGEXP '^[0-9A-Za-z]{1,10}$'),
+  CHECK (CHAR_LENGTH(ETF_Name) BETWEEN 1 AND 100),
+  CHECK (Holders >= 0),
+  CHECK (CHAR_LENGTH(IndexName) BETWEEN 1 AND 50),
+  CHECK (Scale >= 0)
+);
+
+-- 3. 建立 Users 資料表
+CREATE TABLE Users (
+  User_Id VARCHAR(50) PRIMARY KEY,
+  User_Name VARCHAR(50) NOT NULL,
+  Full_Name VARCHAR(100) NOT NULL,
+  Email VARCHAR(100) NOT NULL UNIQUE,
+  Phone_Number VARCHAR(10) NOT NULL,
+  Role ENUM('user','admin') NOT NULL,
+  Max_Amount INT NOT NULL DEFAULT 0,
+  Users_Created_At TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (CHAR_LENGTH(User_Id) BETWEEN 1 AND 50),
+  CHECK (CHAR_LENGTH(User_Name) BETWEEN 1 AND 50),
+  CHECK (CHAR_LENGTH(Full_Name) BETWEEN 1 AND 100),
+  CHECK (Email REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$'),
+  CHECK (Phone_Number REGEXP '^[0-9]{10}$'),
+  CHECK (Role IN ('user','admin')),
+  CHECK (Max_Amount >= 0)
+);
+
+-- 4. 建立 Auth 密碼表（獨立於 etf_db 亦可）
+--CREATE TABLE Auth (
+--  User_Id VARCHAR(50) PRIMARY KEY,
+--  Password VARCHAR(255) NOT NULL,
+--  Last_Login TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--);
+
+-- 5. 建立 Transaction 交易紀錄表
+CREATE TABLE `Transaction` (
+  Transaction_Id INT PRIMARY KEY,
+  User_Id VARCHAR(50) NOT NULL,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Transaction_Type ENUM('Buy','Sell') NOT NULL,
+  Shares INT NOT NULL,
+  Price DECIMAL(10,2) NOT NULL,
+  Transaction_Date TIMESTAMP NOT NULL,
+  FOREIGN KEY (User_Id) REFERENCES Users(User_Id),
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
+  CHECK (Shares > 0),
+  CHECK (Price >= 0),
+  CHECK (Transaction_Type IN ('Buy','Sell'))
+);
+
+-- 6. 建立 Portfolio 持倉資料表
+CREATE TABLE Portfolio (
+  Portfolio_Id INT PRIMARY KEY ,
+  User_Id VARCHAR(50) NOT NULL,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Shares_Held INT NOT NULL,
+  Average_Cost DECIMAL(10,2) NOT NULL,
+  Last_Updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (User_Id) REFERENCES Users(User_Id),
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
+  CHECK (Portfolio_Id >= 1),                  
+  CHECK (CHAR_LENGTH(User_Id) <= 50),    
+  CHECK (Shares_Held >= 0),
+  CHECK (Average_Cost >= 0)
+);
+
+-- 7. 建立 ETF_HistoryPrice 歷史價格表（保留 DATE）
+CREATE TABLE ETF_HistoryPrice (
+  PriceRecord_Id INT PRIMARY KEY AUTO_INCREMENT,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Open_Price DECIMAL(10,2) NOT NULL,
+  Close_Price DECIMAL(10,2) NOT NULL,
+  High_Price DECIMAL(10,2) NOT NULL,
+  Low_Price DECIMAL(10,2) NOT NULL,
+  Volume BIGINT NOT NULL,
+  History_Date DATE NOT NULL,
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
+  CHECK (Open_Price >= 0),
+  CHECK (Close_Price >= 0),
+  CHECK (High_Price >= 0),
+  CHECK (Low_Price >= 0),
+  CHECK (Volume >= 0)
+);
+
+-- 8. 建立 Category_Level1 第⼀分類表
+CREATE TABLE Category_Level1 (
+  Category1_Id INT PRIMARY KEY AUTO_INCREMENT,
+  Category1_Name VARCHAR(20) NOT NULL,
+  CHECK (CHAR_LENGTH(Category1_Name) BETWEEN 1 AND 20)
+);
+
+-- 9. 建立 Category_Level2 第⼆分類表
+CREATE TABLE Category_Level2 (
+  Category2_Id INT PRIMARY KEY AUTO_INCREMENT,
+  Category1_Id INT NOT NULL,
+  Category2_Name VARCHAR(20) NOT NULL,
+  FOREIGN KEY (Category1_Id) REFERENCES Category_Level1(Category1_Id),
+  CHECK (CHAR_LENGTH(Category2_Name) BETWEEN 1 AND 20)
+);
+
+-- 10. 建立 ETF_Category 紀錄分類對應表
+CREATE TABLE ETF_Category (
+  Category_Id INT PRIMARY KEY AUTO_INCREMENT,
+  ETF_Id VARCHAR(10) NOT NULL,
+  Category2_Id INT NOT NULL,
+  FOREIGN KEY (ETF_Id) REFERENCES ETF(ETF_Id),
+  FOREIGN KEY (Category2_Id) REFERENCES Category_Level2(Category2_Id)
+);
+
+-- 建立 Stock_list 資料表
+CREATE TABLE Stock_list (
+  Ticker_Symbol VARCHAR(10) NOT NULL PRIMARY KEY,
+  Stock_Name VARCHAR(100) NOT NULL,
+  Sector VARCHAR(50) DEFAULT NULL,
+  CHECK (Ticker_Symbol REGEXP '^[A-Za-z0-9]{1,10}$'),
+  CHECK (CHAR_LENGTH(Stock_Name) BETWEEN 1 AND 100),
+  CHECK (Sector IS NULL OR CHAR_LENGTH(Sector) BETWEEN 1 AND 50)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 建立 ETF_Holdings 資料表
+CREATE TABLE ETF_Holdings (
+  ETF_Id VARCHAR(10) NOT NULL,
+  Ticker_Symbol VARCHAR(10) NOT NULL,
+  Weight DECIMAL(5,2) NOT NULL,
+  PRIMARY KEY (ETF_Id, Ticker_Symbol),
+  FOREIGN KEY (Ticker_Symbol) REFERENCES Stock_list(Ticker_Symbol),
+  CHECK (ETF_Id REGEXP '^[A-Za-z0-9]{1,10}$'),
+  CHECK (Ticker_Symbol REGEXP '^[A-Za-z0-9]{1,10}$'),
+  CHECK (Weight >= 0.00 AND Weight <= 100.00)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+-----給權限(新)
+GRANT INSERT,UPDATE,DELETE ON etf_db.Transaction TO 'user'@'%'; #給使用者對於Transaction的權限
+GRANT INSERT,UPDATE,DELETE ON etf_db.Portfolio TO 'user'@'%'; #給使用者對於Portfolio的權限
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP ON etf_db.* TO 'admin'@'%'; #給管理員權限
+GRANT SELECT ON etf_db.* TO 'user'@'%'; #給使用者讀取權限
+FLUSH PRIVILEGES;
+
+-----------------
+--密碼資料庫(先打 exit 離開etf_db)
+
+CREATE DATABASE IF NOT EXISTS auth_db;
+USE auth_db;
+
+CREATE TABLE IF NOT EXISTS Auth (
+  User_Id VARCHAR(50) PRIMARY KEY,
+  Password VARCHAR(255) NOT NULL,
+  Last_Login TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+GRANT SELECT, UPDATE ON auth_db.* TO 'user'@'%'; #給使用者對於讀取密碼的權限
+FLUSH PRIVILEGES;
+
+INSERT INTO Auth (User_Id, Password)
+VALUES ('user001', '1234');
+
+INSERT INTO Auth (User_Id, Password)
+VALUES ('adminbenchen', '000');
+
+
