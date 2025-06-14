@@ -1214,5 +1214,5 @@ mysql -u DBA -p auth_db < auth_db_backup.sql
 - Final Project Part III
   - 資料庫實作與設計view、匯入實際資料、網頁實作
 - 專題報告後
-  - 附上參考資料、修改view、添加成分股資料表&view
+  - 附上參考資料、修改view、統一ETF"標籤"的敘述、添加成分股資料表&view
 
