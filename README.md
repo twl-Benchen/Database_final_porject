@@ -1020,8 +1020,46 @@ WHERE Stock_Name LIKE '%台積電%' OR Ticker_Symbol = '2330';
 ### 執行結果:
 (7.1 股票編號2230(台積電)在哪些ETF內)<br>
 <img src="image/STOCKVIEW1.jpg" width="900px"><br><br>
-
-## 管理員View(7~8)
+---
+### 使用者查詢某股票包含在哪些 ETF 裡
+```sql
+-- 8.建立使用者持有的股份有哪些成分股 View
+CREATE VIEW vw_User_ETF_Holdings AS
+SELECT 
+  u.User_Id,
+  u.Full_Name,
+  e.ETF_Id,
+  e.ETF_Name,
+  s.Ticker_Symbol,
+  s.Stock_Name,
+  s.Sector,
+  h.Weight
+FROM Portfolio p
+JOIN Users u ON p.User_Id = u.User_Id
+JOIN ETF e ON p.ETF_Id = e.ETF_Id
+JOIN ETF_Holdings h ON e.ETF_Id = h.ETF_Id
+JOIN Stock_list s ON h.Ticker_Symbol = s.Ticker_Symbol;
+```
+### 使用方式
+```sql
+-- 8.1查詢某股票，在哪些使用者的 ETF 中出現
+SELECT 
+  User_Id,
+  Full_Name,
+  ETF_Id,
+  ETF_Name
+FROM vw_User_ETF_Holdings
+WHERE Ticker_Symbol = '2330'
+ORDER BY User_Id, ETF_Id;
+```
+### 說明
+- 功能與目的： 顯示每位使用者持有的 ETF 以及該 ETF 的成分股清單與比重。
+- 詳情：讓使用者輸入股票代號或名稱，查詢該股票目前被哪些 ETF 納入成分股，並顯示在各 ETF 中的持股比重。此功能有助於投資人掌握該股票的市場影響力與 ETF 資金配置情形，作為投資決策與技術分析的參考依據。
+### 執行結果:
+(8.1 使用者持有的ETF，有哪些ETF包括股票編號2230(台積電))<br>
+<img src="image/STOCKVIEW2.jpg" width="900px"><br><br>
+---
+## 管理員View(9~10)
 ### 管理員查看用戶投資組合持股明細
 ```sql
 -- 9.建立用戶投資組合持股明細 View
