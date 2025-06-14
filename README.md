@@ -703,7 +703,7 @@ GRANT ALL PRIVILEGES ON auth_db.* TO 'DBA'@'localhost';
 FLUSH PRIVILEGES;
 ```
 ---
-## 使用者View(1~6)
+## 使用者View(1~8)
 ### 使用者查詢ETF標籤層次結構
 ```sql
 -- 1.ETF 標籤層次結構 View
