@@ -1018,8 +1018,8 @@ WHERE Stock_Name LIKE '%台積電%' OR Ticker_Symbol = '2330';
 - 功能與目的： 讓使用者輸入股票名稱或代碼 ， 查詢這檔股票在哪些 ETF 裡，用於技術分析和投資決策參考使用。
 - 詳情：從 ETF_Holdings 表搭配 Stock_list 表查詢，使用者可輸入股票代碼（如：2330）或股票名稱（如：台積電），系統將自動比對符合條件的股票，並回傳。
 ### 執行結果:
-(7.1 ETF 0050在哪些ETF內)<br>
-<img src="image/DB5.png" width="900px"><br><br>
+(7.1 股票編號2230(台積電)在哪些ETF內)<br>
+<img src="image/STOCKVIEW1.jpg" width="900px"><br><br>
 
 ## 管理員View(7~8)
 ### 管理員查看用戶投資組合持股明細
