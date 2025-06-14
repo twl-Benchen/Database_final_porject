@@ -634,6 +634,8 @@ ETF_DB
 | 資料表 | 權限 | 說明 |
 |---------|---------|------|
 | ETF | SELECT | 查看ETF |
+| Stock_list | SELECT | 查看成分股清單 |
+| ETF_Holdings | SELECT | 查看成分股佔比 |
 | Transaction | SELECT,INSERT,UPDATE,DELETE | 讀寫交易紀錄 |
 | Portfolio | SELECT,INSERT,UPDATE,DELETE | 讀寫持倉 |
 | ETF_HistoryPrice | SELECT | 查看歷史價格 |
@@ -663,6 +665,8 @@ ETF_DB
 | 資料表 | 權限 | 說明 |
 |---------|---------|------|
 | ETF | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫ETF及備份 |
+| Stock_list | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫成分股清單及備份 |
+| ETF_Holdings | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫成分股佔比及備份 |
 | Transaction | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫交易紀錄及備份 |
 | Portfolio | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫持倉及備份 |
 | ETF_HistoryPrice | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫歷史價格及備份 |
@@ -691,6 +695,8 @@ ETF_DB
 | 資料表 | 權限 | 說明 |
 |---------|---------|------|
 | ETF | ALL | 讀寫ETF及備份與還原 |
+| Stock_list | ALL | 讀寫成分股清單及備份與還原 |
+| ETF_Holdings | ALL | 讀寫成分股佔比及備份與還原 |
 | Transaction | ALL  | 讀寫交易紀錄及備份與還原 |
 | Portfolio | ALL  | 讀寫持倉及備份與還原 |
 | ETF_HistoryPrice | ALL  | 讀寫歷史價格及備份與還原 |
