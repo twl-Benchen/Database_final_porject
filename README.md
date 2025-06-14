@@ -992,6 +992,34 @@ WHERE History_Date = '2025-06-07';
 <img src="image/DB5.png" width="900px"><br><br>
 (6.2 特定日期所有ETF的價格變動)<br>
 <img src="image/DB5.2.png" width="900px"><br><br>
+---
+### 使用者查詢某股票包含在哪些 ETF 裡
+```sql
+-- 7.建立某檔成分股包含在哪些ETF裡 View
+CREATE VIEW vw_Stock_In_ETF AS
+SELECT
+  s.Ticker_Symbol,
+  s.Stock_Name,
+  s.Sector,
+  e.ETF_Id,
+  e.ETF_Name,
+  h.Weight
+FROM ETF_Holdings h
+JOIN Stock_list s ON h.Ticker_Symbol = s.Ticker_Symbol
+JOIN ETF e ON h.ETF_Id = e.ETF_Id;
+```
+### 使用方式
+```sql
+-- 7.1查看特定股票在哪些ETF裡
+SELECT * FROM vw_Stock_In_ETF
+WHERE Stock_Name LIKE '%台積電%' OR Ticker_Symbol = '2330';
+```
+### 說明
+- 功能與目的： 讓使用者輸入股票名稱或代碼 ， 查詢這檔股票在哪些 ETF 裡，用於技術分析和投資決策參考使用。
+- 詳情：從 ETF_Holdings 表搭配 Stock_list 表查詢，使用者可輸入股票代碼（如：2330）或股票名稱（如：台積電），系統將自動比對符合條件的股票，並回傳。
+### 執行結果:
+(7.1 ETF 0050在哪些ETF內)<br>
+<img src="image/DB5.png" width="900px"><br><br>
 
 ## 管理員View(7~8)
 ### 管理員查看用戶投資組合持股明細
