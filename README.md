@@ -1,7 +1,7 @@
 ![image](https://github.com/user-attachments/assets/4d41dd0b-9a93-42e7-84b5-202ddd205de2)
-<!--### 檔案
+### 檔案
 > [!IMPORTANT]
-> [簡報PPT](https://nfuedu-my.sharepoint.com/:p:/g/personal/41143210_nfu_edu_tw/EQgLAPpf7q5Mk7CAZIULnywB_r8vQditrzM4sEXGN3AbaA?e=zg3XKR) 、 [WORD](https://nfuedu-my.sharepoint.com/:w:/r/personal/41143238_nfu_edu_tw/Documents/%E8%B3%87%E6%96%99%E5%BA%AB%E5%A0%B1%E5%91%8A.docx?d=w76ed8ff22f6c4671a6c02972e6391e84&csf=1&web=1&e=W4sp4U) 、 [5/14作業](./homework/hw0514.md)<br>-->
+> [簡報PPT](https://nfuedu-my.sharepoint.com/:p:/g/personal/41143210_nfu_edu_tw/EQgLAPpf7q5Mk7CAZIULnywB_r8vQditrzM4sEXGN3AbaA?e=zg3XKR) 、 [WORD](https://nfuedu-my.sharepoint.com/:w:/r/personal/41143238_nfu_edu_tw/Documents/%E8%B3%87%E6%96%99%E5%BA%AB%E5%A0%B1%E5%91%8A.docx?d=w76ed8ff22f6c4671a6c02972e6391e84&csf=1&web=1&e=W4sp4U) 、 [5/14作業](./homework/hw0514.md)<br>
 ## 目錄
 1. [應用情境與使用案例](#應用情境與使用案例)
 2. [系統需求說明](#系統需求說明)
