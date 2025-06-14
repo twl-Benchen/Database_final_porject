@@ -1057,7 +1057,7 @@ ORDER BY User_Id, ETF_Id;
 - 詳情：讓使用者輸入股票代號或名稱，查詢該股票目前被哪些 ETF 納入成分股，並顯示在各 ETF 中的持股比重。此功能有助於投資人掌握該股票的市場影響力與 ETF 資金配置情形，作為投資決策與技術分析的參考依據。
 ### 執行結果:
 (8.1 使用者持有的ETF，有哪些ETF包括股票編號2230(台積電))<br>
-<img src="image/STOCKVIEW2.jpg" width="900px"><br><br>
+<img src="image/STLOCKVIEW2.jpg" width="900px"><br><br>
 ---
 ## 管理員View(9~10)
 ### 管理員查看用戶投資組合持股明細
