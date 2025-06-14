@@ -156,17 +156,17 @@
 - 規模 (Scale)
 - 創立時間 (ETF_Created_At)
 
-**5. 成分股清單(Stock_list) 資料表屬性**
+**6. 成分股清單(Stock_list) 資料表屬性**
 - 成分股代號 (Ticker_Symbol)
 - 成分股名稱 (Stock_Name)
 - 所屬產業類別 (Sector)
 
-**6.成分股佔比 (ETF_Holdings) 資料表屬性**
+**7.成分股佔比 (ETF_Holdings) 資料表屬性**
 - ETF 代號 (ETF_Id)
 - 成分股代號 (Ticker_Symbol)
 - 該股票在ETF的比重 (Weight)
   
-**7. ETF 歷史價格 (ETF_HistoryPrice) 資料表屬性**
+**8. ETF 歷史價格 (ETF_HistoryPrice) 資料表屬性**
 - 價格紀錄代號 (PriceRecord_Id)
 - ETF 代號 (ETF_Id)
 - 開盤價 (Open_Price)
@@ -176,21 +176,21 @@
 - 交易量 (Volume)
 - 日期 (History_Date)
 
-**8. 紀錄分類 (ETF_Category) 資料表屬性**
+**9. 紀錄分類 (ETF_Category) 資料表屬性**
 - 紀錄分類代號 (Category_Id)
 - ETF 代號 (ETF_Id)
 - 子標籤代號 (Category2_Id)
 
-**9. 子標籤 (Category_Level2) 資料表屬性**
+**10. 子標籤 (Category_Level2) 資料表屬性**
 - 子標籤代號 (Category2_Id)
 - 父標籤代號 (Category1_Id)
 - 子標籤名稱 (Category2_Name)
 
-**10. 父標籤 (Category_Level1) 資料表屬性**
+**11. 父標籤 (Category_Level1) 資料表屬性**
 - 父標籤代號 (Category1_Id)
 - 父標籤名稱 (Category1_Name)
 
-**11. 關聯**
+**12. 關聯**
 - 「使用者密碼（Auth）」與「使用者基本資料表（Users）」實體有一對一 (1..1) 的關係，表示：1..1 和 1..1。每筆使用者密碼只能對應一位使用者，而每位使用者也只能有一筆密碼資料。
 - 「使用者基本資料表（Users）」與「交易紀錄表（Transaction）」實體有一對多 (1..N) 的關係，表示：1..1 和 0..*。一位使用者可以有零到多筆交易紀錄，但每筆交易紀錄只能屬於一位使用者。
 - 「使用者基本資料表（Users）」與「持倉資料表（Portfolio）」實體有一對多 (1..N) 的關係，表示：1..1 和 0..*。一位使用者可以持有零到多筆持倉資料，但每筆持倉資料只能屬於一位使用者。
