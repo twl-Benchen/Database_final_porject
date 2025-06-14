@@ -1024,7 +1024,7 @@ WHERE Stock_Name LIKE '%台積電%' OR Ticker_Symbol = '2330';
 ## 管理員View(7~8)
 ### 管理員查看用戶投資組合持股明細
 ```sql
--- 7.建立用戶投資組合持股明細 View
+-- 9.建立用戶投資組合持股明細 View
 CREATE OR REPLACE VIEW vw_portfolio_detail AS
 SELECT 
     p.Portfolio_Id,
@@ -1044,16 +1044,16 @@ ORDER BY p.User_Id, e.ETF_Id;
 ```
 ### 使用方式
 ```sql
--- 7.1查看所有用戶的投資組合詳細
+-- 9.1查看所有用戶的投資組合詳細
 SELECT * FROM vw_portfolio_detail;
 ```
 ```sql
--- 7.2查看特定用戶的投資組合詳細
+-- 9.2查看特定用戶的投資組合詳細
 SELECT * FROM vw_portfolio_detail 
 WHERE User_Id = 'user001';
 ```
 ```sql
--- 7.3統計用戶投資分佈
+-- 9.3統計用戶投資分佈
 SELECT
     ETF_Id,
     ETF_Name,
@@ -1069,17 +1069,17 @@ ORDER BY Holders DESC;
  - 功能與目的： 提供管理員檢視所有用戶投資組合持股的詳細摘要，整合用戶資訊、ETF資訊和持股詳情，並計算成本基礎，支援用戶投資分析和ETF持有狀況統計。
  - 詳情：關聯Portfolio、Users和ETF三個表格，選擇投資組合編號、用戶編號、用戶姓名等欄位。僅顯示持有股數大於零的投資組合記錄，按用戶編號和ETF編號排序。支援查看所有用戶或特定用戶的投資組合詳情，並可統計各ETF的持有人數、總持股數和總成本分佈情況。
 ### 執行結果:
-( 8.1 查看所有用戶投資組合)<br>
+( 9.1 查看所有用戶投資組合)<br>
 <img src="image/DB6.png" width="800px"><br><br>
-( 8.2 查看特定用戶投資組合)<br>
+( 9.2 查看特定用戶投資組合)<br>
 <img src="image/DB6.2.png" width="800px"><br><br>
-( 8.3 查看ETF持有狀況)<br>
+( 9.3 查看ETF持有狀況)<br>
 <img src="image/DB6.3.png" width="600px"><br><br>
 
 ---
 ### 管理員查看近期交易記錄與統計分析
 ```sql
--- 8.建立近期交易記錄 View
+-- 10.建立近期交易記錄 View
 CREATE OR REPLACE VIEW vw_recent_transactions AS
 SELECT 
     t.Transaction_Id,
@@ -1099,16 +1099,16 @@ ORDER BY t.Transaction_Date DESC;
 ```
 ### 使用方式
 ```sql
--- 8.1查看最新 10 筆交易記錄
+-- 10.1查看最新 10 筆交易記錄
 SELECT * FROM vw_recent_transactions LIMIT 10;
 ```
 ```sql
--- 8.2查看今日所有交易
+-- 10.2查看今日所有交易
 SELECT * FROM vw_recent_transactions 
 WHERE DATE(Transaction_Date) = CURDATE();
 ```
 ```sql
--- 8.3統計交易量分析
+-- 10.3統計交易量分析
 SELECT
     ETF_Id,
     ETF_Name,
@@ -1122,7 +1122,7 @@ GROUP BY ETF_Id, ETF_Name, Transaction_Type
 ORDER BY Total_Amount DESC;
 ```
 ```sql
--- 8.4查看用戶交易活躍度
+-- 10.4查看用戶交易活躍度
 SELECT
     User_Id,
     Full_Name,
@@ -1138,13 +1138,13 @@ ORDER BY Transaction_Count DESC;
 - 詳情：關聯Transaction、Users和ETF三個表格，選擇交易編號、用戶編號、用戶姓名等欄位，按交易日期降序排序以顯示最新交易。支援查看最新交易記錄、今日所有交易、近30天交易量分析和用戶交易活躍度統計。可統計各ETF的買賣次數、總股數和總金額，以及各用戶的交易次數和交易金額。
 ### 執行結果:
 
-(8.1 查看最新十筆交易)<br>
+(10.1 查看最新十筆交易)<br>
 <img src="image/DB8.png" width="800px"><br><br>
-(8.2 統計今日所有交易)<br>
+(10.2 統計今日所有交易)<br>
 <img src="image/DB8.2.png" width="900px"><br><br>
-(8.3 統計ETF近30天買賣次數與金額)<br>
+(10.3 統計ETF近30天買賣次數與金額)<br>
 <img src="image/DB8.3.png" width="800px"><br><br>
-(8.4 統計用戶近30天總交易次數與金額)<br>
+(10.4 統計用戶近30天總交易次數與金額)<br>
 <img src="image/DB8.4.png" width="700px"><br><br>
 
 ---
