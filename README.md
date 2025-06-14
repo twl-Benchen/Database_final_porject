@@ -68,7 +68,7 @@
    - 建立與追蹤自訂投資組合
  - 說明
    - 使用者可以買入或賣出ETF，，對應「 Transaction(交易紀錄表) 」​
-   - 依據標籤（如科技、能源、金融、高股息、ESG等），快速找到符合需求的ETF ，對應「 Category_Level1(第一分類) 」與「 Category_Level2(第二分類) 」​
+   - 依據標籤（如科技、能源、金融、高股息、ESG等），快速找到符合需求的ETF ，對應「 Category_Level1(父標籤) 」與「 Category_Level2(子標籤) 」​
    - 建立個人化投資組合，追蹤其報酬變化，對應「 Portfolio (持倉資料表) 」​
  - 管理者
    - 查看使用者資料
@@ -169,16 +169,16 @@
 **7. 紀錄分類 (ETF_Category) 資料表屬性**
 - 紀錄分類代號 (Category_Id)
 - ETF 代號 (ETF_Id)
-- 第二分類代號 (Category2_Id)
+- 子標籤代號 (Category2_Id)
 
-**8. 第二分類 (Category_Level2) 資料表屬性**
-- 第二分類代號 (Category2_Id)
-- 第一分類代號 (Category1_Id)
-- 第二分類名稱 (Category2_Name)
+**8. 子標籤 (Category_Level2) 資料表屬性**
+- 子標籤代號 (Category2_Id)
+- 父標籤代號 (Category1_Id)
+- 子標籤名稱 (Category2_Name)
 
-**9. 第一分類 (Category_Level1) 資料表屬性**
-- 第一分類代號 (Category1_Id)
-- 第一分類名稱 (Category1_Name)
+**9. 父標籤 (Category_Level1) 資料表屬性**
+- 父標籤代號 (Category1_Id)
+- 父標籤名稱 (Category1_Name)
 
 **10. 關聯**
 - 「使用者密碼（Auth）」與「使用者基本資料表（Users）」實體有一對一 (1..1) 的關係，表示：1..1 和 1..1。每筆使用者密碼只能對應一位使用者，而每位使用者也只能有一筆密碼資料。
@@ -187,8 +187,8 @@
 - 「持倉資料表（Portfolio）」與「ETF」實體有一對多 (1..N) 的關係，表示：1..1 和 0..*。每個 ETF 可以出現在多筆持倉資料中，但一筆持倉只能包含一個 ETF。
 - 「ETF」與「ETF 歷史價格表（ETF_HistoryPrice）」實體有一對多 (1..N) 的關係，表示：1..1 和 0..*。一個 ETF 可以有零到多筆歷史價格紀錄，但每筆歷史價格紀錄只能對應一個 ETF。
 - 「ETF」與「紀錄分類表（ETF_Category）」實體有一對多 (1..N) 的關係，表示：1..1 和 0..*。每筆分類可以對應多個 ETF，但每個 ETF 只能歸類於一個分類。
-- 「紀錄分類表（ETF_Category）」與「第二分類表（Category_Level2）」實體有多對多 (M..N) 的關係，表示：0..* 和 0..*。一筆分類可以包含多個次分類，而一個次分類也可以屬於多個分類。
-- 「第一分類表（Category_Level1）」與「第二分類表（Category_Level2）」實體有一對多 (1..N) 的關係，表示：1..1 和 0..*。一個第一分類可以包含多個第二分類，但每個第二分類只能屬於一個第一分類。
+- 「紀錄分類表（ETF_Category）」與「子標籤表（Category_Level2）」實體有多對多 (M..N) 的關係，表示：0..* 和 0..*。一筆分類可以包含多個次分類，而一個次分類也可以屬於多個分類。
+- 「父標籤表（Category_Level1）」與「子標籤表（Category_Level2）」實體有一對多 (1..N) 的關係，表示：1..1 和 0..*。一個父標籤可以包含多個子標籤，但每個子標籤只能屬於一個父標籤。
 
 
 ## 資料庫Schema及完整性限制
@@ -452,12 +452,12 @@ VALUES ('0050', 167.15, 167.80, 168.00, 166.50, 10830, '2025-04-28');
 ```
 
 ---
-### 第一分類表 (Category_Level1)
+### 父標籤表 (Category_Level1)
 
 | 欄位名稱           | 資料型態    | 是否可為空 | 欄位說明     | 值域                               | 實際資料舉例    |
 | ------------------ | ----------- | ---------- | ------------ | ------------------------------- | -------------- |
-| Category1_Id (PK)  | INT         | N          | 第一分類代號 | 從 1 開始遞增的整數               | 1              |
-| Category1_Name     | VARCHAR(20) | N          | 第一分類名稱 | 長度 1~20 的文字                 | 股票型          |
+| Category1_Id (PK)  | INT         | N          | 父標籤代號 | 從 1 開始遞增的整數               | 1              |
+| Category1_Name     | VARCHAR(20) | N          | 父標籤名稱 | 長度 1~20 的文字                 | 股票型          |
 
 | 欄位名稱               | 值域限制說明                                 | 確認方式（MySQL）                                              |
 | ------------------ | -------------------------------------- | ------------------------------------------------------ |
@@ -467,7 +467,7 @@ VALUES ('0050', 167.15, 167.80, 168.00, 166.50, 10830, '2025-04-28');
 
 
 ```sql
--- 建立第一分類表
+-- 建立父標籤表
 CREATE TABLE Category_Level1 (
   Category1_Id INT PRIMARY KEY AUTO_INCREMENT,
   Category1_Name VARCHAR(20) NOT NULL,
@@ -475,18 +475,18 @@ CREATE TABLE Category_Level1 (
 );
 
 
--- 範例：新增第一分類「股票型」
+-- 範例：新增父標籤「股票型」
 INSERT INTO Category_Level1 (Category1_Name) VALUES ('股票型');
 ```
 
 ---
-### 第二分類表 (Category_Level2)
+### 子標籤表 (Category_Level2)
 
 | 欄位名稱              | 資料型態    | 是否可為空 | 欄位說明       | 值域                                      | 實際資料舉例  |
 | --------------------- | ----------- | ---------- | -------------- | -------------------------------------- | ------------ |
-| Category2_Id (PK)     | INT         | N          | 第二分類代號   | 從 1 開始遞增的整數                      | 1            |
-| Category1_Id (FK)     | INT         | N          | 第一分類代號   | 參考 Category_Level1.Category1_Id       | 1            |
-| Category2_Name        | VARCHAR(20) | N          | 第二分類名稱   | 長度 1~20 的文字                        | 市值型        |
+| Category2_Id (PK)     | INT         | N          | 子標籤代號   | 從 1 開始遞增的整數                      | 1            |
+| Category1_Id (FK)     | INT         | N          | 父標籤代號   | 參考 Category_Level1.Category1_Id       | 1            |
+| Category2_Name        | VARCHAR(20) | N          | 子標籤名稱   | 長度 1~20 的文字                        | 市值型        |
 
 | 欄位名稱               | 值域限制說明                                                      | 確認方式（MySQL）                                              |
 | ------------------ | ----------------------------------------------------------- | ------------------------------------------------------ |
@@ -497,7 +497,7 @@ INSERT INTO Category_Level1 (Category1_Name) VALUES ('股票型');
 
 
 ```sql
--- 建立第二分類表
+-- 建立子標籤表
 CREATE TABLE Category_Level2 (
   Category2_Id INT PRIMARY KEY AUTO_INCREMENT,
   Category1_Id INT NOT NULL,
@@ -506,7 +506,7 @@ CREATE TABLE Category_Level2 (
   CHECK (CHAR_LENGTH(Category2_Name) BETWEEN 1 AND 20)
 );
 
--- 範例：新增第二分類「大型權值」屬於第一分類1
+-- 範例：新增子標籤「大型權值」屬於父標籤1
 INSERT INTO Category_Level2 (Category1_Id, Category2_Name) VALUES (1, '大型權值');
 ```
 
@@ -517,7 +517,7 @@ INSERT INTO Category_Level2 (Category1_Id, Category2_Name) VALUES (1, '大型權
 | ------------------- | ----------- | ---------- | -------------- | ------------------------------------ | -------------- |
 | Category_Id (PK)    | INT         | N          | 紀錄分類代號   | 從 1 開始遞增的整數                    | 1              |
 | ETF_Id (FK)         | VARCHAR(10) | N          | ETF 代號       | 參考 ETF.ETF_Id                      | 0050        |
-| Category2_Id (FK)   | INT         | N          | 第二分類代號   | 參考 Category_Level2.Category2_Id     | 1              |
+| Category2_Id (FK)   | INT         | N          | 子標籤代號   | 參考 Category_Level2.Category2_Id     | 1              |
 
 | 欄位名稱               | 值域限制說明                                                      | 確認方式（MySQL）                                |
 | ------------------ | ----------------------------------------------------------- | ---------------------------------------- |
@@ -536,7 +536,7 @@ CREATE TABLE ETF_Category (
   FOREIGN KEY (Category2_Id) REFERENCES Category_Level2(Category2_Id)
 );
 
--- 範例：將0050歸類至第二分類1 (大型權值)
+-- 範例：將0050歸類至子標籤1 (大型權值)
 INSERT INTO ETF_Category (ETF_Id, Category2_Id) VALUES ('0050', 1);
 ```
 
@@ -627,8 +627,8 @@ ETF_DB
 | Transaction | SELECT,INSERT,UPDATE,DELETE | 讀寫交易紀錄 |
 | Portfolio | SELECT,INSERT,UPDATE,DELETE | 讀寫持倉 |
 | ETF_HistoryPrice | SELECT | 查看歷史價格 |
-| Category_Level1 | SELECT | 查看第一分類 |
-| Category_Level2 | SELECT | 查看第二分類 |
+| Category_Level1 | SELECT | 查看父標籤 |
+| Category_Level2 | SELECT | 查看子標籤 |
 | ETF_Category | SELECT | 查看分類 |
 | Users | SELECT | 查看使用者基本資料 |
 
@@ -656,8 +656,8 @@ ETF_DB
 | Transaction | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫交易紀錄及備份 |
 | Portfolio | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫持倉及備份 |
 | ETF_HistoryPrice | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫歷史價格及備份 |
-| Category_Level1 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫第一分類及備份 |
-| Category_Level2 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫第二分類及備份 |
+| Category_Level1 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫父標籤及備份 |
+| Category_Level2 | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫子標籤及備份 |
 | ETF_Category | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫分類及備份 |
 | Users | SELECT,INSERT,UPDATE,DELETE,CREATE VIEW,LOCK TABLES,SHOW VIEW,DROP | 讀寫使用者基本資料及備份 |
 
@@ -684,8 +684,8 @@ ETF_DB
 | Transaction | ALL  | 讀寫交易紀錄及備份與還原 |
 | Portfolio | ALL  | 讀寫持倉及備份與還原 |
 | ETF_HistoryPrice | ALL  | 讀寫歷史價格及備份與還原 |
-| Category_Level1 | ALL  | 讀寫第一分類及備份與還原 |
-| Category_Level2 | ALL  | 讀寫第二分類及備份與還原 |
+| Category_Level1 | ALL  | 讀寫父標籤及備份與還原 |
+| Category_Level2 | ALL  | 讀寫子標籤及備份與還原 |
 | ETF_Category | ALL  | 讀寫分類及備份與還原 |
 | Users | ALL | 讀寫使用者基本資料及備份與還原 |
 
@@ -1173,7 +1173,7 @@ mysql -u DBA -p auth_db < auth_db_backup.sql
 - 2008年以前資料：finmind https://finmindtrade.com/analysis/#/data/document
 - 2008年以後資料：Yahoo finance套件: yfinance (官網頁面顯示，以ETF:0050舉例 https://finance.yahoo.com/quote/0050.TW/history/)
 
-**紀錄分類表 (ETF_Category)、第一分類表 (Category_Level1)、第二分類表 (Category_Level2):**
+**紀錄分類表 (ETF_Category)、父標籤表 (Category_Level1)、子標籤表 (Category_Level2):**
 - 利用證交所、櫃買中心篩選器的篩選結果: https://www.twse.com.tw/zh/ETFortune/products <br>
 比如總共有A~E這些ETF，選擇"股票型"標籤後，剩下A、C、D這些ETF，就可以將"股票型"這個標籤分配給A、C、D這三檔ETF，其餘標籤同理
 - 配息月份標籤 : https://www.twse.com.tw/zh/ETFortune/dividendCalendar
