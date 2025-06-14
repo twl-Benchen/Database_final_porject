@@ -52,7 +52,7 @@
 >Email：41143238@nfu.edu.tw
 
 >組員二：資工系 - 41143239 - 陳億穎 [yiyingg1226](https://github.com/yiyingg1226)<br>
->負責項目：[資料庫概念層建立、ER digram製作、Github編輯、成分股資料表設計&實作]<br>
+>負責項目：[資料庫概念層建立、ER digram製作、Github編輯、成分股相關設計&實作]<br>
 >Email：41143239@nfu.edu.tw
 ## 應用情境與使用案例
 **應用情境**
