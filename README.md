@@ -1060,7 +1060,7 @@ ORDER BY User_Id, ETF_Id;
 ### 執行結果:
 
 (8.1 使用者持有的ETF，有哪些ETF包括股票編號2230(台積電))<br>
-<img src="image/STOLCKVIEW2.jpg" width="900px"><br><br>
+<img src="image/STOLCKVIEW2.jpg" width="700px"><br><br>
 
 ---
 ## 管理員View(9~10)
