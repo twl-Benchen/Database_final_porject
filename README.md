@@ -237,7 +237,7 @@ INSERT INTO ETF (ETF_Id, ETF_Name, Holders, IndexName, Scale, ETF_Created_At)
 VALUES ('0050', '元大台灣50', 500000, '臺灣50指數', 250, '2003-06-25');
 ``` 
 ---
-### Stock 
+### Stock_list
 
 | 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                               | 實際資料舉例            |
 | ------------------- | -------------- | ---------- | ---------- | -------------------------------- | ---------------------- |
@@ -254,23 +254,23 @@ VALUES ('0050', '元大台灣50', 500000, '臺灣50指數', 250, '2003-06-25');
 
 
 ```sql
--- 建立 Stock 資料表
-CREATE TABLE Stock (
+-- 建立 Stock_list 資料表
+CREATE TABLE Stock_list (
   Ticker_Symbol VARCHAR(10) NOT NULL PRIMARY KEY,
   Stock_Name VARCHAR(100) NOT NULL,
   Sector VARCHAR(50) DEFAULT NULL,
   CHECK (Ticker_Symbol REGEXP '^[A-Za-z0-9]{1,10}$'),
-  CHECK (Stock_Name REGEXP '^[A-Za-z0-9\u4e00-\u9fa5()（）\\s]{1,100}$'),
-  CHECK (Sector IS NULL OR Sector REGEXP '^[A-Za-z\u4e00-\u9fa5\\s]{1,50}$')
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  CHECK (CHAR_LENGTH(Stock_Name) BETWEEN 1 AND 100),
+  CHECK (Sector IS NULL OR CHAR_LENGTH(Sector) BETWEEN 1 AND 50)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- 範例：插入成分股（2330 台積電、AAPL Apple）
-INSERT INTO Stock (Ticker_Symbol, Stock_Name, Sector)
+-- 範例：插入成分股（2330 台積電、半導體）
+INSERT INTO Stock_list (Ticker_Symbol, Stock_Name, Sector)
 VALUES ('2330', '台積電', '半導體');
 ``` 
 ---
-### ETF_Stock 
+### ETF_Holdings
 | 欄位名稱            | 資料型態       | 是否可為空 | 欄位說明   | 值域                               | 實際資料舉例            |
 | ------------------- | -------------- | ---------- | ---------- | -------------------------------- | ---------------------- |
 | ETF_Id              | VARCHAR(10)    | N          | ETF 代號	  | 長度 1~50 的文字                  | 1                     |
@@ -286,21 +286,22 @@ VALUES ('2330', '台積電', '半導體');
 
 
 ```sql
--- 建立 ETF_Stock 資料表
-CREATE TABLE ETF_Stock (
+-- 建立 ETF_Holdings 資料表
+CREATE TABLE ETF_Holdings (
   ETF_Id VARCHAR(10) NOT NULL,
   Ticker_Symbol VARCHAR(10) NOT NULL,
   Weight DECIMAL(5,2) NOT NULL,
   PRIMARY KEY (ETF_Id, Ticker_Symbol),
-  FOREIGN KEY (Ticker_Symbol) REFERENCES Stock(Ticker_Symbol),
+  FOREIGN KEY (Ticker_Symbol) REFERENCES Stock_list(Ticker_Symbol),
   CHECK (ETF_Id REGEXP '^[A-Za-z0-9]{1,10}$'),
   CHECK (Ticker_Symbol REGEXP '^[A-Za-z0-9]{1,10}$'),
   CHECK (Weight >= 0.00 AND Weight <= 100.00)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 
 -- 範例：插入 ETF「0050」的成分股組成
-INSERT INTO ETF_Stock (ETF_Id, Ticker_Symbol, Weight)
+INSERT INTO ETF_Holdings (ETF_Id, Ticker_Symbol, Weight)
 VALUES ('0050', '2330', 45.00);
 ``` 
 ---
