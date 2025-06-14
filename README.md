@@ -1190,3 +1190,9 @@ mysql -u DBA -p auth_db < auth_db_backup.sql
   - Yahoo finance套件:https://ithelp.ithome.com.tw/articles/10341344
   - ETF成分股(只包含部分ETF的資料):[https://mopsov.twse.com.tw/mops/web/t78sb03_q2
 ](https://mopsov.twse.com.tw/mops/web/t78sb04_q2)
+
+## 進度
+Final Project Part I   [簡報PPT](Database_final_porject/other/第八組_ETF投資組合管理系統.pdf)
+Final Project Part II  修正erdigram圖、加上更嚴格的值域限制、舉例實際資料
+Final Project Part III 
+
