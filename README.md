@@ -1301,9 +1301,9 @@ mysql -u DBA -p auth_db < auth_db_backup.sql
 - Final Project Part I
   - [簡報PPT](other/第八組_ETF%20投資組合管理系統.pdf) 
 - Final Project Part II
-  - 修正erdigram圖、撰寫SQL、加上更嚴格的值域限制、舉例實際資料
+  - 修正erdigram圖並撰寫更詳細的說明、撰寫SQL、加上更嚴格的值域限制、舉例實際資料
 - Final Project Part III
-  - 資料庫實作與設計view、匯入實際資料、網頁實作
+  - 資料庫實作與設計view、匯入實際資料、網頁實作、彙整資料至word、ppt
 - 專題報告後
-  - 附上參考資料、修改view、統一ETF"標籤"的敘述、添加成分股資料表&view
+  - 附上參考資料、修改view、統一ETF"標籤"的敘述、添加成分股資料表&view、修改word、ppt
 
