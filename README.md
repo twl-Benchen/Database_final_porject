@@ -1,5 +1,5 @@
 ![image](https://github.com/user-attachments/assets/4d41dd0b-9a93-42e7-84b5-202ddd205de2)
-### 檔案(可能須下載才能預覽)
+### 檔案 (可能須下載才能預覽)
 > [!IMPORTANT]
 > [簡報PPT](./第八組_ETF投資組合管理系統_簡報.pdf) 、 [完整報告WORD](./第八組_ETF投資組合管理系統_完整書面報告.pdf) 、 [5/14作業](./homework/hw0514.md)<br>
 ## 目錄
